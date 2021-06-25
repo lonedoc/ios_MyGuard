@@ -22,7 +22,7 @@ extension CheckBox {
     }
 }
 
-protocol CheckBoxDelegate {
+protocol CheckBoxDelegate: AnyObject {
     func stateChanged(sender: CheckBox)
 }
 

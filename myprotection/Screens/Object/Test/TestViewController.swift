@@ -56,7 +56,7 @@ extension TestViewController: TestContract.View {
 
 class TestViewController: UIViewController {
 
-    private var rootView: TestView { return view as! TestView }
+    private var rootView: TestView { return view as! TestView } // swiftlint:disable:this force_cast
     private let presenter: TestContract.Presenter
 
     init(with presenter: TestContract.Presenter) {
@@ -126,4 +126,5 @@ class TestViewController: UIViewController {
     @objc func completeButtonPressed() {
         presenter.completeButtonPressed()
     }
+
 }

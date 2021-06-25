@@ -95,7 +95,6 @@ class EventsTableViewCell: UITableViewCell {
         imageView.backgroundColor = .green
         imageView.layer.cornerRadius = 30
         imageView.layer.masksToBounds = true
-        
         imageView.isSkeletonable = true
         return imageView
     }()

@@ -153,7 +153,7 @@ class TestPresenter {
                     self?.updateStatus(status)
                     self?.testAlarmGateway.close()
                 },
-                onError: { [weak self] error in
+                onError: { [weak self] _ in
                     self?.testAlarmGateway.close()
                 }
             )
@@ -188,8 +188,8 @@ class TestPresenter {
     private func makeResetRequest(address: InetAddress, token: String) {
         testAlarmGateway.resetAlarmButtons(address: address, token: token, objectId: objectId)
             .subscribe(
-                onNext: { result in
-                    
+                onNext: { _ in
+
                 },
                 onError: { [weak self] error in
                     defer { self?.testAlarmGateway.close() }
@@ -218,7 +218,7 @@ class TestPresenter {
     private func makeEndTestModeRequest(address: InetAddress, token: String) {
         testAlarmGateway.exitTestMode(address: address, token: token, objectId: objectId)
             .subscribe(
-                onNext: { [weak self] result in
+                onNext: { [weak self] _ in
                     self?.testAlarmGateway.close()
                     self?.stopCountDownTimer()
                     self?.view?.close()

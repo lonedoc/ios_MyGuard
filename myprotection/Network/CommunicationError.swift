@@ -34,9 +34,7 @@ class CommunicationError: LocalizedError {
     }
 
     var errorDescription: String? {
-        get {
-            return message
-        }
+        return message
     }
 
 }

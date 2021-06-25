@@ -13,19 +13,19 @@ struct SortingOption {
     let values: [Int]
 }
 
-protocol SortingDialogDelegate {
+protocol SortingDialogDelegate: AnyObject {
     func sortingChanged(sorting: Int)
 }
 
 class SortingDialogController: UIViewController {
 
-    private var rootView: SortingDialogView { return view as! SortingDialogView }
+    private var rootView: SortingDialogView { return view as! SortingDialogView } // swiftlint:disable:this force_cast
     private var radioGroup = RadioGroup()
 
     private var options = [SortingOption]()
     private var defaultValue = 0
 
-    var delegate: SortingDialogDelegate?
+    weak var delegate: SortingDialogDelegate?
 
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -156,7 +156,9 @@ class SortingDialogController: UIViewController {
 }
 
 extension SortingDialogController: RadioGroupDelegate {
+
     func valueChanged(value: Int) {
         delegate?.sortingChanged(sorting: value)
     }
+
 }

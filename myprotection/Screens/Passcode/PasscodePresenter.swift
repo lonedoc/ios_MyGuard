@@ -10,7 +10,7 @@ import Foundation
 import RubegProtocol_v2_0
 import RxSwift
 
-fileprivate let driverPort: Int32 = 8301
+private let driverPort: Int32 = 8301
 
 extension PasscodePresenter: PasscodeContract.Presenter {
 
@@ -93,7 +93,7 @@ class PasscodePresenter {
     private var stage: Stage = .creation
     private var passcode1 = ""
     private var passcode2 = ""
-    
+
     private var disposeBag = DisposeBag()
     private var ipIndex = 0
 
@@ -110,10 +110,10 @@ class PasscodePresenter {
             view?.setForgotPasscodeButtonIsHidden(true)
             return
         }
-        
+
         self.stage = .entrance
         self.passcode1 = passcode
-        
+
         view?.setHint(text: "Enter the passcode".localized)
         view?.setBiometryType(biometry.biometryType())
         view?.setForgotPasscodeButtonIsHidden(false)
@@ -165,7 +165,7 @@ class PasscodePresenter {
     private func makeLogoutRequest(address: InetAddress, token: String) {
         loginGateway.unregister(address: address, token: token)
             .subscribe(
-                onNext: { [weak self, loginGateway] result in
+                onNext: { [weak self, loginGateway] _ in
                     self?.resetAndExitToLoginScreen()
                     loginGateway.close()
                 },
@@ -250,7 +250,7 @@ class PasscodePresenter {
     private func appendToPasscodeConfirmation(_ symbol: String) {
         passcode2 += symbol
         view?.setIndicator(value: passcode2.count)
-        
+
         if passcode2.count == 4 {
             checkConfirmation()
         }
@@ -267,7 +267,7 @@ class PasscodePresenter {
                 title: "Error".localized,
                 message: "Wrong passcode confirmation".localized
             )
-            
+
             stage = .creation
             passcode1 = ""
             passcode2 = ""
@@ -279,7 +279,7 @@ class PasscodePresenter {
     private func appendToPasscode(_ symbol: String) {
         passcode2 += symbol
         view?.setIndicator(value: passcode2.count)
-        
+
         if passcode2.count == 4 {
             checkPasscode()
         }
@@ -295,7 +295,7 @@ class PasscodePresenter {
                 title: "Error".localized,
                 message: "Wrong passcode".localized
             )
-            
+
             passcode2 = ""
             view?.setIndicator(value: 0)
         }

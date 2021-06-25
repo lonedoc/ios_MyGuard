@@ -22,7 +22,7 @@ class MultiCheckBox: UIView, CheckBox {
     private var subtitles = [CheckBoxVariant: String]()
     private var images = [CheckBoxVariant: UIImage]()
 
-    var delegate: CheckBoxDelegate?
+    weak var delegate: CheckBoxDelegate?
 
     var value: Int {
         return valuesByVariant[variant] ?? 0
@@ -110,7 +110,7 @@ class MultiCheckBox: UIView, CheckBox {
 
     private func setupViews() {
         backgroundColor = .none
-        
+
         addSubview(titleView)
         addSubview(subtitleView)
         addSubview(imageView)

@@ -54,20 +54,20 @@ private let timeToRetry = 40
 class PasswordPresenter {
 
     private weak var view: PasswordContract.View?
-    
+
     private let appDataRepository: AppDataRepository
     private let passwordGateway: PasswordGateway
     private let loginGateway: LoginGateway
 
     private var communicationData: CommunicationData?
-    
+
     private let disposeBag = DisposeBag()
 
     private var timer: Timer?
     private var timeLeft = 0
 
     private var password = ""
-    
+
     init(
         appDataRepository: AppDataRepository,
         passwordGateway: PasswordGateway,
@@ -94,6 +94,7 @@ class PasswordPresenter {
     }
 
     private func requestPassword() {
+        // swiftlint:disable:next identifier_name
         guard let cd = communicationData else {
             view?.showAlertDialog(
                 title: "Error".localized,
@@ -185,6 +186,7 @@ class PasswordPresenter {
     }
 
     private func register() {
+        // swiftlint:disable:next identifier_name
         guard let cd = communicationData else {
             view?.showAlertDialog(
                 title: "Error".localized,

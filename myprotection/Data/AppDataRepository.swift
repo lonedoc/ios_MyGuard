@@ -8,6 +8,8 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name
+
 protocol AppDataRepository {
     func set(fcmToken: String)
     func getFcmToken() -> String?
@@ -30,21 +32,21 @@ protocol AppDataRepository {
 }
 
 enum AppDataKey: String, CaseIterable {
-    case fcmToken     = "fcmToken"
-    case city         = "city"
-    case company      = "company"
-    case ip           = "ip"
-    case phone        = "phone"
-    case password     = "password"
-    case userId       = "userId"
-    case userName     = "userName"
-    case factoryName  = "factoryName"
-    case factoryPhone = "factoryPhone"
-    case token        = "token"
-    case passcode     = "passcode"
+    case fcmToken
+    case city
+    case company
+    case ip
+    case phone
+    case password
+    case userId
+    case userName
+    case factoryName
+    case factoryPhone
+    case token
+    case passcode
 }
 
-class UserDefaultsAppDataRepository : AppDataRepository {
+class UserDefaultsAppDataRepository: AppDataRepository {
 
     func set(fcmToken: String) {
         UserDefaults.standard.set(fcmToken, forKey: AppDataKey.fcmToken.rawValue)
@@ -144,7 +146,7 @@ class UserDefaultsAppDataRepository : AppDataRepository {
             UserDefaults.standard.removeObject(forKey: $0.rawValue)
         }
     }
-    
+
     func reset(key: AppDataKey) {
         UserDefaults.standard.removeObject(forKey: key.rawValue)
     }

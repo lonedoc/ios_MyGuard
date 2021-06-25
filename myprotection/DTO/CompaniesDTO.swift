@@ -8,30 +8,31 @@
 
 import Foundation
 
-struct CompanyDTO : Decodable {
+// swiftlint:disable identifier_name
+struct CompanyDTO: Decodable {
     let name: String
     let ip: [String]
 
-    enum CodingKeys : String, CodingKey {
-        case name = "name"
-        case ip   = "ip"
+    enum CodingKeys: String, CodingKey {
+        case name
+        case ip
     }
 }
 
-struct CityDTO : Decodable {
+struct CityDTO: Decodable {
     let name: String
     let companies: [CompanyDTO]
 
-    enum CodingKeys : String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case name      = "name"
         case companies = "pr"
     }
 }
 
-struct CompaniesDTO : Decodable {
+struct CompaniesDTO: Decodable {
     let data: [CityDTO]
 
-    enum CodingKeys : String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case data = "city"
     }
 

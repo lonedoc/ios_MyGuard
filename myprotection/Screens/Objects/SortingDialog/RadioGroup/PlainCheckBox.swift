@@ -14,7 +14,7 @@ class PlainCheckBox: UIView, CheckBox {
 
     private var images = [CheckBoxState: UIImage]()
 
-    var delegate: CheckBoxDelegate?
+    weak var delegate: CheckBoxDelegate?
     private(set) var value: Int = 0
 
     var values: [Int] {

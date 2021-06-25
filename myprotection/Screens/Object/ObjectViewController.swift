@@ -30,7 +30,7 @@ extension ObjectViewController: ObjectContract.View {
             self.rootView.armButtonColor = status.color
         }
     }
-    
+
     func setLinkIconHidden(_ hidden: Bool) {
         DispatchQueue.main.async {
             self.rootView.linkIconWrapper.isHidden = hidden
@@ -53,7 +53,7 @@ extension ObjectViewController: ObjectContract.View {
     func showProgressBar(message: String, type: ExecutingCommandType) {
         DispatchQueue.main.async {
             let color: UIColor = type == .arming ? .guardedStatusColor : .notGuardedStatusColor
-            
+
             self.rootView.armingProgressText.text = message
             self.rootView.armingProgressView.progressTintColor = color
             self.rootView.armingProgressView.trackTintColor = color.withAlphaComponent(0.5)
@@ -185,7 +185,7 @@ extension ObjectViewController: ObjectContract.View {
 class ObjectViewController: UIViewController {
 
     private let presenter: ObjectContract.Presenter
-    private var rootView: ObjectView { return view as! ObjectView }
+    private var rootView: ObjectView { return view as! ObjectView } // swiftlint:disable:this force_cast
 
     private let formatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -252,7 +252,7 @@ class ObjectViewController: UIViewController {
     @objc func editButtonTapped() {
         presenter.editButtonTapped()
     }
-    
+
     @objc func armButtonTapped() {
         presenter.armButtonTapped()
     }
@@ -321,7 +321,10 @@ class ObjectViewController: UIViewController {
             if error != nil {
                 completion(nil)
             } else {
-                let unitOfWork = Container.shared.resolve(UnitOfWork.self, argument: contextProvider.newBackgroundContext())
+                let unitOfWork = Container.shared.resolve(
+                    UnitOfWork.self,
+                    argument: contextProvider.newBackgroundContext()
+                )
                 completion(unitOfWork)
             }
         }

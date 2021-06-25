@@ -76,7 +76,7 @@ extension PasswordViewController: PasswordContract.View {
 class PasswordViewController: UIViewController {
 
     private let presenter: PasswordContract.Presenter
-    private var rootView: PasswordView { return self.view as! PasswordView }
+    private var rootView: PasswordView { return self.view as! PasswordView } // swiftlint:disable:this force_cast
 
     init(with presenter: PasswordContract.Presenter) {
         self.presenter = presenter
@@ -103,7 +103,6 @@ class PasswordViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerForKeyboardNotifications()
-        
     }
 
     override func viewWillDisappear(_ animated: Bool) {

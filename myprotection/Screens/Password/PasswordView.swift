@@ -29,7 +29,7 @@ class PasswordView: UIView {
 
     private func setupViews() {
         addSubview(backgroundView)
-        
+
         contentView.addSubview(requestLabel)
         contentView.addSubview(passwordTextField)
         contentView.addSubview(timeLeftLabel)
@@ -54,7 +54,7 @@ class PasswordView: UIView {
         backgroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         backgroundView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         backgroundView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        
+
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         scrollView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor).isActive = true
@@ -90,11 +90,11 @@ class PasswordView: UIView {
         timeLeftLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 32).isActive = true
         timeLeftLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32).isActive = true
         timeLeftLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
-        
+
         retryButton.translatesAutoresizingMaskIntoConstraints = false
         retryButton.centerXAnchor.constraint(equalTo: timeLeftLabel.centerXAnchor).isActive = true
         retryButton.centerYAnchor.constraint(equalTo: timeLeftLabel.centerYAnchor).isActive = true
-        
+
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.topAnchor.constraint(equalTo: timeLeftLabel.bottomAnchor, constant: 48).isActive = true
         cancelButton.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
@@ -107,7 +107,7 @@ class PasswordView: UIView {
     }
 
     // MARK: Views
-    
+
     let backgroundView: UIImageView = {
         let image = UIImage.assets(.background)
         let view = UIImageView(image: image)
@@ -131,6 +131,7 @@ class PasswordView: UIView {
     }()
 
     let requestLabel: UILabel = {
+        // swiftlint:disable:next line_length
         let text = "An sms message with a password has been sent to your number. Please, enter it in the text field below:".localized
         let label = UILabel(frame: .zero)
         label.lineBreakMode = .byWordWrapping
@@ -147,17 +148,17 @@ class PasswordView: UIView {
         textField.setRightPadding(16)
         textField.backgroundColor = UIColor.white.withAlphaComponent(0.3)
         textField.textColor = .white
-    
+
         let placeholderText = "Password".localized
         let placeholderColor = UIColor.white.withAlphaComponent(0.6)
         let attributes = [NSAttributedString.Key.foregroundColor: placeholderColor]
         let placeholder = NSAttributedString(string: placeholderText, attributes: attributes)
-        
+
         textField.attributedPlaceholder = placeholder
-        
+
         return textField
     }()
-    
+
     let timeLeftLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.isUserInteractionEnabled = false
@@ -168,7 +169,7 @@ class PasswordView: UIView {
         label.text = " "
         return label
     }()
-    
+
     let retryButton: UIButton = {
         let title = "Get new password".localized.uppercased()
         let font = UIFont.systemFont(ofSize: 16, weight: .semibold)

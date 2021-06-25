@@ -22,7 +22,7 @@ class ObjectsView: UIView {
 
     private func setup() {
         backgroundColor = .white
-    
+
         setupViews()
         setupConstraints()
     }
@@ -36,7 +36,7 @@ class ObjectsView: UIView {
         tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         tableView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     }
 
     // MARK: Views

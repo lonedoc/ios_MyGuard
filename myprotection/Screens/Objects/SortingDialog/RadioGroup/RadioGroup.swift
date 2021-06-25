@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol RadioGroupDelegate {
+protocol RadioGroupDelegate: AnyObject {
     func valueChanged(value: Int)
 }
 
@@ -16,7 +16,7 @@ class RadioGroup: CheckBoxDelegate {
 
     private var radioButtons = [CheckBox]()
 
-    var delegate: RadioGroupDelegate?
+    weak var delegate: RadioGroupDelegate?
 
     init() {}
 

@@ -95,7 +95,7 @@ class SortingDialogView: UIView {
         checkbox.setValue(value)
 
         checkbox.setTitle(title)
-    
+
         checkbox.tintColor = .primaryColor
         checkbox.setImage(UIImage.assets(.done), for: .selected)
 
@@ -107,7 +107,7 @@ class SortingDialogView: UIView {
         checkbox.trailingAnchor.constraint(equalTo: optionsStackView.trailingAnchor).isActive = true
         checkbox.heightAnchor.constraint(equalToConstant: 48).isActive = true
     }
-    
+
     func addOption(title: String, values: [Int]) {
         let checkbox = MultiCheckBox(frame: .zero)
         checkbox.setValue(values[0], for: .main)

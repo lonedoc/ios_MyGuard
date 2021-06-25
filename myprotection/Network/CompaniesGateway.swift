@@ -78,12 +78,12 @@ extension UdpCompaniesGateway: RubegSocketDelegate {
         if response.command != "city" {
             return
         }
-        
+
         guard let companiesDTO = try? CompaniesDTO.parse(json: response.data) else {
             let subject = companiesSubject
             companiesSubject = nil
             subject?.onError(CommunicationError.parseError)
-            
+
             return
         }
 

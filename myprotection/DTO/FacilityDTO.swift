@@ -8,6 +8,7 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name
 struct FacilityDTO: Decodable {
     let id: String
     let name: String

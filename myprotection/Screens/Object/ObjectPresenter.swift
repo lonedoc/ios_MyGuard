@@ -93,8 +93,19 @@ extension ObjectPresenter: ObjectContract.Presenter {
 
 // MARK: -
 
-fileprivate let guardedStatuses: [StatusCode] = [.guarded, .alarmGuarded, .alarmGuardedWithHandling, .malfunctionGuarded]
-fileprivate let notGuardedStatuses: [StatusCode] = [.notGuarded, .alarmNotGuarded, .alarmNotGuardedWithHandling, .malfunctionNotGuarded]
+private let guardedStatuses: [StatusCode] = [
+    .guarded,
+    .alarmGuarded,
+    .alarmGuardedWithHandling,
+    .malfunctionGuarded
+]
+
+private let notGuardedStatuses: [StatusCode] = [
+    .notGuarded,
+    .alarmNotGuarded,
+    .alarmNotGuardedWithHandling,
+    .malfunctionNotGuarded
+]
 
 class ObjectPresenter {
 
@@ -207,7 +218,8 @@ class ObjectPresenter {
     ) {
         objectsGateway.setName(address: address, token: token, objectId: objectId, name: name)
             .subscribe(
-                onNext: { [objectsGateway] success in
+                onNext: { [objectsGateway] _ in
+                    // TODO: Check if operation ended successfully
                     objectsGateway.close()
                 },
                 onError: { [weak self] error in
@@ -332,7 +344,8 @@ class ObjectPresenter {
     private func makeAlarmRequest(address: InetAddress, token: String, objectId: String) {
         objectsGateway.startAlarm(address: address, token: token, objectId: objectId)
             .subscribe(
-                onNext: { [objectsGateway] success in
+                onNext: { [objectsGateway] _ in
+                    // TODO: Check if operation ended successfully
                     objectsGateway.close()
                 },
                 onError: { [weak self] error in

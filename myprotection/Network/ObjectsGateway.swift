@@ -179,7 +179,7 @@ class UdpObjectsGateway: ObjectsGateway {
 
         return subject
     }
-    
+
     func setName(address: InetAddress, token: String, objectId: String, name: String) -> Observable<Bool> {
         if !socket.opened {
             do {
@@ -252,6 +252,7 @@ class UdpObjectsGateway: ObjectsGateway {
 
 extension UdpObjectsGateway: RubegSocketDelegate {
 
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func stringMessageReceived(_ message: String) {
         #if DEBUG
             print("<- \(message)")

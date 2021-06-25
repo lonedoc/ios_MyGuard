@@ -21,7 +21,7 @@ class CoreDataContextProvider {
     }
 
     func loadStores(completionHandler: @escaping ((Error?) -> Void)) {
-        persistentContainer.loadPersistentStores { description, error in
+        persistentContainer.loadPersistentStores { _, error in
             completionHandler(error)
         }
     }

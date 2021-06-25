@@ -63,7 +63,7 @@ extension LoginViewController: LoginContract.View {
         }
     }
 
-    func openPasswordScreen(ip: [String], phone: String) {
+    func openPasswordScreen(ipAddresses: [String], phone: String) {
         DispatchQueue.main.async {
             let passwordViewController = Container.shared.resolve(PasswordContract.View.self)!
             self.present(passwordViewController, animated: true, completion: nil)
@@ -89,7 +89,7 @@ extension LoginViewController: LoginContract.View {
 class LoginViewController: UIViewController {
 
     private let presenter: LoginContract.Presenter
-    private var rootView: LoginView { return self.view as! LoginView }
+    private var rootView: LoginView { return self.view as! LoginView } // swiftlint:disable:this force_cast
 
     private var cities = [""]
     private var companies = [""]
@@ -108,7 +108,7 @@ class LoginViewController: UIViewController {
     override func loadView() {
         self.view = LoginView(frame: UIScreen.main.bounds)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
@@ -125,7 +125,7 @@ class LoginViewController: UIViewController {
         super.viewWillDisappear(animated)
         unsubscibe()
     }
-    
+
     private func setup() {
         rootView.cityPicker.dataSource = self
         rootView.cityPicker.delegate = self
@@ -213,9 +213,11 @@ class LoginViewController: UIViewController {
     }
 
     @objc func keyboardWillShow(notification: Notification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
             return
         }
+
+        let keyboardSize = keyboardFrame.cgRectValue
 
         rootView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
         rootView.scrollView.scrollIndicatorInsets = rootView.scrollView.contentInset
@@ -237,9 +239,18 @@ extension LoginViewController: UITextFieldDelegate {
         rootView.nextButtonItem.isEnabled = !rootView.phoneTextField.isFirstResponder
     }
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
         if textField == rootView.phoneTextField {
-            guard let updatedText = getUpdatedText(text: textField.text, range: range, replacementString: string) else { return false }
+            guard
+                let updatedText = getUpdatedText(text: textField.text, range: range, replacementString: string)
+            else {
+                return false
+            }
+
             presenter.didChangePhone(value: updatedText)
 
             return false

@@ -29,7 +29,7 @@ class BiometricAuth: Biometry {
     }
 
     func biometryType() -> BiometryType {
-        let _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+        _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
 
         switch context.biometryType {
         case .none:

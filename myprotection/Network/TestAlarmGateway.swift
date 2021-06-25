@@ -167,6 +167,7 @@ class UdpTestAlarmGateway: TestAlarmGateway {
 
 extension UdpTestAlarmGateway: RubegSocketDelegate {
 
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func stringMessageReceived(_ message: String) {
         #if DEBUG
             print("<- \(message)")

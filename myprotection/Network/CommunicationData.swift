@@ -9,7 +9,7 @@
 import Foundation
 import RubegProtocol_v2_0
 
-fileprivate enum InitializingError: Error {
+private enum InitializingError: Error {
     case emptyAddressList
 }
 
