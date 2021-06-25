@@ -1,0 +1,94 @@
+/* 
+  Localizable.strings
+  alarmbutton
+
+  Created by Rubeg NPO on 01/06/2020.
+  Copyright © 2020 Rubeg NPO. All rights reserved.
+*/
+
+// MARK: Errors
+"Error" = "Ошибка";
+"Wrong password" = "Неверный пароль";
+"Service is not available now" = "Сервис сейчас не доступен";
+"Unable to load data" = "Не удалось загрузить данные";
+"Incorrect data format" = "Неправильный формат данных";
+"No security company selected" = "Не выбрано охранное предприятие";
+"Phone number not specified" = "Не указан номер телефона";
+"Server address unknown" = "Адрес сервера не известен";
+"Unknown error" = "Неизвестная ошибка";
+"Server not responding" = "Сервер не отвечает";
+"The operation could not be performed" = "Операция не может быть выполнена";
+"Unable to read server response" = "Не удалось прочитать ответ сервера";
+"Push-notifications is not available" = "Сервис пуш-уведомлений не доступен";
+"Phone not found" = "Телефон не найден";
+"The number cannot be dialed" = "Номер не может быть набран";
+"Wrong passcode" = "Неправильный код безопасности";
+"Wrong passcode confirmation" = "Введенные коды не совпадают";
+"Biometric authentication is unavailable" = "Данный способ аутентификации недоступен";
+"Authentication failed" = "Не удалось выполнить аутентификацию";
+"Biometry is not configured" = "Face ID/Touch ID не настроен";
+"Biometry is locked out" = "Данный способ аутентификации заблокирован";
+
+// MARK: Common
+"Proceed" = "Продолжить";
+"Done" = "Готово";
+"Cancel" = "Отмена";
+
+// MARK: Login
+"City" = "Город";
+"Security company" = "Охранное предприятие";
+"Phone number" = "Номер телефона";
+"Get password" = "Получить пароль";
+"Authentication is required to access the data" = "Для доступа к данным необходима авторизация";
+
+// MARK: Password
+"An sms message with a password has been sent to your number. Please, enter it in the text field below:" = "На Ваш номер отправлено смс-сообщение с паролем. Введите его в текстовое поле ниже:";
+"Password" = "Пароль";
+"Get new password" = "Запросить пароль";
+"Next" = "Продолжить";
+"You can request new password again after: %@" = "Пароль можно запросить повторно через: %@";
+
+// MARK: Passcode
+"abc" = "абвг";
+"def" = "дежз";
+"ghi" = "ийкл";
+"jkl" = "мноп";
+"mno" = "рсту";
+"pqrs" = "фхцч";
+"tuv" = "шщъы";
+"wxyz" = "ьэюя";
+
+"Forgot passcode?" = "Забыли код?";
+"Enter new passcode" = "Введите новый код безопасности";
+"Repeat the passcode" = "Введите код еще раз";
+"Enter the passcode" = "Введите код безопасности";
+
+"The phone number cannot be called" = "Номер не может быть набран";
+
+// MARK: Sorting dialog
+"Sorting" = "Сортировка";
+"Ascending" = "По возрастанию";
+"Descending" = "По убыванию";
+"By name" = "По имени";
+"By address" = "По адресу";
+"By status" = "По статусу";
+
+// MARK: Objects
+"Objects list" = "Список объектов";
+"Failed to load cached events" = "Не удалось загрузить сохраненные события";
+"Loading..." = "Загрузка...";
+
+// MARK: Object
+"Arming..." = "Постановка на охрану...";
+"Arming perimeter..." = "Постановка периметра...";
+"Disarming..." = "Снятие с охраны...";
+"Confirmation required" = "Требуется подтверждение";
+"Are you sure you want to arm the object?" = "Вы уверены, что хотите поставить объект на охрану?";
+"Are you sure you want to disarm the object?" = "Вы уверены, что хотите снять объект с охраны?";
+"Are you sure you want to arm the object's perimeter?" = "Вы уверены, что хотите поставить периметр объекта на охрану?";
+"Facility's name" = "Название объекта";
+"Reset" = "Сбросить";
+"Complete" = "Завершить";
+"Press the alarm button" = "Нажмите тревожную кнопку";
+"The alarm button has been pressed" = "Тревожная кнопка была нажата";
+"The alarm button has been tested. Press the next alarm button" = "Тревожная кнопка протестирована. Нажмите следующую тревожную кнопку";
