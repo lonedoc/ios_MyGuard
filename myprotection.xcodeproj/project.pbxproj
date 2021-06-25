@@ -932,7 +932,7 @@
 				CODE_SIGN_ENTITLEMENTS = myprotection/myprotection.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 54;
+				CURRENT_PROJECT_VERSION = 55;
 				DEVELOPMENT_TEAM = TZX223S8SD;
 				INFOPLIST_FILE = myprotection/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -957,7 +957,7 @@
 				CODE_SIGN_ENTITLEMENTS = myprotection/myprotection.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 54;
+				CURRENT_PROJECT_VERSION = 55;
 				DEVELOPMENT_TEAM = TZX223S8SD;
 				INFOPLIST_FILE = myprotection/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

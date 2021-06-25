@@ -23,7 +23,8 @@ extension PasscodePresenter: PasscodeContract.Presenter {
     }
 
     func viewDidAppear() {
-        if biometry.biometryType() == .faceID {
+        let faceIdAvailable = biometry.isAvailable() && biometry.biometryType() == .faceID
+        if stage == .entrance && faceIdAvailable {
             biometricButtonTapped()
         }
     }
