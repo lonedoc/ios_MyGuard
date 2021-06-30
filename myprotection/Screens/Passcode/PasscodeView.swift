@@ -27,7 +27,7 @@ class PasscodeView : UIView {
             let coloredImage = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
             indicator.image = coloredImage
         } else {
-            indicator.image = image
+            indicator.image = image?.withRenderingMode(.alwaysTemplate)
             indicator.tintColor = .white
         }
     }
@@ -192,7 +192,7 @@ class PasscodeView : UIView {
                 let indicator = UIImageView(image: coloredImage)
                 indicators.append(indicator)
             } else {
-                let indicator = UIImageView(image: image)
+                let indicator = UIImageView(image: image?.withRenderingMode(.alwaysTemplate))
                 indicator.tintColor = .white
                 indicators.append(indicator)
             }
@@ -314,7 +314,7 @@ class PasscodeView : UIView {
             button.setImage(coloredImage, for: .normal)
             button.setImage(coloredImage, for: .highlighted)
         } else {
-            button.setImage(image, for: .normal)
+            button.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
             button.tintColor = .white
         }
         
@@ -334,7 +334,7 @@ class PasscodeView : UIView {
             button.setImage(coloredImage, for: .normal)
             button.setImage(coloredImage, for: .highlighted)
         } else {
-            button.setImage(image, for: .normal)
+            button.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
             button.tintColor = .white
         }
         

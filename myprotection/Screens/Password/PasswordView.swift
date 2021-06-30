@@ -186,7 +186,7 @@ class PasswordView: UIView {
         button.layer.cornerRadius = 5
         button.setBackgroundColor(.errorColor, for: .normal)
         button.setTitle(title, for: .normal)
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.white, for: .normal)
         return button
     }()
 
@@ -198,8 +198,8 @@ class PasswordView: UIView {
         button.setBackgroundColor(.primaryColor, for: .normal)
         button.setBackgroundColor(.primaryColorPale, for: .disabled)
         button.setTitle(title, for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.setTitleColor(.defaultTextColor, for: .disabled)
+        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.white, for: .disabled)
         button.isEnabled = false
         return button
     }()

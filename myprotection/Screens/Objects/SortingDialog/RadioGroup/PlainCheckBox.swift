@@ -8,45 +8,46 @@
 
 import UIKit
 
+enum CheckBoxState {
+    case selected, notSelected
+}
+
 class PlainCheckBox: UIView, CheckBox {
 
-    private var state: CheckBoxState = .notSelected
+    private var imageSelected: UIImage?
+    private var imageNotSelected: UIImage?
 
-    private var images = [CheckBoxState: UIImage]()
+    var isSelected: Bool = false {
+        didSet {
+            updateView()
+            delegate?.stateChanged(sender: self)
+        }
+    }
 
-    var delegate: CheckBoxDelegate?
-    private(set) var value: Int = 0
+    var value: Int = 0
 
     var values: [Int] {
         return [value]
     }
 
-    var isSelected: Bool = false {
+    var mainColor: UIColor? {
         didSet {
-            state = isSelected ? .selected : .notSelected
-            delegate?.stateChanged(sender: self)
             updateView()
         }
     }
 
-    func select(value: Int?) {
-        isSelected = true
-    }
-
-    func setValue(_ value: Int) {
-        self.value = value
-    }
-
-    func setTitle(_ title: String) {
-        titleView.text = title
-    }
-
-    func setImage(_ image: UIImage?, for state: CheckBoxState) {
-        if let image = image {
-            images[state] = image
+    override var tintColor: UIColor? {
+        didSet {
+            updateView()
         }
-        updateView()
     }
+
+    var title: String? {
+        get { return titleView.text }
+        set { titleView.text = newValue }
+    }
+
+    var delegate: CheckBoxDelegate?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -55,6 +56,18 @@ class PlainCheckBox: UIView, CheckBox {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setImage(_ image: UIImage?, for state: CheckBoxState) {
+        if state == .selected {
+            imageSelected = image
+        } else {
+            imageNotSelected = image
+        }
+    }
+
+    func select(value: Int) {
+        isSelected = true
     }
 
     private func setup() {
@@ -67,10 +80,6 @@ class PlainCheckBox: UIView, CheckBox {
         )
 
         addGestureRecognizer(tapRecognizer)
-    }
-
-    @objc func checkBoxTapped() {
-        isSelected = !isSelected
     }
 
     private func setupViews() {
@@ -92,13 +101,31 @@ class PlainCheckBox: UIView, CheckBox {
         imageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
     }
 
-    private func updateView() {
-        titleView.textColor = isSelected ? tintColor : .black
-        imageView.image = images[state]
-        imageView.tintColor = tintColor
+    @objc private func checkBoxTapped() {
+        isSelected = !isSelected
     }
 
-    // MARK: Views
+    private func updateView() {
+        titleView.textColor = isSelected ? tintColor : mainColor
+        
+        let image = isSelected ? imageSelected : imageNotSelected
+
+        guard let imageColor = tintColor else {
+            imageView.image = image
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            let coloredImage = image?.withTintColor(imageColor, renderingMode: .alwaysOriginal)
+            imageView.image = coloredImage
+        } else {
+            let templateImage = image?.withRenderingMode(.alwaysTemplate)
+            imageView.image = templateImage
+            imageView.tintColor = imageColor
+        }
+    }
+
+    // MARK: - Views
 
     let titleView: UILabel = {
         let label = UILabel(frame: .zero)

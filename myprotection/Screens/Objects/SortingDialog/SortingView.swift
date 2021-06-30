@@ -19,6 +19,50 @@ class SortingDialogView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func addOption(title: String, value: Int) {
+        let checkbox = PlainCheckBox(frame: .zero)
+        checkbox.value = value
+        checkbox.title = title
+    
+        checkbox.mainColor = .contrastTextColor
+        checkbox.tintColor = .primaryColor
+
+        checkbox.setImage(UIImage.assets(.done), for: .selected)
+
+        radioButtons.append(checkbox)
+        optionsStackView.addArrangedSubview(checkbox)
+
+        checkbox.translatesAutoresizingMaskIntoConstraints = false
+        checkbox.leadingAnchor.constraint(equalTo: optionsStackView.leadingAnchor).isActive = true
+        checkbox.trailingAnchor.constraint(equalTo: optionsStackView.trailingAnchor).isActive = true
+        checkbox.heightAnchor.constraint(equalToConstant: 48).isActive = true
+    }
+    
+    func addOption(title: String, values: [Int]) {
+        let checkbox = MultiCheckBox(frame: .zero)
+        checkbox.setValue(values[0], for: .main)
+        checkbox.setValue(values[1], for: .alternative)
+        
+        checkbox.mainColor = .contrastTextColor
+        checkbox.minorColor = .paleTextColor
+        checkbox.tintColor = .primaryColor
+
+        checkbox.title = title
+        checkbox.setSubtitle("Ascending".localized, for: .main)
+        checkbox.setSubtitle("Descending".localized, for: .alternative)
+
+        checkbox.setImage(UIImage.assets(.downwardArrow), for: .main)
+        checkbox.setImage(UIImage.assets(.upwardArrow), for: .alternative)
+
+        radioButtons.append(checkbox)
+        optionsStackView.addArrangedSubview(checkbox)
+
+        checkbox.translatesAutoresizingMaskIntoConstraints = false
+        checkbox.leadingAnchor.constraint(equalTo: optionsStackView.leadingAnchor).isActive = true
+        checkbox.trailingAnchor.constraint(equalTo: optionsStackView.trailingAnchor).isActive = true
+        checkbox.heightAnchor.constraint(equalToConstant: 48).isActive = true
+    }
+
     private func setup() {
         setupViews()
         setupConstraints()
@@ -57,25 +101,34 @@ class SortingDialogView: UIView {
         optionsStackView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -24).isActive = true
     }
 
-    // MARK: Views
+    // MARK: - Views
 
     let container: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .white
+        view.backgroundColor = .backgroundColor
         return view
     }()
 
     let closeButton: UIButton = {
-        let image = UIImage.assets(.close)
         let button = UIButton(type: .custom)
-        button.setImage(image, for: .normal)
-        button.tintColor = .black
+
+        let image = UIImage.assets(.close)
+        if #available(iOS 13.0, *) {
+            let coloredImage = image?.withTintColor(.contrastTextColor)
+            button.setImage(coloredImage, for: .normal)
+        } else {
+            let templateImage = image?.withRenderingMode(.alwaysTemplate)
+            button.setImage(templateImage, for: .normal)
+        }
+
+        button.tintColor = .contrastTextColor
         return button
     }()
 
     let titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)//label.font.withSize(18)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        label.textColor = .contrastTextColor
         label.text = "Sorting".localized
         return label
     }()
@@ -89,45 +142,5 @@ class SortingDialogView: UIView {
     }()
 
     var radioButtons = [CheckBox]()
-
-    func addOption(title: String, value: Int) {
-        let checkbox = PlainCheckBox(frame: .zero)
-        checkbox.setValue(value)
-
-        checkbox.setTitle(title)
-    
-        checkbox.tintColor = .primaryColor
-        checkbox.setImage(UIImage.assets(.done), for: .selected)
-
-        radioButtons.append(checkbox)
-        optionsStackView.addArrangedSubview(checkbox)
-
-        checkbox.translatesAutoresizingMaskIntoConstraints = false
-        checkbox.leadingAnchor.constraint(equalTo: optionsStackView.leadingAnchor).isActive = true
-        checkbox.trailingAnchor.constraint(equalTo: optionsStackView.trailingAnchor).isActive = true
-        checkbox.heightAnchor.constraint(equalToConstant: 48).isActive = true
-    }
-    
-    func addOption(title: String, values: [Int]) {
-        let checkbox = MultiCheckBox(frame: .zero)
-        checkbox.setValue(values[0], for: .main)
-        checkbox.setValue(values[1], for: .alternative)
-
-        checkbox.setTitle(title)
-        checkbox.setSubtitle("Ascending".localized, for: .main)
-        checkbox.setSubtitle("Descending".localized, for: .alternative)
-
-        checkbox.tintColor = .primaryColor
-        checkbox.setImage(UIImage.assets(.downwardArrow), for: .main)
-        checkbox.setImage(UIImage.assets(.upwardArrow), for: .alternative)
-
-        radioButtons.append(checkbox)
-        optionsStackView.addArrangedSubview(checkbox)
-
-        checkbox.translatesAutoresizingMaskIntoConstraints = false
-        checkbox.leadingAnchor.constraint(equalTo: optionsStackView.leadingAnchor).isActive = true
-        checkbox.trailingAnchor.constraint(equalTo: optionsStackView.trailingAnchor).isActive = true
-        checkbox.heightAnchor.constraint(equalToConstant: 48).isActive = true
-    }
 
 }

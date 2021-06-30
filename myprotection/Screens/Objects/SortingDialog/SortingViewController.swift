@@ -156,7 +156,9 @@ class SortingDialogController: UIViewController {
 }
 
 extension SortingDialogController: RadioGroupDelegate {
+
     func valueChanged(value: Int) {
         delegate?.sortingChanged(sorting: value)
     }
+
 }

@@ -41,16 +41,16 @@ class RadioGroup: CheckBoxDelegate {
     func stateChanged(sender: CheckBox) {
         if sender.isSelected {
             delegate?.valueChanged(value: sender.value)
+
+            radioButtons
+                .filter { $0.value != sender.value && $0.isSelected }
+                .forEach { $0.isSelected = false }
+            
+            return
         }
 
         if (radioButtons.allSatisfy { !$0.isSelected }) {
             sender.isSelected = true
-        }
-
-        if sender.isSelected {
-            radioButtons
-                .filter { $0.value != sender.value && $0.isSelected }
-                .forEach { $0.isSelected = false }
         }
     }
 
