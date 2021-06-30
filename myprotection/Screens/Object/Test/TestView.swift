@@ -73,7 +73,7 @@ class TestView: UIView {
 
     let containerView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .darkBackgroundColor
+        view.backgroundColor = .backgroundColor
         return view
     }()
 
@@ -81,7 +81,7 @@ class TestView: UIView {
         let label = UILabel()
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.textColor = .white.withAlphaComponent(0.6)
+        label.textColor = .paleTextColor
         return label
     }()
 
@@ -89,7 +89,7 @@ class TestView: UIView {
         let label = UILabel()
         label.textAlignment = .center
         label.numberOfLines = 1
-        label.textColor = .white
+        label.textColor = .contrastTextColor
         label.font = label.font.withSize(64)
         label.text = "0:00"
         return label
@@ -99,7 +99,7 @@ class TestView: UIView {
         let button = UIButton()
         button.layer.cornerRadius = 12
         button.setBackgroundColor(.primaryColor, for: .normal)
-        button.setBackgroundColor(.gray, for: .disabled)
+        button.setBackgroundColor(.primaryColorPale, for: .disabled)
         button.setTitle("Reset".localized, for: .normal)
         button.isEnabled = false
         return button
@@ -109,7 +109,7 @@ class TestView: UIView {
         let button = UIButton()
         button.layer.cornerRadius = 12
         button.setBackgroundColor(.primaryColor, for: .normal)
-        button.setBackgroundColor(.gray, for: .disabled)
+        button.setBackgroundColor(.primaryColorPale, for: .disabled)
         button.setTitle("Complete".localized, for: .normal)
         return button
     }()

@@ -14,62 +14,57 @@ enum CheckBoxVariant {
 
 class MultiCheckBox: UIView, CheckBox {
 
-    private var state: CheckBoxState = .notSelected
-    private var variant: CheckBoxVariant = .main
-
-    private var variantsByValue = [Int: CheckBoxVariant]()
-    private var valuesByVariant = [CheckBoxVariant: Int]()
     private var subtitles = [CheckBoxVariant: String]()
-    private var images = [CheckBoxVariant: UIImage]()
+    private var images = [CheckBoxVariant: UIImage?]()
+    private var valuesByVariant = [CheckBoxVariant: Int]()
+    private var variantsByValue = [Int: CheckBoxVariant]()
 
-    var delegate: CheckBoxDelegate?
-
-    var value: Int {
-        return valuesByVariant[variant] ?? 0
-    }
-
-    var values: [Int] {
-        return Array(variantsByValue.keys)
+    private(set) var selectedVariant: CheckBoxVariant = .main {
+        didSet {
+            updateView()
+            delegate?.stateChanged(sender: self)
+        }
     }
 
     var isSelected: Bool = false {
         didSet {
+            updateView()
             delegate?.stateChanged(sender: self)
+        }
+    }
+
+    var values: [Int] {
+        return Array(valuesByVariant.values)
+    }
+
+    var value: Int {
+        return valuesByVariant[selectedVariant] ?? 0
+    }
+
+    var mainColor: UIColor? {
+        didSet {
             updateView()
         }
     }
 
-    func select(value: Int?) {
-        defer {
-            isSelected = true
+    var minorColor: UIColor? {
+        didSet {
             updateView()
         }
-
-        guard let val = value else { return }
-        guard let variant = variantsByValue[val] else { return }
-        self.variant = variant
     }
 
-    func setValue(_ value: Int, for variant: CheckBoxVariant) {
-        valuesByVariant[variant] = value
-        variantsByValue[value] = variant
-    }
-
-    func setTitle(_ title: String) {
-        titleView.text = title
-    }
-
-    func setSubtitle(_ subtitle: String, for variant: CheckBoxVariant) {
-        subtitles[variant] = subtitle
-        updateView()
-    }
-
-    func setImage(_ image: UIImage?, for variant: CheckBoxVariant) {
-        if let image = image {
-            images[variant] = image
+    override var tintColor: UIColor? {
+        didSet {
+            updateView()
         }
-        updateView()
     }
+
+    var title: String? {
+        get { return titleView.text }
+        set { titleView.text = newValue }
+    }
+
+    var delegate: CheckBoxDelegate?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -78,6 +73,28 @@ class MultiCheckBox: UIView, CheckBox {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setSubtitle(_ subtitle: String, for variant: CheckBoxVariant) {
+        subtitles[variant] = subtitle
+        updateView()
+    }
+
+    func setImage(_ image: UIImage?, for variant: CheckBoxVariant) {
+        images[variant] = image
+        updateView()
+    }
+
+    func setValue(_ value: Int, for variant: CheckBoxVariant) {
+        valuesByVariant[variant] = value
+    }
+
+    func select(value: Int) {
+        guard let variant = variantsByValue[value] else {
+            return
+        }
+
+        selectedVariant = variant
     }
 
     private func setup() {
@@ -92,25 +109,9 @@ class MultiCheckBox: UIView, CheckBox {
         addGestureRecognizer(tapRecognizer)
     }
 
-    @objc func checkBoxTapped() {
-        if !isSelected {
-            isSelected = true
-        } else {
-            if variant == .main {
-                variant = .alternative
-            } else {
-                variant = .main
-            }
-        }
-
-        delegate?.stateChanged(sender: self)
-
-        updateView()
-    }
-
     private func setupViews() {
         backgroundColor = .none
-        
+
         addSubview(titleView)
         addSubview(subtitleView)
         addSubview(imageView)
@@ -132,30 +133,54 @@ class MultiCheckBox: UIView, CheckBox {
         imageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
     }
 
-    private func updateView() {
-        subtitleView.text = subtitles[variant]
-        imageView.image = images[variant]
-
-        titleView.textColor = isSelected ? tintColor : .black
-        imageView.tintColor = isSelected ? tintColor : .gray
+    @objc private func checkBoxTapped() {
+        if !isSelected {
+            isSelected = true
+        } else {
+            selectedVariant = (selectedVariant == .main) ? .alternative : .main
+        }
     }
 
-    // MARK: Views
+    private func updateView() {
+        subtitleView.text = subtitles[selectedVariant]
 
-    let titleView: UILabel = {
+        titleView.textColor = isSelected ? tintColor : mainColor
+        subtitleView.textColor = minorColor
+
+        guard let image = images[selectedVariant] else {
+            return
+        }
+
+        guard let imageColor = isSelected ? tintColor : minorColor else {
+            imageView.image = image
+            return
+        }
+
+        if #available(iOS 13.0, *) {
+            let coloredImage = image?.withTintColor(imageColor, renderingMode: .alwaysOriginal)
+            imageView.image = coloredImage
+        } else {
+            let templateImage = image?.withRenderingMode(.alwaysTemplate)
+            imageView.image = templateImage
+            imageView.tintColor = imageColor
+        }
+    }
+
+    // MARK: - Views
+
+    private let titleView: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         return label
     }()
 
-    let subtitleView: UILabel = {
+    private let subtitleView: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .gray
         return label
     }()
 
-    let imageView: UIImageView = {
+    private let imageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         return imageView
     }()

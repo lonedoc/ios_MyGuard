@@ -13,19 +13,9 @@ protocol CheckBox: UIView {
     var value: Int { get }
     var values: [Int] { get }
     var delegate: CheckBoxDelegate? { get set }
-    func select(value: Int?)
-}
-
-extension CheckBox {
-    func select() {
-        select(value: nil)
-    }
+    func select(value: Int)
 }
 
 protocol CheckBoxDelegate {
     func stateChanged(sender: CheckBox)
-}
-
-enum CheckBoxState {
-    case selected, notSelected
 }

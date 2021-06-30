@@ -123,6 +123,8 @@ extension ObjectViewController: ObjectContract.View {
                 preferredStyle: .alert
             )
 
+            controller.view.tintColor = .primaryColor
+
             controller.addTextField { textField in
                 textField.text = currentName
                 textField.selectAll(nil)
