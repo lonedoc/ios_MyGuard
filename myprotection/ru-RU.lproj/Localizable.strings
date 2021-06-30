@@ -86,6 +86,7 @@
 "Are you sure you want to arm the object?" = "Вы уверены, что хотите поставить объект на охрану?";
 "Are you sure you want to disarm the object?" = "Вы уверены, что хотите снять объект с охраны?";
 "Are you sure you want to arm the object's perimeter?" = "Вы уверены, что хотите поставить периметр объекта на охрану?";
+"Are you sure you want to start alarm?" = "Вы уверены, что хотите начать тревогу?";
 "Facility's name" = "Название объекта";
 "Reset" = "Сбросить";
 "Complete" = "Завершить";

@@ -80,8 +80,10 @@ extension ObjectPresenter: ObjectContract.Presenter {
     }
 
     func alarmButtonTapped() {
-        if facility.statusCode != .alarm {
-            startAlarm()
+        view?.showConfirmDialog(message: "Are you sure you want to start alarm?".localized) {
+            if self.facility.statusCode != .alarm {
+                self.startAlarm()
+            }
         }
     }
 
