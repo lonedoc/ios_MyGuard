@@ -9,6 +9,6 @@
 import Foundation
 
 struct User {
-    let id: Int
+    let id: Int // swiftlint:disable:this identifier_name
     let name: String
 }

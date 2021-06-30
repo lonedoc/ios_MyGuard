@@ -128,26 +128,19 @@ class UdpLoginGateway: LoginGateway {
 
 // MARK: RubegSocketDelegate
 
-//        {"$c$":"reglkok","usern_abs":25,"guid":"60E39E9A-263E-4944-97B4-BEEB0141B58D","name":"Тест","factory":"Rubezh NPO","factorytel":"9140000000","stat":7}
-//        {"$c$":"passwordtimelimit"}
-//        {"$c$":"regerror","data":"wrongpassword"}
-
 extension UdpLoginGateway: RubegSocketDelegate {
 
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func stringMessageReceived(_ message: String) {
         #if DEBUG
             print("<- \(message)")
         #endif
 
-        guard let sourceData = message.data(using: .utf8) else {
-            return
-        }
-
-        guard let jsonObject = try? JSONSerialization.jsonObject(with: sourceData, options: []) else {
-            return
-        }
-
-        guard let jsonMap = jsonObject as? [String: Any] else {
+        guard
+            let sourceData = message.data(using: .utf8),
+            let jsonObject = try? JSONSerialization.jsonObject(with: sourceData, options: []),
+            let jsonMap = jsonObject as? [String: Any]
+        else {
             return
         }
 
@@ -182,8 +175,6 @@ extension UdpLoginGateway: RubegSocketDelegate {
             )
 
             loginSubject?.onNext(result)
-
-            break
         case "regerror":
             let subject = loginSubject
             loginSubject = nil

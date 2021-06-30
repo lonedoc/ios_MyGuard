@@ -38,6 +38,6 @@ class Event {
     }
 }
 
-func ==(_ lhs: Event, _ rhs: Event) -> Bool {
+func == (_ lhs: Event, _ rhs: Event) -> Bool {
     return lhs.objectId == rhs.objectId && lhs.number == rhs.number
 }

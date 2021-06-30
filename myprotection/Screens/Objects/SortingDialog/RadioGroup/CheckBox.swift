@@ -16,6 +16,6 @@ protocol CheckBox: UIView {
     func select(value: Int)
 }
 
-protocol CheckBoxDelegate {
+protocol CheckBoxDelegate: AnyObject {
     func stateChanged(sender: CheckBox)
 }

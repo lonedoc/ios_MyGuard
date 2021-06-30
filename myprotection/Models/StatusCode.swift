@@ -23,30 +23,20 @@ enum StatusCode {
     case unknown
 
     init(text code: String) {
-        switch code {
-        case "1":
-            self = .alarmNotGuarded
-        case "2":
-            self = .malfunction
-        case "3":
-            self = .guarded
-        case "4":
-            self = .notGuarded
-        case "5":
-            self = .alarmNotGuardedWithHandling
-        case "6":
-            self = .alarm
-        case "7":
-            self = .alarmGuardedWithHandling
-        case "8":
-            self = .alarmGuarded
-        case "9":
-            self = .malfunctionNotGuarded
-        case "10":
-            self = .malfunctionGuarded
-        default:
-            self = .unknown
-        }
+        let map: [String: StatusCode] = [
+            "1": .alarmNotGuarded,
+            "2": .malfunction,
+            "3": .guarded,
+            "4": .notGuarded,
+            "5": .alarmNotGuardedWithHandling,
+            "6": .alarm,
+            "7": .alarmGuardedWithHandling,
+            "8": .alarmGuarded,
+            "9": .malfunctionNotGuarded,
+            "10": .malfunctionGuarded
+        ]
+
+        self = map[code] ?? .unknown
     }
 }
 

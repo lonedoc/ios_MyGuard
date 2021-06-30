@@ -13,7 +13,6 @@ class TestView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setup()
     }
 
@@ -113,5 +112,5 @@ class TestView: UIView {
         button.setTitle("Complete".localized, for: .normal)
         return button
     }()
-    
+
 }

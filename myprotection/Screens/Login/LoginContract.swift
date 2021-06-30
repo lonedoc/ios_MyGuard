@@ -18,7 +18,7 @@ protocol ILoginView: UIViewController, AlertDialog {
     func setCompany(_ value: String)
     func setPhoneNumber(_ value: String)
     func setSubmitButtonEnabled(_ enabled: Bool)
-    func openPasswordScreen(ip: [String], phone: String)
+    func openPasswordScreen(ipAddresses: [String], phone: String)
 }
 
 protocol ILoginPresenter {

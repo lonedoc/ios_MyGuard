@@ -26,7 +26,7 @@ extension ObjectsViewController: ObjectsContract.View {
             )
         }
     }
-    
+
     func hideRefresher() {
         DispatchQueue.main.async {
             self.rootView.refreshControl.endRefreshing()
@@ -82,12 +82,12 @@ extension ObjectsViewController: ObjectsContract.View {
 
 // MARK: -
 
-fileprivate let cellIdentifier = "object_cell"
+private let cellIdentifier = "object_cell"
 
 class ObjectsViewController: UIViewController, SortingDialogDelegate {
 
     private let presenter: ObjectsContract.Presenter
-    private var rootView: ObjectsView { return view as! ObjectsView }
+    private var rootView: ObjectsView { return view as! ObjectsView } // swiftlint:disable:this force_cast
 
     private var facilities = [Facility]()
 
@@ -166,6 +166,7 @@ extension ObjectsViewController: SkeletonTableViewDataSource, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // swiftlint:disable:next force_cast
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! ObjectsTableViewCell
 
         let facility = facilities[indexPath.row]
@@ -179,7 +180,10 @@ extension ObjectsViewController: SkeletonTableViewDataSource, UITableViewDelegat
         return cell
     }
 
-    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+    func collectionSkeletonView(
+        _ skeletonView: UITableView,
+        cellIdentifierForRowAt indexPath: IndexPath
+    ) -> ReusableCellIdentifier {
         return cellIdentifier
     }
 

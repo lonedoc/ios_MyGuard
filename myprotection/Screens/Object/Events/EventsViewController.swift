@@ -57,13 +57,13 @@ extension EventsViewController: EventsContract.View {
 
 // MARK: -
 
-fileprivate let cellIdentifier = "eventsTableViewCell"
-fileprivate let animationDuration = 0.5
+private let cellIdentifier = "eventsTableViewCell"
+private let animationDuration = 0.5
 
 class EventsViewController: UIViewController {
 
     private let presenter: EventsContract.Presenter
-    private var rootView: EventsView { return view as! EventsView }
+    private var rootView: EventsView { return view as! EventsView } // swiftlint:disable:this force_cast
 
     private var events = [Event]()
 
@@ -176,6 +176,7 @@ extension EventsViewController: SkeletonTableViewDataSource, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // swiftlint:disable:next force_cast
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! EventsTableViewCell
 
         let event = events[indexPath.row]

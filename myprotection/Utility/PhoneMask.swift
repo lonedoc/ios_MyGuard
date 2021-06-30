@@ -8,10 +8,11 @@
 
 import Foundation
 
-fileprivate typealias Rule = (Character) -> Bool
+private typealias Rule = (Character) -> Bool
 
 class PhoneMask {
 
+    // swiftlint:disable opening_brace
     private var rules: [Rule] {
         return [
             { $0 == "+" },
@@ -34,13 +35,14 @@ class PhoneMask {
             isDigit(char:)
         ]
     }
+    // swiftlint:enable opening_brace
 
     func validate(_ value: String) -> Bool {
         if value.count != rules.count {
             return false
         }
 
-        let characters: Array<Character> = Array(value)
+        let characters = Array(value)
 
         for index in 0 ..< rules.count {
             let rule = rules[index]
@@ -117,7 +119,12 @@ class PhoneMask {
         return result
     }
 
-    private func insert(count: Int, into string: inout String, from characters: [Character], start index: inout Int) -> Bool {
+    private func insert(
+        count: Int,
+        into string: inout String,
+        from characters: [Character],
+        start index: inout Int
+    ) -> Bool {
         for _ in 0 ..< count {
             guard index < characters.count else {
                 return false

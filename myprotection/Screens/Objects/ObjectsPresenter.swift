@@ -21,11 +21,11 @@ extension ObjectsPresenter: ObjectsContract.Presenter {
         fetchFacilities()
         startPolling()
     }
-    
+
     func viewWillDisappear() {
         stopPolling()
     }
-    
+
     func refresh() {
         fetchFacilities(userInitiated: true)
 

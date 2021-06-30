@@ -15,7 +15,7 @@ extension LoginPresenter: LoginContract.Presenter {
     func attach(view: LoginContract.View) {
         self.view = view
     }
-    
+
     func viewDidLoad() {
         DispatchQueue.global(qos: .background).async {
             self.loadCachedData()
@@ -24,30 +24,30 @@ extension LoginPresenter: LoginContract.Presenter {
             self.view?.setSubmitButtonEnabled(self.isReadyForSubmit())
         }
     }
-    
+
     func didSelect(city: String) {
         view?.setCity(city)
         view?.setCompany("")
 
         selectedCity = city
         selectedCompany = nil
-        
+
         let companiesInCity = getCompanyNames(by: city)
         view?.setCompanies(companiesInCity)
         view?.selectCompanyPickerRow(0)
-        
+
         view?.setSubmitButtonEnabled(isReadyForSubmit())
     }
-    
+
     func didSelect(company: String) {
         view?.setCompany(company)
         selectedCompany = companies.first { $0.city == selectedCity && $0.name == company }
         view?.setSubmitButtonEnabled(isReadyForSubmit())
     }
-    
+
     func didChangePhone(value: String) {
         let phoneMask = PhoneMask()
-        
+
         if phoneMask.validatePart(value) {
             phoneNumber = value
             view?.setPhoneNumber(value)
@@ -56,15 +56,15 @@ extension LoginPresenter: LoginContract.Presenter {
             phoneNumber = formattedValue
             view?.setPhoneNumber(formattedValue)
         }
-        
+
         view?.setSubmitButtonEnabled(isReadyForSubmit())
     }
-    
+
     func didHitSubmitButton() {
         saveDataInCache()
-        view?.openPasswordScreen(ip: selectedCompany?.ip ?? [], phone: phoneNumber ?? "")
+        view?.openPasswordScreen(ipAddresses: selectedCompany?.ip ?? [], phone: phoneNumber ?? "")
     }
-    
+
     func didHitRetryButton() {
         currentIpIndex += 1
     }
@@ -73,46 +73,48 @@ extension LoginPresenter: LoginContract.Presenter {
 
 // MARK: -
 
-fileprivate let ipAddresses = ["94.177.183.4", "194.125.255.105"]
-fileprivate let port: Int32 = 8300
+private let ipAddresses = ["94.177.183.4", "194.125.255.105"]
+private let port: Int32 = 8300
 
 class LoginPresenter {
 
-    private weak var view: LoginContract.View? = nil
+    private weak var view: LoginContract.View?
     private let appDataRepository: AppDataRepository
     private let companiesGateway: CompaniesGateway
 
     private let communicationData: CommunicationData
 
     private var companies: [Company] = []
-    private var selectedCity: String? = nil
-    private var selectedCompany: Company? = nil
-    private var phoneNumber: String? = nil
+    private var selectedCity: String?
+    private var selectedCompany: Company?
+    private var phoneNumber: String?
 
     private var currentIpIndex = 0
     private let disposeBag = DisposeBag()
-    
+
     init(appDataRepository: AppDataRepository, companiesGateway: CompaniesGateway) {
         self.appDataRepository = appDataRepository
         self.companiesGateway = companiesGateway
 
         let addresses = ipAddresses.compactMap { try? InetAddress.create(ip: $0, port: port) }
+
+        // swiftlint:disable:next identifier_name
         guard let cd = try? CommunicationData(addresses: addresses, token: nil) else {
             fatalError("Could not get ip addresses")
         }
 
         communicationData = cd
     }
-    
+
     private func loadCachedData() {
         if let company = appDataRepository.getCompany() {
             selectedCity = company.city
             view?.setCity(company.city)
-            
+
             selectedCompany = company
             view?.setCompany(company.name)
         }
-        
+
         if let phone = appDataRepository.getPhone() {
             let maskedPhone = PhoneMask().apply(to: phone)
             phoneNumber = maskedPhone
@@ -208,7 +210,7 @@ class LoginPresenter {
 
         guard
             let company = selectedCompany,
-            let companyIndex = (companiesInCity.firstIndex { c in c == company.name })
+            let companyIndex = (companiesInCity.firstIndex { $0 == company.name })
         else {
             selectedCompany = nil
 
@@ -240,28 +242,28 @@ class LoginPresenter {
         companiesInCity.insert("", at: 0)
         return companiesInCity
     }
-    
+
     private func saveDataInCache() {
         if let company = selectedCompany {
             appDataRepository.set(company: company)
         }
-        
+
         if let phone = phoneNumber {
             appDataRepository.set(phone: phone)
         }
     }
-        
+
     private func isReadyForSubmit() -> Bool {
         let companyIsSelected = selectedCompany != nil
         let phoneNumberIsValid = PhoneMask().validate(phoneNumber ?? "")
 
         return companyIsSelected && phoneNumberIsValid
     }
-    
+
     private func extractDigits(text: String) -> String {
         return text.filter { isDigit($0) }
     }
-    
+
     private func isDigit(_ character: Character) -> Bool {
         return "0123456789".contains(character)
     }

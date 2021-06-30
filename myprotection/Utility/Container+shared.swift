@@ -10,6 +10,8 @@ import Foundation
 import Swinject
 import CoreData
 
+// swiftlint:disable identifier_name line_length
+
 extension Container {
 
     static let shared: Container = {
@@ -87,19 +89,19 @@ extension Container {
 
         // MARK: - Objects
 
-        container.register(ObjectsContract.Presenter.self) { (resolver, communicationData: CommunicationData) in
+        container.register(ObjectsContract.Presenter.self) { (resolver, cd: CommunicationData) in
             let objectsGateway = resolver.resolve(ObjectsGateway.self)!
 
             return ObjectsPresenter(
                 objectsGateway: objectsGateway,
-                communicationData: communicationData
+                communicationData: cd
             )
         }
 
-        container.register(ObjectsContract.View.self) { (resolver, communicationData: CommunicationData) in
+        container.register(ObjectsContract.View.self) { (resolver, cd: CommunicationData) in
             let presenter = resolver.resolve(
                 ObjectsContract.Presenter.self,
-                argument: communicationData
+                argument: cd
             )!
 
             return ObjectsViewController(with: presenter)
@@ -107,8 +109,7 @@ extension Container {
 
         // MARK: - Object
 
-        container.register(ObjectContract.Presenter.self)
-            { (resolver, facility: Facility, cd: CommunicationData) in
+        container.register(ObjectContract.Presenter.self) { (resolver, facility: Facility, cd: CommunicationData) in
                 let objectsGateway = resolver.resolve(ObjectsGateway.self)!
 
                 return ObjectPresenter(
@@ -118,11 +119,10 @@ extension Container {
                 )
             }
 
-        container.register(ObjectContract.View.self)
-            { (resolver, facility: Facility, communicationData: CommunicationData) in
+        container.register(ObjectContract.View.self) { (resolver, facility: Facility, cd: CommunicationData) in
                 let presenter = resolver.resolve(
                     ObjectContract.Presenter.self,
-                    arguments: facility, communicationData
+                    arguments: facility, cd
                 )!
 
                 return ObjectViewController(with: presenter)
@@ -130,8 +130,7 @@ extension Container {
 
         // MARK: - Events
 
-        container.register(EventsContract.Presenter.self)
-            { (resolver, objectId: String, cd: CommunicationData, unitOfWork: UnitOfWork?) in
+        container.register(EventsContract.Presenter.self) { (resolver, objectId: String, cd: CommunicationData, unitOfWork: UnitOfWork?) in
                 let objectsGateway = resolver.resolve(ObjectsGateway.self)!
 
                 return EventsPresenter(
@@ -142,20 +141,18 @@ extension Container {
                 )
             }
 
-        container.register(EventsContract.View.self)
-            { (resolver, objectId: String, cd: CommunicationData, unitOfWork: UnitOfWork?) in
+        container.register(EventsContract.View.self) { (resolver, objectId: String, cd: CommunicationData, unitOfWork: UnitOfWork?) in
                 let presenter = resolver.resolve(
                     EventsContract.Presenter.self,
                     arguments: objectId, cd, unitOfWork
                 )!
-            
+
                 return EventsViewController(with: presenter)
             }
 
         // MARK: - Test alarm
 
-        container.register(TestContract.Presenter.self)
-            { (resolver, objectId: String, cd: CommunicationData) in
+        container.register(TestContract.Presenter.self) { (resolver, objectId: String, cd: CommunicationData) in
                 let testAlarmGateway = resolver.resolve(TestAlarmGateway.self)!
 
                 return TestPresenter(
@@ -165,8 +162,7 @@ extension Container {
                 )
             }
 
-        container.register(TestContract.View.self)
-            { (resolver, objectId: String, cd: CommunicationData) in
+        container.register(TestContract.View.self) { (resolver, objectId: String, cd: CommunicationData) in
                 let presenter = resolver.resolve(
                     TestContract.Presenter.self,
                     arguments: objectId, cd

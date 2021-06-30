@@ -14,7 +14,6 @@ class ObjectView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setup()
     }
 
@@ -82,6 +81,7 @@ class ObjectView: UIView {
         addSubview(bottomAppBar)
     }
 
+    // swiftlint:disable function_body_length line_length
     private func setupConstraints() {
         topView.translatesAutoresizingMaskIntoConstraints = false
         topView.topAnchor.constraint(equalTo: topAnchor).isActive = true
@@ -145,6 +145,7 @@ class ObjectView: UIView {
         bottomView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         bottomView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
+    // swiftlint:enable function_body_length line_length
 
     // MARK: - Views
 

@@ -9,7 +9,7 @@
 import Foundation
 
 class Facility {
-    var id: String
+    var id: String // swiftlint:disable:this identifier_name
     var name: String
     var address: String
     var selfService: Bool
@@ -17,7 +17,7 @@ class Facility {
     var onlineEnabled: Bool
     var statusCode: StatusCode
     var status: String
-    
+
     init(_ dto: FacilityDTO) {
         id = dto.id
         name = dto.name

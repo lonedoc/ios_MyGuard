@@ -10,12 +10,12 @@ import Foundation
 import RubegProtocol_v2_0
 import RxSwift
 
-fileprivate typealias Range = (
+private typealias Range = (
     start: Int,
     end: Int
 )
 
-fileprivate enum DbError: Error {
+private enum DbError: Error {
     case unavailable
 }
 

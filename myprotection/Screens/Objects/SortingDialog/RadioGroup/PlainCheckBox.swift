@@ -47,7 +47,7 @@ class PlainCheckBox: UIView, CheckBox {
         set { titleView.text = newValue }
     }
 
-    var delegate: CheckBoxDelegate?
+    weak var delegate: CheckBoxDelegate?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
