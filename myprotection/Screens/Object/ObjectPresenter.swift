@@ -96,6 +96,9 @@ extension ObjectPresenter: ObjectContract.Presenter {
 
 // MARK: -
 
+private let shortPollingInterval: TimeInterval = 1
+private let longPollingInterval: TimeInterval = 10
+
 private let guardedStatuses: [StatusCode] = [
     .guarded,
     .alarmGuarded,
@@ -133,10 +136,10 @@ class ObjectPresenter {
         self.objectsGateway = objectsGateway
     }
 
-    private func startPolling() {
+    private func startPolling(interval: TimeInterval = longPollingInterval) {
         timer?.invalidate()
         timer = Timer.scheduledTimer(
-            timeInterval: 10,
+            timeInterval: interval,
             target: self,
             selector: #selector(fetchFacilityData),
             userInfo: nil,
@@ -164,7 +167,7 @@ class ObjectPresenter {
         objectsGateway.getObjectData(address: address, token: token, objectId: facility.id)
             .subscribe(
                 onNext: { [weak self, objectsGateway] facility in
-                    self?.manageProgressBarAndArmButton(updated: facility)
+                    self?.completeStatusChange(updated: facility)
                     self?.facility = facility
                     self?.updateView()
 
@@ -175,7 +178,7 @@ class ObjectPresenter {
             .disposed(by: disposeBag)
     }
 
-    private func manageProgressBarAndArmButton(updated: Facility) {
+    private func completeStatusChange(updated: Facility) {
         if !progressBarIsShown {
             return
         }
@@ -189,6 +192,14 @@ class ObjectPresenter {
         if gotGuarded || gotNotGuarded {
             view?.hideProgressBar()
             view?.setArmButtonEnabled(true)
+            restartPolling()
+        }
+    }
+
+    private func restartPolling(interval: TimeInterval = longPollingInterval) {
+        DispatchQueue.main.async {
+            self.stopPolling()
+            self.startPolling(interval: interval)
         }
     }
 
@@ -280,6 +291,7 @@ class ObjectPresenter {
                 }
 
                 self?.showProgressBar(status: status)
+                self?.restartPolling(interval: shortPollingInterval)
             },
             onError: { [weak self] error in
                 defer { self?.objectsGateway.close() }
