@@ -107,7 +107,7 @@ class PlainCheckBox: UIView, CheckBox {
 
     private func updateView() {
         titleView.textColor = isSelected ? tintColor : mainColor
-        
+
         let image = isSelected ? imageSelected : imageNotSelected
 
         guard let imageColor = tintColor else {

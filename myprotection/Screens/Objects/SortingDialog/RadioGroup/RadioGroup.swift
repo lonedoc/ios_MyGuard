@@ -45,7 +45,7 @@ class RadioGroup: CheckBoxDelegate {
             radioButtons
                 .filter { $0.value != sender.value && $0.isSelected }
                 .forEach { $0.isSelected = false }
-            
+
             return
         }
 

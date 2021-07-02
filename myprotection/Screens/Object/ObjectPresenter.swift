@@ -10,6 +10,8 @@ import Foundation
 import RubegProtocol_v2_0
 import RxSwift
 
+// swiftlint:disable file_length
+
 extension ObjectPresenter: ObjectContract.Presenter {
 
     func attach(view: ObjectContract.View) {
