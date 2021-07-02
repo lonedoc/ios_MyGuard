@@ -52,6 +52,8 @@ extension ObjectPresenter: ObjectContract.Presenter {
     func armButtonTapped() {
         guard facility.online && facility.onlineEnabled else { return }
 
+        view?.setArmButtonEnabled(false)
+
         if !guardedStatuses.contains(facility.statusCode) {
             view?.showConfirmDialog(message: "Are you sure you want to arm the object?".localized) {
                 self.changeStatus(1)
@@ -70,6 +72,8 @@ extension ObjectPresenter: ObjectContract.Presenter {
         if guardedStatuses.contains(facility.statusCode) {
             return
         }
+
+        view?.setArmButtonEnabled(false)
 
         view?.showConfirmDialog(message: "Are you sure you want to arm the object's perimeter?".localized) {
             self.changeStatus(2)
@@ -160,7 +164,7 @@ class ObjectPresenter {
         objectsGateway.getObjectData(address: address, token: token, objectId: facility.id)
             .subscribe(
                 onNext: { [weak self, objectsGateway] facility in
-                    self?.manageProgressBar(updated: facility)
+                    self?.manageProgressBarAndArmButton(updated: facility)
                     self?.facility = facility
                     self?.updateView()
 
@@ -171,7 +175,7 @@ class ObjectPresenter {
             .disposed(by: disposeBag)
     }
 
-    private func manageProgressBar(updated: Facility) {
+    private func manageProgressBarAndArmButton(updated: Facility) {
         if !progressBarIsShown {
             return
         }
@@ -184,6 +188,7 @@ class ObjectPresenter {
 
         if gotGuarded || gotNotGuarded {
             view?.hideProgressBar()
+            view?.setArmButtonEnabled(true)
         }
     }
 
@@ -278,6 +283,8 @@ class ObjectPresenter {
             },
             onError: { [weak self] error in
                 defer { self?.objectsGateway.close() }
+
+                self?.view?.setArmButtonEnabled(true)
 
                 guard let errorMessage = self?.getErrorMessage(by: error) else {
                     return

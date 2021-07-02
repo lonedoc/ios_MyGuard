@@ -21,6 +21,7 @@ protocol IObjectView: UIViewController, AlertDialog {
     func setAlarmButtonEnabled(_ enabled: Bool)
     func showProgressBar(message: String, type: ExecutingCommandType)
     func hideProgressBar()
+    func setArmButtonEnabled(_ enabled: Bool)
     func showConfirmDialog(message: String, proceed: @escaping () -> Void)
     func showEditNameDialog(currentName: String)
     func showTestAlarmView(objectId: String, communicationData: CommunicationData)

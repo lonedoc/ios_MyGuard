@@ -44,6 +44,12 @@ extension ObjectViewController: ObjectContract.View {
         }
     }
 
+    func setArmButtonEnabled(_ enabled: Bool) {
+        DispatchQueue.main.async {
+            self.rootView.armButton.isEnabled = enabled
+        }
+    }
+
     func setAlarmButtonEnabled(_ enabled: Bool) {
         DispatchQueue.main.async {
             self.rootView.bottomAppBar.floatingButton.setEnabled(enabled, animated: true)
