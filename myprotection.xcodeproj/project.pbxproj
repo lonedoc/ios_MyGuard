@@ -953,7 +953,7 @@
 				CODE_SIGN_ENTITLEMENTS = myprotection/myprotection.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = TZX223S8SD;
 				INFOPLIST_FILE = myprotection/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -961,7 +961,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.32;
+				MARKETING_VERSION = 2.33;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.rubeg38.securitycenter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "SC Development";
@@ -978,7 +978,7 @@
 				CODE_SIGN_ENTITLEMENTS = myprotection/myprotection.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = TZX223S8SD;
 				INFOPLIST_FILE = myprotection/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -986,7 +986,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.32;
+				MARKETING_VERSION = 2.33;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.rubeg38.securitycenter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "SC Development";
