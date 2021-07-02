@@ -235,9 +235,15 @@ class ObjectPresenter {
     ) {
         objectsGateway.setName(address: address, token: token, objectId: objectId, name: name)
             .subscribe(
-                onNext: { [objectsGateway] _ in
-                    // TODO: Check if operation ended successfully
-                    objectsGateway.close()
+                onNext: { [weak self] success in
+                    defer { self?.objectsGateway.close() }
+
+                    if !success {
+                        self?.view?.showAlertDialog(
+                            title: "Error".localized,
+                            message: "The operation could not be performed".localized
+                        )
+                    }
                 },
                 onError: { [weak self] error in
                     defer { self?.objectsGateway.close() }
@@ -364,9 +370,15 @@ class ObjectPresenter {
     private func makeAlarmRequest(address: InetAddress, token: String, objectId: String) {
         objectsGateway.startAlarm(address: address, token: token, objectId: objectId)
             .subscribe(
-                onNext: { [objectsGateway] _ in
-                    // TODO: Check if operation ended successfully
-                    objectsGateway.close()
+                onNext: { [weak self] success in
+                    defer { self?.objectsGateway.close() }
+
+                    if !success {
+                        self?.view?.showAlertDialog(
+                            title: "Error".localized,
+                            message: "The operation could not be performed".localized
+                        )
+                    }
                 },
                 onError: { [weak self] error in
                     defer { self?.objectsGateway.close() }
