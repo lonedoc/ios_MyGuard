@@ -16,6 +16,7 @@
 "Phone number not specified" = "Phone number not specified";
 "Server address unknown" = "Server address unknown";
 "Unknown error" = "Unknown error";
+"Could not send request" = "Could not send request";
 "Server not responding" = "Server not responding";
 "The operation could not be performed" = "The operation could not be performed";
 "Unable to read server response" = "Unable to read server response";

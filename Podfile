@@ -1,6 +1,8 @@
 source 'https://gitlab.com/rubeg-npo/rubeg-cocoapods.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
+inhibit_all_warnings!
+
 target 'myprotection' do
   use_frameworks!
 

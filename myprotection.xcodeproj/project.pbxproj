@@ -58,6 +58,7 @@
 		5C6D001425E8FFD000FD43F2 /* Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D001325E8FFD000FD43F2 /* Factory.swift */; };
 		5C7687C924D2CF20009FFA2E /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C7687C824D2CF20009FFA2E /* LocalAuthentication.framework */; };
 		5C7687CB24D2D5BD009FFA2E /* BiometricAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7687CA24D2D5BD009FFA2E /* BiometricAuth.swift */; };
+		5C8310962692DE36001B713C /* getErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8310952692DE36001B713C /* getErrorMessage.swift */; };
 		5C92BD0626140CDB00872B17 /* EventMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C92BD0426140CDB00872B17 /* EventMO+CoreDataClass.swift */; };
 		5C92BD0726140CDB00872B17 /* EventMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C92BD0526140CDB00872B17 /* EventMO+CoreDataProperties.swift */; };
 		5C92BD2326140D2400872B17 /* CoreDataContextProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C92BD2226140D2400872B17 /* CoreDataContextProvider.swift */; };
@@ -164,6 +165,7 @@
 		5C6D001325E8FFD000FD43F2 /* Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factory.swift; sourceTree = "<group>"; };
 		5C7687C824D2CF20009FFA2E /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		5C7687CA24D2D5BD009FFA2E /* BiometricAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuth.swift; sourceTree = "<group>"; };
+		5C8310952692DE36001B713C /* getErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getErrorMessage.swift; sourceTree = "<group>"; };
 		5C92BD0426140CDB00872B17 /* EventMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventMO+CoreDataClass.swift"; sourceTree = "<group>"; };
 		5C92BD0526140CDB00872B17 /* EventMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		5C92BD2226140D2400872B17 /* CoreDataContextProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataContextProvider.swift; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 				5C681B0A25DBAFEC002F5690 /* UIDevice+modelName.swift */,
 				5C681B0E25DD254F002F5690 /* UITextField+padding.swift */,
 				5C681B1D25DE811E002F5690 /* UIImage+assets.swift */,
+				5C8310952692DE36001B713C /* getErrorMessage.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -764,6 +767,7 @@
 				5C0F2DE6265DEB8600644867 /* TestAlarmGateway.swift in Sources */,
 				5C6D001025E8FC4F00FD43F2 /* User.swift in Sources */,
 				5C02E00424BEE753003573A3 /* CompaniesDTO.swift in Sources */,
+				5C8310962692DE36001B713C /* getErrorMessage.swift in Sources */,
 				5C146E3F2611B4DF003AB5B0 /* EventDTO.swift in Sources */,
 				5C681B0F25DD254F002F5690 /* UITextField+padding.swift in Sources */,
 				5C02DFE324BEE60D003573A3 /* Array+distinct.swift in Sources */,

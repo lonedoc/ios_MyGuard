@@ -172,9 +172,7 @@ class EventsPresenter {
                         return
                     }
 
-                    guard let errorMessage = self?.getErrorMessage(by: error) else {
-                        return
-                    }
+                    let errorMessage = getErrorMessage(by: error)
 
                     self?.view?.showAlertDialog(
                         title: "Error".localized,
@@ -244,25 +242,6 @@ class EventsPresenter {
     private func updateView() {
         view?.setEvents(events)
         view?.hidePlaceholder()
-    }
-
-    private func getErrorMessage(by error: Error) -> String {
-        guard let error = error as? CommunicationError else {
-            return "Unknown error".localized
-        }
-
-        switch error.type {
-        case .socketError:
-            return "Unknown error".localized // TODO: Make specific error message
-        case .serverError:
-            return "Server not responding".localized
-        case .internalServerError:
-            return "The operation could not be performed".localized
-        case .parseError:
-            return "Unable to read server response".localized
-        case .authError:
-            return "Wrong password".localized
-        }
     }
 
     private func getRange() -> Range {

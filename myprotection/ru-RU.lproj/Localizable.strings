@@ -16,6 +16,7 @@
 "Phone number not specified" = "Не указан номер телефона";
 "Server address unknown" = "Адрес сервера не известен";
 "Unknown error" = "Неизвестная ошибка";
+"Could not send request" = "Не удалось отправить запрос";
 "Server not responding" = "Сервер не отвечает";
 "The operation could not be performed" = "Операция не может быть выполнена";
 "Unable to read server response" = "Не удалось прочитать ответ сервера";

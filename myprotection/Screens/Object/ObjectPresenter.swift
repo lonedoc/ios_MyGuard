@@ -10,8 +10,6 @@ import Foundation
 import RubegProtocol_v2_0
 import RxSwift
 
-// swiftlint:disable file_length
-
 extension ObjectPresenter: ObjectContract.Presenter {
 
     func attach(view: ObjectContract.View) {
@@ -248,9 +246,7 @@ class ObjectPresenter {
                 onError: { [weak self] error in
                     defer { self?.objectsGateway.close() }
 
-                    guard let errorMessage = self?.getErrorMessage(by: error) else {
-                        return
-                    }
+                    let errorMessage = getErrorMessage(by: error)
 
                     self?.view?.showAlertDialog(
                         title: "Error".localized,
@@ -306,9 +302,7 @@ class ObjectPresenter {
 
                 self?.view?.setArmButtonEnabled(true)
 
-                guard let errorMessage = self?.getErrorMessage(by: error) else {
-                    return
-                }
+                let errorMessage = getErrorMessage(by: error)
 
                 self?.view?.showAlertDialog(
                     title: "Error".localized,
@@ -383,9 +377,7 @@ class ObjectPresenter {
                 onError: { [weak self] error in
                     defer { self?.objectsGateway.close() }
 
-                    guard let errorMessage = self?.getErrorMessage(by: error) else {
-                        return
-                    }
+                    let errorMessage = getErrorMessage(by: error)
 
                     self?.view?.showAlertDialog(
                         title: "Error".localized,
@@ -394,25 +386,6 @@ class ObjectPresenter {
                 }
             )
             .disposed(by: disposeBag)
-    }
-
-    private func getErrorMessage(by error: Error) -> String {
-        guard let error = error as? CommunicationError else {
-            return "Unknown error".localized
-        }
-
-        switch error.type {
-        case .socketError:
-            return "Unknown error".localized // TODO: Make specific error message
-        case .serverError:
-            return "Server not responding".localized
-        case .internalServerError:
-            return "The operation could not be performed".localized
-        case .parseError:
-            return "Unable to read server response".localized
-        case .authError:
-            return "Wrong password".localized
-        }
     }
 
 }
