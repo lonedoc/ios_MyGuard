@@ -54,16 +54,16 @@ extension ObjectPresenter: ObjectContract.Presenter {
     func armButtonTapped() {
         guard facility.online && facility.onlineEnabled else { return }
 
-        view?.setArmButtonEnabled(false)
-
         if !guardedStatuses.contains(facility.statusCode) {
             view?.showConfirmDialog(message: "Are you sure you want to arm the object?".localized) {
+                self.view?.setArmButtonEnabled(false)
                 self.changeStatus(1)
             }
             return
         }
 
         view?.showConfirmDialog(message: "Are you sure you want to disarm the object?".localized) {
+            self.view?.setArmButtonEnabled(false)
             self.changeStatus(0)
         }
     }
@@ -75,9 +75,8 @@ extension ObjectPresenter: ObjectContract.Presenter {
             return
         }
 
-        view?.setArmButtonEnabled(false)
-
         view?.showConfirmDialog(message: "Are you sure you want to arm the object's perimeter?".localized) {
+            self.view?.setArmButtonEnabled(false)
             self.changeStatus(2)
         }
     }
