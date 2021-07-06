@@ -36,6 +36,8 @@ extension TestPresenter: TestContract.Presenter {
 
 // MARK: -
 
+private let attemptsCount = 2
+
 class TestPresenter {
 
     private var view: TestContract.View?
@@ -64,10 +66,14 @@ class TestPresenter {
             return
         }
 
-        makeTestModeRequest(address: communicationData.address, token: token)
+        makeTestModeRequest(
+            address: communicationData.address,
+            token: token,
+            attempts: attemptsCount
+        )
     }
 
-    private func makeTestModeRequest(address: InetAddress, token: String) {
+    private func makeTestModeRequest(address: InetAddress, token: String, attempts: Int) {
         testAlarmGateway.enterTestMode(address: address, token: token, objectId: objectId)
             .subscribe(
                 onNext: { [weak self] duration in
@@ -76,6 +82,17 @@ class TestPresenter {
                     self?.testAlarmGateway.close()
                 },
                 onError: { [weak self] error in
+                    self?.communicationData.invalidateAddress()
+
+                    if attempts - 1 > 0 {
+                        self?.makeTestModeRequest(
+                            address: address,
+                            token: token,
+                            attempts: attempts - 1
+                        )
+                        return
+                    }
+
                     defer { self?.testAlarmGateway.close() }
 
                     let errorMessage = getErrorMessage(by: error)
@@ -152,6 +169,7 @@ class TestPresenter {
                     self?.testAlarmGateway.close()
                 },
                 onError: { [weak self] _ in
+                    self?.communicationData.invalidateAddress()
                     self?.testAlarmGateway.close()
                 }
             )
@@ -180,16 +198,31 @@ class TestPresenter {
             return
         }
 
-        makeResetRequest(address: communicationData.address, token: token)
+        makeResetRequest(
+            address: communicationData.address,
+            token: token,
+            attempts: attemptsCount
+        )
     }
 
-    private func makeResetRequest(address: InetAddress, token: String) {
+    private func makeResetRequest(address: InetAddress, token: String, attempts: Int) {
         testAlarmGateway.resetAlarmButtons(address: address, token: token, objectId: objectId)
             .subscribe(
                 onNext: { _ in
-
+                    // TODO: Handle it
                 },
                 onError: { [weak self] error in
+                    self?.communicationData.invalidateAddress()
+
+                    if attempts - 1 > 0 {
+                        self?.makeResetRequest(
+                            address: address,
+                            token: token,
+                            attempts: attempts - 1
+                        )
+                        return
+                    }
+
                     defer { self?.testAlarmGateway.close() }
 
                     let errorMessage = getErrorMessage(by: error)
@@ -208,10 +241,14 @@ class TestPresenter {
             return
         }
 
-        makeEndTestModeRequest(address: communicationData.address, token: token)
+        makeEndTestModeRequest(
+            address: communicationData.address,
+            token: token,
+            attempts: attemptsCount
+        )
     }
 
-    private func makeEndTestModeRequest(address: InetAddress, token: String) {
+    private func makeEndTestModeRequest(address: InetAddress, token: String, attempts: Int) {
         testAlarmGateway.exitTestMode(address: address, token: token, objectId: objectId)
             .subscribe(
                 onNext: { [weak self] _ in
@@ -220,6 +257,17 @@ class TestPresenter {
                     self?.view?.close()
                 },
                 onError: { [weak self] error in
+                    self?.communicationData.invalidateAddress()
+
+                    if attempts - 1 > 0 {
+                        self?.makeEndTestModeRequest(
+                            address: address,
+                            token: token,
+                            attempts: attempts - 1
+                        )
+                        return
+                    }
+
                     defer { self?.testAlarmGateway.close() }
 
                     let errorMessage = getErrorMessage(by: error)

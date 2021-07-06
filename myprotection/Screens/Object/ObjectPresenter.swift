@@ -10,6 +10,8 @@ import Foundation
 import RubegProtocol_v2_0
 import RxSwift
 
+// swiftlint:disable file_length type_body_length
+
 extension ObjectPresenter: ObjectContract.Presenter {
 
     func attach(view: ObjectContract.View) {
@@ -98,6 +100,7 @@ extension ObjectPresenter: ObjectContract.Presenter {
 
 private let shortPollingInterval: TimeInterval = 1
 private let longPollingInterval: TimeInterval = 10
+private let attemptsCount = 2
 
 private let guardedStatuses: [StatusCode] = [
     .guarded,
@@ -173,7 +176,10 @@ class ObjectPresenter {
 
                     objectsGateway.close()
                 },
-                onError: { [objectsGateway] _ in objectsGateway.close() }
+                onError: { [weak self] _ in
+                    self?.communicationData.invalidateAddress()
+                    self?.objectsGateway.close()
+                }
             )
             .disposed(by: disposeBag)
     }
@@ -220,18 +226,18 @@ class ObjectPresenter {
         makeUpdateNameRequest(
             address: communicationData.address,
             token: token,
-            objectId: facility.id,
-            name: name
+            name: name,
+            attempts: attemptsCount
         )
     }
 
     private func makeUpdateNameRequest(
         address: InetAddress,
         token: String,
-        objectId: String,
-        name: String
+        name: String,
+        attempts: Int
     ) {
-        objectsGateway.setName(address: address, token: token, objectId: objectId, name: name)
+        objectsGateway.setName(address: address, token: token, objectId: facility.id, name: name)
             .subscribe(
                 onNext: { [weak self] success in
                     defer { self?.objectsGateway.close() }
@@ -244,6 +250,18 @@ class ObjectPresenter {
                     }
                 },
                 onError: { [weak self] error in
+                    self?.communicationData.invalidateAddress()
+
+                    if attempts - 1 > 0 {
+                        self?.makeUpdateNameRequest(
+                            address: address,
+                            token: token,
+                            name: name,
+                            attempts: attempts - 1
+                        )
+                        return
+                    }
+
                     defer { self?.objectsGateway.close() }
 
                     let errorMessage = getErrorMessage(by: error)
@@ -265,21 +283,21 @@ class ObjectPresenter {
         makeChangeStatusRequest(
             address: communicationData.address,
             token: token,
-            objectId: facility.id,
-            status: status
+            status: status,
+            attempts: attemptsCount
         )
     }
 
     private func makeChangeStatusRequest(
         address: InetAddress,
         token: String,
-        objectId: String,
-        status: Int
+        status: Int,
+        attempts: Int
     ) {
         objectsGateway.setStatus(
             address: address,
             token: token,
-            objectId: objectId,
+            objectId: facility.id,
             status: status
         )
         .subscribe(
@@ -298,6 +316,18 @@ class ObjectPresenter {
                 self?.restartPolling(interval: shortPollingInterval)
             },
             onError: { [weak self] error in
+                self?.communicationData.invalidateAddress()
+
+                if attempts - 1 > 0 {
+                    self?.makeChangeStatusRequest(
+                        address: address,
+                        token: token,
+                        status: status,
+                        attempts: attempts - 1
+                    )
+                    return
+                }
+
                 defer { self?.objectsGateway.close() }
 
                 self?.view?.setArmButtonEnabled(true)
@@ -357,12 +387,16 @@ class ObjectPresenter {
         makeAlarmRequest(
             address: communicationData.address,
             token: token,
-            objectId: facility.id
+            attempts: attemptsCount
         )
     }
 
-    private func makeAlarmRequest(address: InetAddress, token: String, objectId: String) {
-        objectsGateway.startAlarm(address: address, token: token, objectId: objectId)
+    private func makeAlarmRequest(
+        address: InetAddress,
+        token: String,
+        attempts: Int
+    ) {
+        objectsGateway.startAlarm(address: address, token: token, objectId: facility.id)
             .subscribe(
                 onNext: { [weak self] success in
                     defer { self?.objectsGateway.close() }
@@ -375,6 +409,17 @@ class ObjectPresenter {
                     }
                 },
                 onError: { [weak self] error in
+                    self?.communicationData.invalidateAddress()
+
+                    if attempts - 1 > 0 {
+                        self?.makeAlarmRequest(
+                            address: address,
+                            token: token,
+                            attempts: attempts - 1
+                        )
+                        return
+                    }
+
                     defer { self?.objectsGateway.close() }
 
                     let errorMessage = getErrorMessage(by: error)

@@ -60,6 +60,10 @@ extension ObjectsPresenter: ObjectsContract.Presenter {
 
 }
 
+// MARK: -
+
+private let attemptsCount = 2
+
 class ObjectsPresenter {
 
     private var view: ObjectsContract.View?
@@ -108,14 +112,16 @@ class ObjectsPresenter {
         makeFacilitiesRequest(
             address: communicationData.address,
             token: token,
-            userInitiated: userInitiated
+            userInitiated: userInitiated,
+            attempts: userInitiated ? attemptsCount : 1
         )
     }
 
     private func makeFacilitiesRequest(
         address: InetAddress,
         token: String,
-        userInitiated: Bool = false
+        userInitiated: Bool = false,
+        attempts: Int
     ) {
         objectsGateway.getObjects(address: address, token: token)
             .subscribe(
@@ -124,11 +130,24 @@ class ObjectsPresenter {
                     objectsGateway.close()
                 },
                 onError: { [weak self] error in
-                    defer { self?.objectsGateway.close() }
+                    self?.communicationData.invalidateAddress()
 
                     if !userInitiated {
+                        self?.objectsGateway.close()
                         return
                     }
+
+                    if attempts - 1 > 0 {
+                        self?.makeFacilitiesRequest(
+                            address: address,
+                            token: token,
+                            userInitiated: userInitiated,
+                            attempts: attempts - 1
+                        )
+                        return
+                    }
+
+                    defer { self?.objectsGateway.close() }
 
                     let errorMessage = getErrorMessage(by: error)
 

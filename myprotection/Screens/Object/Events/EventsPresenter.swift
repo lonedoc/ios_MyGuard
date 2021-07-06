@@ -75,6 +75,8 @@ extension EventsPresenter: EventsContract.Presenter {
 
 // MARK: -
 
+private let attemptsCount = 2
+
 class EventsPresenter {
 
     private var view: EventsContract.View?
@@ -131,7 +133,8 @@ class EventsPresenter {
             address: communicationData.address,
             token: token,
             position: position,
-            userInitiated: userInitiated
+            userInitiated: userInitiated,
+            attempts: userInitiated ? attemptsCount : 1
         )
     }
 
@@ -139,7 +142,8 @@ class EventsPresenter {
         address: InetAddress,
         token: String,
         position: Int? = nil,
-        userInitiated: Bool = false
+        userInitiated: Bool = false,
+        attempts: Int
     ) {
         let result: Observable<[Event]>
         if let position = position {
@@ -166,11 +170,25 @@ class EventsPresenter {
                     self?.objectsGateway.close()
                 },
                 onError: { [weak self] error in
-                    defer { self?.objectsGateway.close() }
+                    self?.communicationData.invalidateAddress()
 
                     if !userInitiated {
+                        self?.objectsGateway.close()
                         return
                     }
+
+                    if attempts - 1 > 0 {
+                        self?.makeEventsRequest(
+                            address: address,
+                            token: token,
+                            position: position,
+                            userInitiated: userInitiated,
+                            attempts: attempts - 1
+                        )
+                        return
+                    }
+
+                    defer { self?.objectsGateway.close() }
 
                     let errorMessage = getErrorMessage(by: error)
 
