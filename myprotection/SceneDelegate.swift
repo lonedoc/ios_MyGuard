@@ -9,10 +9,14 @@
 import UIKit
 import Swinject
 
+private let nano: UInt64 = 1_000_000_000
+private let autoLogoutinterval: UInt64 = 300 // seconds
+
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var enterBackgroundTime: DispatchTime?
 
     func scene(
         _ scene: UIScene,
@@ -50,6 +54,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             repository.getFactory()  != nil &&
             repository.getToken()    != nil &&
             repository.getPasscode() != nil
+    }
+
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        enterBackgroundTime = .now()
+    }
+
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        guard let startTime = enterBackgroundTime else {
+            return
+        }
+
+        let endTime = DispatchTime.now()
+
+        let distanceNano = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
+        let distanceSec = distanceNano / nano
+
+        if distanceSec > autoLogoutinterval {
+            window?.rootViewController = getRootViewController()
+            window?.makeKeyAndVisible()
+        }
+
+        enterBackgroundTime = nil
     }
 
 }

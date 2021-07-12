@@ -11,10 +11,14 @@ import Swinject
 import Firebase
 import UserNotifications
 
+private let nano: UInt64 = 1_000_000_000
+private let autoLogoutInterval: UInt64 = 300 // seconds
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var enterBackgroundTime: DispatchTime?
 
     func application(
         _ application: UIApplication,
@@ -70,6 +74,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         )
 
         application.registerForRemoteNotifications()
+    }
+
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        enterBackgroundTime = .now()
+    }
+
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        guard let startTime = enterBackgroundTime else {
+            return
+        }
+
+        let endTime = DispatchTime.now()
+
+        let distanceNano = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
+        let distanceSec = distanceNano / nano
+
+        if distanceSec > autoLogoutInterval {
+            window?.rootViewController = getRootViewController()
+            window?.makeKeyAndVisible()
+        }
+
+        enterBackgroundTime = nil
     }
 
 }
