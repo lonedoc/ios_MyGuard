@@ -90,7 +90,9 @@ extension ObjectPresenter: ObjectContract.Presenter {
     }
 
     func testAlarmButtonTapped() {
-        view?.showTestAlarmView(objectId: facility.id, communicationData: communicationData)
+        view?.showConfirmDialog(message: "Are you sure you want to start testing mode?".localized) {
+            self.view?.showTestAlarmView(objectId: self.facility.id, communicationData: self.communicationData)
+        }
     }
 
 }
