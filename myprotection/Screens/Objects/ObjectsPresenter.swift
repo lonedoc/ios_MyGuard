@@ -17,7 +17,10 @@ extension ObjectsPresenter: ObjectsContract.Presenter {
     }
 
     func viewWillAppear() {
-        view?.showPlaceholder()
+        if facilities.count == 0 {
+            view?.showPlaceholder()
+        }
+
         fetchFacilities()
         startPolling()
     }
