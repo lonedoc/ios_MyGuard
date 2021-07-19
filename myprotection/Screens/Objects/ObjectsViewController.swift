@@ -62,6 +62,8 @@ extension ObjectsViewController: ObjectsContract.View {
                 arguments: facility, communicationData
             )!
 
+            viewController.title = facility.name
+
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
