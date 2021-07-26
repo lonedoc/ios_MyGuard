@@ -82,8 +82,6 @@ class TestPresenter {
                     self?.testAlarmGateway.close()
                 },
                 onError: { [weak self] error in
-                    self?.communicationData.invalidateAddress()
-
                     if attempts - 1 > 0 {
                         self?.makeTestModeRequest(
                             address: address,
@@ -99,7 +97,8 @@ class TestPresenter {
 
                     self?.view?.showAlertDialog(
                         title: "Error".localized,
-                        message: errorMessage
+                        message: errorMessage,
+                        completion: { _ in self?.view?.close() }
                     )
                 }
             )
@@ -169,7 +168,6 @@ class TestPresenter {
                     self?.testAlarmGateway.close()
                 },
                 onError: { [weak self] _ in
-                    self?.communicationData.invalidateAddress()
                     self?.testAlarmGateway.close()
                 }
             )
@@ -208,12 +206,10 @@ class TestPresenter {
     private func makeResetRequest(address: InetAddress, token: String, attempts: Int) {
         testAlarmGateway.resetAlarmButtons(address: address, token: token, objectId: objectId)
             .subscribe(
-                onNext: { _ in
-                    // TODO: Handle it
+                onNext: { [weak self] _ in
+                    self?.testAlarmGateway.close()
                 },
                 onError: { [weak self] error in
-                    self?.communicationData.invalidateAddress()
-
                     if attempts - 1 > 0 {
                         self?.makeResetRequest(
                             address: address,
@@ -257,8 +253,6 @@ class TestPresenter {
                     self?.view?.close()
                 },
                 onError: { [weak self] error in
-                    self?.communicationData.invalidateAddress()
-
                     if attempts - 1 > 0 {
                         self?.makeEndTestModeRequest(
                             address: address,
@@ -274,7 +268,8 @@ class TestPresenter {
 
                     self?.view?.showAlertDialog(
                         title: "Error".localized,
-                        message: errorMessage
+                        message: errorMessage,
+                        completion: { _ in self?.view?.close() }
                     )
                 }
             )
