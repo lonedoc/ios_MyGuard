@@ -374,7 +374,7 @@ extension UdpObjectsGateway: RubegSocketDelegate {
                 return
             }
 
-            alarmSubject?.onNext(result == "start")
+            alarmSubject?.onNext(result == "ok")
             alarmSubject = nil
         case "guard":
             guard let result = jsonMap["result"] as? String else {
