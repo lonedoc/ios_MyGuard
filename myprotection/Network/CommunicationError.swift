@@ -14,6 +14,7 @@ enum CommunicationErrorType {
     case internalServerError
     case parseError
     case authError
+    case userNotFoundError
 }
 
 class CommunicationError: LocalizedError {
@@ -23,6 +24,7 @@ class CommunicationError: LocalizedError {
     static let internalServerError = CommunicationError(message: "internal server error", type: .internalServerError)
     static let parseError = CommunicationError(message: "could not parse data", type: .parseError)
     static let authError = CommunicationError(message: "access denied", type: .authError)
+    static let userNotFoundError = CommunicationError(message: "user not found", type: .userNotFoundError)
 
     private let message: String
 

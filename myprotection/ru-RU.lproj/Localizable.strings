@@ -9,6 +9,7 @@
 // MARK: Errors
 "Error" = "Ошибка";
 "Wrong password" = "Неверный пароль";
+"Could not find user by provided phone number" = "Не удалось найти пользователя по указанному номеру телефона";
 "Service is not available now" = "Сервис сейчас не доступен";
 "Unable to load data" = "Не удалось загрузить данные";
 "Incorrect data format" = "Неправильный формат данных";

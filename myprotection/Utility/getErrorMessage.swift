@@ -24,5 +24,7 @@ func getErrorMessage(by error: Error) -> String {
         return "Unable to read server response".localized
     case .authError:
         return "Wrong password".localized
+    case .userNotFoundError:
+        return "Could not find user by provided phone number".localized
     }
 }

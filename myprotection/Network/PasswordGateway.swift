@@ -20,7 +20,7 @@ class UdpPasswordGateway: PasswordGateway {
     private var passwordSubject: PublishSubject<Bool>?
 
     private lazy var socket: RubegSocket = {
-        let socket = RubegSocket()
+        let socket = RubegSocket(dropUnexpected: false)
         socket.delegate = self
         return socket
     }()
@@ -100,8 +100,14 @@ extension UdpPasswordGateway: RubegSocketDelegate {
             return
         }
 
-        let result = resultString == "ok"
+        if resultString == "usernotfound" {
+            let subject = passwordSubject
+            passwordSubject = nil
+            subject?.onError(CommunicationError.userNotFoundError)
+            return
+        }
 
+        let result = resultString == "ok"
         passwordSubject?.onNext(result)
     }
 

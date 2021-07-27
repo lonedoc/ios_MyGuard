@@ -9,6 +9,7 @@
 // MARK: Errors
 "Error" = "Error";
 "Wrong password" = "Wrong password";
+"Could not find user by provided phone number" = "Could not find user by provided phone number";
 "Service is not available now" = "Service is not available now";
 "Unable to load data" = "Unable to load data";
 "Incorrect data format" = "Incorrect data format";
