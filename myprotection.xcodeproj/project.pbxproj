@@ -260,7 +260,7 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
-		5C02DFD924BEE60C003573A3 /* Utility */ = {
+		5C02DFD924BEE60C003573A3 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				5C02DFDA24BEE60C003573A3 /* Container+shared.swift */,
@@ -278,7 +278,7 @@
 				5C681B1D25DE811E002F5690 /* UIImage+assets.swift */,
 				5C8310952692DE36001B713C /* getErrorMessage.swift */,
 			);
-			path = Utility;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		5C02DFEA24BEE646003573A3 /* Network */ = {
@@ -476,7 +476,7 @@
 			children = (
 				5CE4994126848B46007170A6 /* myprotection.entitlements */,
 				5C847DB7264142DE002FC099 /* Screens */,
-				5C02DFD924BEE60C003573A3 /* Utility */,
+				5C02DFD924BEE60C003573A3 /* Utils */,
 				5CD0F53A255E5FAD003BF7F2 /* Data */,
 				5C02E00A24BEE79A003573A3 /* Common */,
 				5C02E00524BEE75B003573A3 /* Models */,
