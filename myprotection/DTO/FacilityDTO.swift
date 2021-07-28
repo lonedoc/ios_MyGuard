@@ -18,6 +18,7 @@ struct FacilityDTO: Decodable {
     let selfService: Int
     let online: Int
     let onlineEnabled: Int
+    let perimeterOnly: Int?
 
     enum CodingKeys: String, CodingKey {
         case id            = "n_abs"
@@ -28,6 +29,7 @@ struct FacilityDTO: Decodable {
         case selfService   = "sam"
         case online        = "online"
         case onlineEnabled = "onlineon"
+        case perimeterOnly = "p"
     }
 
     static func deserialize(from json: String) throws -> FacilityDTO {
