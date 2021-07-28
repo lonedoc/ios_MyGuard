@@ -25,7 +25,11 @@ class Facility {
         selfService = dto.selfService == 1
         online = dto.online == 1
         onlineEnabled = dto.onlineEnabled == 1
-        statusCode = StatusCode(text: dto.statusCode)
         status = dto.status
+
+        statusCode = StatusCode(
+            text: dto.statusCode,
+            perimeterOnly: dto.perimeterOnly == 1
+        )
     }
 }

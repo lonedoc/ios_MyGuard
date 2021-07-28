@@ -54,7 +54,7 @@ extension ObjectPresenter: ObjectContract.Presenter {
     func armButtonTapped() {
         guard facility.online && facility.onlineEnabled else { return }
 
-        if !guardedStatuses.contains(facility.statusCode) {
+        if !facility.statusCode.isGuarded() {
             view?.showConfirmDialog(message: "Are you sure you want to arm the object?".localized) {
                 self.view?.setArmButtonEnabled(false)
                 self.changeStatus(1)
@@ -71,7 +71,7 @@ extension ObjectPresenter: ObjectContract.Presenter {
     func armButtonLongPressed() {
         guard facility.online && facility.onlineEnabled else { return }
 
-        if guardedStatuses.contains(facility.statusCode) {
+        if facility.statusCode.isGuarded() {
             return
         }
 
@@ -102,20 +102,6 @@ extension ObjectPresenter: ObjectContract.Presenter {
 private let shortPollingInterval: TimeInterval = 1
 private let longPollingInterval: TimeInterval = 10
 private let attemptsCount = 2
-
-private let guardedStatuses: [StatusCode] = [
-    .guarded,
-    .alarmGuarded,
-    .alarmGuardedWithHandling,
-    .malfunctionGuarded
-]
-
-private let notGuardedStatuses: [StatusCode] = [
-    .notGuarded,
-    .alarmNotGuarded,
-    .alarmNotGuardedWithHandling,
-    .malfunctionNotGuarded
-]
 
 class ObjectPresenter {
 
@@ -193,8 +179,8 @@ class ObjectPresenter {
         let oldStatus = facility.statusCode
         let newStatus = updated.statusCode
 
-        let gotGuarded = !guardedStatuses.contains(oldStatus) && guardedStatuses.contains(newStatus)
-        let gotNotGuarded = !notGuardedStatuses.contains(oldStatus) && notGuardedStatuses.contains(newStatus)
+        let gotGuarded = !oldStatus.isGuarded() && newStatus.isGuarded()
+        let gotNotGuarded = !oldStatus.isNotGuarded() && newStatus.isNotGuarded()
 
         if gotGuarded || gotNotGuarded {
             view?.hideProgressBar()
