@@ -216,15 +216,15 @@ extension EventsViewController: SkeletonTableViewDataSource, UITableViewDelegate
     private func getIcon(by event: Event) -> UIImage? {
         switch event.type {
         case 1, 2, 3, 77, 79, 85:
-            return UIImage.assets(.alarmStatus)
+            return UIImage.assets(.alarmStatusIcon)
         case 4:
             return UIImage.assets(.fireAlarm)
         case 5:
-            return UIImage.assets(.malfunctionStatus)
+            return UIImage.assets(.malfunctionStatusIcon)
         case 6, 8, 9, 66, 67:
-            return UIImage.assets(.guardedStatus)
+            return UIImage.assets(.guardedStatusIcon)
         case 10, 69, 68:
-            return UIImage.assets(.notGuardedStatus)
+            return UIImage.assets(.notGuardedStatusIcon)
         case 33, 81:
             return UIImage.assets(.battery)
         default:

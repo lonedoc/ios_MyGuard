@@ -54,7 +54,7 @@ extension ObjectPresenter: ObjectContract.Presenter {
     func armButtonTapped() {
         guard facility.online && facility.onlineEnabled else { return }
 
-        if !facility.statusCode.isGuarded() {
+        if !facility.statusCode.isGuarded {
             view?.showConfirmDialog(message: "Are you sure you want to arm the object?".localized) {
                 self.view?.setArmButtonEnabled(false)
                 self.changeStatus(1)
@@ -71,7 +71,7 @@ extension ObjectPresenter: ObjectContract.Presenter {
     func armButtonLongPressed() {
         guard facility.online && facility.onlineEnabled else { return }
 
-        if facility.statusCode.isGuarded() {
+        if facility.statusCode.isGuarded {
             return
         }
 
@@ -179,8 +179,8 @@ class ObjectPresenter {
         let oldStatus = facility.statusCode
         let newStatus = updated.statusCode
 
-        let gotGuarded = !oldStatus.isGuarded() && newStatus.isGuarded()
-        let gotNotGuarded = !oldStatus.isNotGuarded() && newStatus.isNotGuarded()
+        let gotGuarded = !oldStatus.isGuarded && newStatus.isGuarded
+        let gotNotGuarded = !oldStatus.isNotGuarded && newStatus.isNotGuarded
 
         if gotGuarded || gotNotGuarded {
             view?.hideProgressBar()
@@ -201,6 +201,8 @@ class ObjectPresenter {
         view?.setAddress(facility.address)
         view?.setStatusIcon(facility.statusCode)
         view?.setLinkIconHidden(!facility.online)
+        view?.setElectricityIconHidden(!facility.powerSupplyMalfunction)
+        view?.setBatteryIconHidden(!facility.batteryMalfunction)
         view?.setLinkIcon(linked: facility.onlineEnabled)
         view?.setAlarmButtonEnabled(![.alarm].contains(facility.statusCode))
     }

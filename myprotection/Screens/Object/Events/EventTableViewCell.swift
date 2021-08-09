@@ -88,7 +88,7 @@ class EventsTableViewCell: UITableViewCell {
     // MARK: Views
 
     let iconView: UIImageView = {
-        let image = UIImage.assets(.notGuardedStatus)
+        let image = UIImage.assets(.notGuardedStatusIcon)
         let imageView = UIImageView(image: image)
         imageView.contentMode = .center
         imageView.tintColor = .white

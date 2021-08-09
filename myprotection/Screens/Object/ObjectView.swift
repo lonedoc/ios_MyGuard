@@ -21,39 +21,6 @@ class ObjectView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    var armButtonIcon: UIImage? {
-        get { armButton.imageView?.image }
-        set {
-            armButton.setImage(newValue, for: .normal)
-            armButton.tintColor = .white
-        }
-    }
-
-    var armButtonColor: UIColor? {
-        get { armButton.backgroundColor }
-        set { armButton.backgroundColor = newValue }
-    }
-
-    func setArmButtonIcon(by status: StatusCode) {
-        switch status {
-        case .alarm:
-            armButton.backgroundColor = .errorColor
-
-            if let image = UIImage.assets(.dotOutlined) {
-                let colorlessImage = image.withRenderingMode(.alwaysTemplate)
-                armButton.setImage(colorlessImage, for: .normal)
-                armButton.tintColor = .white
-            }
-        default:
-            armButton.backgroundColor = .primaryColor
-            if let image = UIImage.assets(.dotSolid) {
-                let colorlessImage = image.withRenderingMode(.alwaysTemplate)
-                armButton.setImage(colorlessImage, for: .normal)
-                armButton.tintColor = .white
-            }
-        }
-    }
-
     private func setup() {
         backgroundColor = .white
 
@@ -65,14 +32,20 @@ class ObjectView: UIView {
         backgroundColor = .white
 
         linkIconWrapper.addSubview(linkIcon)
+        electricityMalfunctionIconWrapper.addSubview(electricityMalfunctionIcon)
+        batteryMalfunctionIconWrapper.addSubview(batteryMalfunctionIcon)
+
+        iconsContainer.addArrangedSubview(linkIconWrapper)
+        iconsContainer.addArrangedSubview(electricityMalfunctionIconWrapper)
+        iconsContainer.addArrangedSubview(batteryMalfunctionIconWrapper)
 
         topView.addSubview(backgroundView)
-        topView.addSubview(statusDescriptionView)
-        topView.addSubview(addressView)
-        topView.addSubview(armButton)
-        topView.addSubview(linkIconWrapper)
         topView.addSubview(armingProgressView)
         topView.addSubview(armingProgressText)
+        topView.addSubview(armButton)
+        topView.addSubview(iconsContainer)
+        topView.addSubview(statusDescriptionView)
+        topView.addSubview(addressView)
 
         bottomAppBar.trailingBarButtonItems = [testAlarmButton]
 
@@ -87,7 +60,13 @@ class ObjectView: UIView {
         topView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         topView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         topView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        topView.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -100).isActive = true
+        topView.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -50).isActive = true
+
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.topAnchor.constraint(equalTo: topView.topAnchor).isActive = true
+        backgroundView.leadingAnchor.constraint(equalTo: topView.leadingAnchor).isActive = true
+        backgroundView.widthAnchor.constraint(equalTo: topView.widthAnchor).isActive = true
+        backgroundView.heightAnchor.constraint(equalTo: topView.heightAnchor).isActive = true
 
         armingProgressView.translatesAutoresizingMaskIntoConstraints = false
         armingProgressView.topAnchor.constraint(equalTo: topView.topAnchor).isActive = true
@@ -99,32 +78,18 @@ class ObjectView: UIView {
         armingProgressText.topAnchor.constraint(equalTo: armingProgressView.bottomAnchor, constant: 8).isActive = true
         armingProgressText.centerXAnchor.constraint(equalTo: armingProgressView.centerXAnchor).isActive = true
 
-        backgroundView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundView.topAnchor.constraint(equalTo: topView.topAnchor).isActive = true
-        backgroundView.leadingAnchor.constraint(equalTo: topView.leadingAnchor).isActive = true
-        backgroundView.widthAnchor.constraint(equalTo: topView.widthAnchor).isActive = true
-        backgroundView.heightAnchor.constraint(equalTo: topView.heightAnchor).isActive = true
-
-        addressView.translatesAutoresizingMaskIntoConstraints = false
-        addressView.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
-        addressView.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -8).isActive = true
-
-        statusDescriptionView.translatesAutoresizingMaskIntoConstraints = false
-        statusDescriptionView.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
-        statusDescriptionView.bottomAnchor.constraint(equalTo: addressView.topAnchor, constant: -16).isActive = true
-
         armButton.translatesAutoresizingMaskIntoConstraints = false
         armButton.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
-        armButton.bottomAnchor.constraint(equalTo: statusDescriptionView.topAnchor, constant: -16).isActive = true
-        armButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        armButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        armButton.topAnchor.constraint(equalTo: armingProgressText.bottomAnchor, constant: -16).isActive = true
+        armButton.widthAnchor.constraint(equalToConstant: 220).isActive = true
+        armButton.heightAnchor.constraint(equalToConstant: 160).isActive = true
 
-        let side = 40.0
-        let shift = side - sqrt(side * side / 2)
+        iconsContainer.translatesAutoresizingMaskIntoConstraints = false
+        iconsContainer.topAnchor.constraint(equalTo: armButton.bottomAnchor, constant: -16).isActive = true
+        iconsContainer.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        iconsContainer.heightAnchor.constraint(equalToConstant: 24).isActive = true
 
         linkIconWrapper.translatesAutoresizingMaskIntoConstraints = false
-        linkIconWrapper.centerXAnchor.constraint(equalTo: armButton.trailingAnchor, constant: CGFloat(-shift)).isActive = true
-        linkIconWrapper.centerYAnchor.constraint(equalTo: armButton.topAnchor, constant: CGFloat(shift)).isActive = true
         linkIconWrapper.widthAnchor.constraint(equalToConstant: 24).isActive = true
         linkIconWrapper.heightAnchor.constraint(equalToConstant: 24).isActive = true
 
@@ -134,6 +99,33 @@ class ObjectView: UIView {
         linkIcon.widthAnchor.constraint(equalToConstant: 16).isActive = true
         linkIcon.heightAnchor.constraint(equalToConstant: 16).isActive = true
 
+        electricityMalfunctionIconWrapper.translatesAutoresizingMaskIntoConstraints = false
+        electricityMalfunctionIconWrapper.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        electricityMalfunctionIconWrapper.heightAnchor.constraint(equalToConstant: 24).isActive = true
+
+        electricityMalfunctionIcon.translatesAutoresizingMaskIntoConstraints = false
+        electricityMalfunctionIcon.centerXAnchor.constraint(equalTo: electricityMalfunctionIconWrapper.centerXAnchor).isActive = true
+        electricityMalfunctionIcon.centerYAnchor.constraint(equalTo: electricityMalfunctionIconWrapper.centerYAnchor).isActive = true
+        electricityMalfunctionIcon.widthAnchor.constraint(equalToConstant: 16).isActive = true
+        electricityMalfunctionIcon.heightAnchor.constraint(equalToConstant: 16).isActive = true
+
+        batteryMalfunctionIconWrapper.translatesAutoresizingMaskIntoConstraints = false
+        batteryMalfunctionIconWrapper.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        batteryMalfunctionIconWrapper.heightAnchor.constraint(equalToConstant: 24).isActive = true
+
+        batteryMalfunctionIcon.translatesAutoresizingMaskIntoConstraints = false
+        batteryMalfunctionIcon.centerXAnchor.constraint(equalTo: batteryMalfunctionIconWrapper.centerXAnchor).isActive = true
+        batteryMalfunctionIcon.centerYAnchor.constraint(equalTo: batteryMalfunctionIconWrapper.centerYAnchor).isActive = true
+        batteryMalfunctionIcon.widthAnchor.constraint(equalToConstant: 16).isActive = true
+        batteryMalfunctionIcon.heightAnchor.constraint(equalToConstant: 16).isActive = true
+
+        statusDescriptionView.translatesAutoresizingMaskIntoConstraints = false
+        statusDescriptionView.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
+        statusDescriptionView.topAnchor.constraint(equalTo: iconsContainer.bottomAnchor, constant: 8).isActive = true
+
+        addressView.translatesAutoresizingMaskIntoConstraints = false
+        addressView.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
+        addressView.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -8).isActive = true
         bottomAppBar.translatesAutoresizingMaskIntoConstraints = false
         bottomAppBar.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         bottomAppBar.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
@@ -173,6 +165,7 @@ class ObjectView: UIView {
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textColor = .white.withAlphaComponent(0.5)
         label.alpha = 0
+        label.text = " "
         return label
     }()
 
@@ -192,29 +185,62 @@ class ObjectView: UIView {
 
     let armButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.layer.cornerRadius = 40
-        button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        button.backgroundColor = .red
+        button.backgroundColor = .none
 
-        if let image = UIImage.assets(.dotSolid) {
-            let colorlessImage = image.withRenderingMode(.alwaysTemplate)
-            button.setImage(colorlessImage, for: .normal)
-            button.tintColor = .white
+        if let image = UIImage.assets(.guardedStatus) {
+            button.setImage(image, for: .normal)
         }
 
         return button
     }()
 
+    let iconsContainer: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.alignment = .center
+        stack.distribution = .equalCentering
+        stack.spacing = 15
+        return stack
+    }()
+
     let linkIconWrapper: UIView = {
         let view = UIView(frame: .zero)
         view.layer.cornerRadius = 12
-        view.backgroundColor = .black
+        view.backgroundColor = .secondaryColor
         view.tintColor = .white
         return view
     }()
 
     let linkIcon: UIImageView = {
         let image = UIImage.assets(.linkOff)
+        let imageView = UIImageView(image: image)
+        return imageView
+    }()
+
+    let batteryMalfunctionIconWrapper: UIView = {
+        let view = UIView(frame: .zero)
+        view.layer.cornerRadius = 12
+        view.backgroundColor = .alarmStatusColor
+        view.tintColor = .white
+        return view
+    }()
+
+    let batteryMalfunctionIcon: UIImageView = {
+        let image = UIImage.assets(.batteryMalfunction)
+        let imageView = UIImageView(image: image)
+        return imageView
+    }()
+
+    let electricityMalfunctionIconWrapper: UIView = {
+        let view = UIView(frame: .zero)
+        view.layer.cornerRadius = 12
+        view.backgroundColor = .alarmStatusColor
+        view.tintColor = .white
+        return view
+    }()
+
+    let electricityMalfunctionIcon: UIImageView = {
+        let image = UIImage.assets(.electricityMalfunction)
         let imageView = UIImageView(image: image)
         return imageView
     }()

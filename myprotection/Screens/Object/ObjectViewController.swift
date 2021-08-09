@@ -26,14 +26,27 @@ extension ObjectViewController: ObjectContract.View {
 
     func setStatusIcon(_ status: StatusCode) {
         DispatchQueue.main.async {
-            self.rootView.armButtonIcon = status.image
-            self.rootView.armButtonColor = status.color
+            if let image = self.getStatusImage(status) {
+                self.rootView.armButton.setImage(image, for: .normal)
+            }
         }
     }
 
     func setLinkIconHidden(_ hidden: Bool) {
         DispatchQueue.main.async {
             self.rootView.linkIconWrapper.isHidden = hidden
+        }
+    }
+
+    func setElectricityIconHidden(_ hidden: Bool) {
+        DispatchQueue.main.async {
+            self.rootView.electricityMalfunctionIconWrapper.isHidden = hidden
+        }
+    }
+
+    func setBatteryIconHidden(_ hidden: Bool) {
+        DispatchQueue.main.async {
+            self.rootView.batteryMalfunctionIconWrapper.isHidden = hidden
         }
     }
 
@@ -321,6 +334,22 @@ class ObjectViewController: UIViewController {
 
     @objc private func viewWentForeground() {
         presenter.viewWentForeground()
+    }
+
+    private func getStatusImage(_ status: StatusCode) -> UIImage? {
+        if status.isAlarm {
+            if status.isGuarded {
+                return UIImage.assets(.alarmGuardedStatus)
+            } else {
+                return UIImage.assets(.alarmNotGuardedStatus)
+            }
+        } else {
+            if status.isGuarded {
+                return UIImage.assets(.guardedStatus)
+            } else {
+                return UIImage.assets(.notGuardedStatus)
+            }
+        }
     }
 
     private func getUnitOfWork(completion: @escaping (UnitOfWork?) -> Void) {

@@ -176,10 +176,42 @@ extension ObjectsViewController: SkeletonTableViewDataSource, UITableViewDelegat
         cell.title = facility.name
         cell.address = facility.address
         cell.status = facility.status
-        cell.statusIcon = facility.statusCode.image
-        cell.statusColor = facility.statusCode.color
+        cell.statusIcon = getStatusIcon(by: facility.statusCode)
+        cell.statusColor = getStatusColor(by: facility.statusCode)
 
         return cell
+    }
+
+    private func getStatusIcon(by statusCode: StatusCode) -> UIImage? {
+        switch statusCode {
+        case let status where status.isNotGuarded:
+            return UIImage.assets(.notGuardedStatusIcon)
+        case let status where status.isFullGuarded:
+            return UIImage.assets(.guardedStatusIcon)
+        case let status where status.isPerimeterOnlyGuarded:
+            return UIImage.assets(.perimeterOnlyStatusIcon)
+        case let status where status.isAlarm:
+            return UIImage.assets(.alarmStatusIcon)
+        case let status where status.isMalfunction:
+            return UIImage.assets(.malfunctionStatusIcon)
+        default:
+            return nil
+        }
+    }
+
+    private func getStatusColor(by statusCode: StatusCode) -> UIColor {
+        switch statusCode {
+        case let status where status.isAlarm:
+            return .alarmStatusColor
+        case let status where status.isMalfunction:
+            return .malfunctionStatusColor
+        case let status where status.isNotGuarded:
+            return .notGuardedStatusColor
+        case let status where status.isGuarded:
+            return .guardedStatusColor
+        default:
+            return .malfunctionStatusColor
+        }
     }
 
     func collectionSkeletonView(

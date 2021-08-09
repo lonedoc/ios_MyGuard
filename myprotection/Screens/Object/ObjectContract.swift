@@ -18,6 +18,8 @@ protocol IObjectView: UIViewController, AlertDialog {
     func setStatusIcon(_ status: StatusCode)
     func setLinkIconHidden(_ hidden: Bool)
     func setLinkIcon(linked: Bool)
+    func setElectricityIconHidden(_ hidden: Bool)
+    func setBatteryIconHidden(_ hidden: Bool)
     func setAlarmButtonEnabled(_ enabled: Bool)
     func showProgressBar(message: String, type: ExecutingCommandType)
     func hideProgressBar()

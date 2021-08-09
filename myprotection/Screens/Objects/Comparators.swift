@@ -35,10 +35,10 @@ extension ObjectsComparator {
     }
 
     fileprivate func compareByStatus(_ lhs: Facility, _ rhs: Facility) -> Bool? {
-        if lhs.statusCode.importance == rhs.statusCode.importance {
+        if lhs.statusCode == rhs.statusCode {
             return nil
         }
-        return lhs.statusCode.importance > rhs.statusCode.importance
+        return lhs.statusCode > rhs.statusCode
     }
 
 }
