@@ -113,7 +113,8 @@ class ObjectPresenter {
 
     private let communicationData: CommunicationData
     private var timer: Timer?
-    private var progressBarIsShown = false
+    @Atomic private var progressBarIsShown = false
+    @Atomic private var alarmIsStarting = false
     private var disposeBag = DisposeBag()
 
     init(
@@ -172,20 +173,25 @@ class ObjectPresenter {
     }
 
     private func completeStatusChange(updated: Facility) {
-        if !progressBarIsShown {
-            return
+        if progressBarIsShown {
+            let oldStatus = facility.statusCode
+            let newStatus = updated.statusCode
+
+            let gotGuarded = !oldStatus.isGuarded && newStatus.isGuarded
+            let gotNotGuarded = !oldStatus.isNotGuarded && newStatus.isNotGuarded
+
+            if gotGuarded || gotNotGuarded {
+                view?.hideProgressBar()
+                view?.setArmButtonEnabled(true)
+                restartPolling()
+            }
         }
 
-        let oldStatus = facility.statusCode
-        let newStatus = updated.statusCode
-
-        let gotGuarded = !oldStatus.isGuarded && newStatus.isGuarded
-        let gotNotGuarded = !oldStatus.isNotGuarded && newStatus.isNotGuarded
-
-        if gotGuarded || gotNotGuarded {
-            view?.hideProgressBar()
-            view?.setArmButtonEnabled(true)
-            restartPolling()
+        if alarmIsStarting {
+            if updated.statusCode.isAlarm {
+                alarmIsStarting = false
+                restartPolling()
+            }
         }
     }
 
@@ -395,6 +401,9 @@ class ObjectPresenter {
                             title: "Error".localized,
                             message: "The operation could not be performed".localized
                         )
+                    } else {
+                        self?.alarmIsStarting = true
+                        self?.restartPolling(interval: shortPollingInterval)
                     }
                 },
                 onError: { [weak self] error in
