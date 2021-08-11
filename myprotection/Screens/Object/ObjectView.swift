@@ -57,16 +57,16 @@ class ObjectView: UIView {
     // swiftlint:disable function_body_length line_length
     private func setupConstraints() {
         topView.translatesAutoresizingMaskIntoConstraints = false
-        topView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        topView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         topView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         topView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        topView.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -50).isActive = true
+        topView.heightAnchor.constraint(equalToConstant: 250).isActive = true
 
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         backgroundView.topAnchor.constraint(equalTo: topView.topAnchor).isActive = true
         backgroundView.leadingAnchor.constraint(equalTo: topView.leadingAnchor).isActive = true
-        backgroundView.widthAnchor.constraint(equalTo: topView.widthAnchor).isActive = true
-        backgroundView.heightAnchor.constraint(equalTo: topView.heightAnchor).isActive = true
+        backgroundView.trailingAnchor.constraint(equalTo: topView.trailingAnchor).isActive = true
+        backgroundView.bottomAnchor.constraint(equalTo: topView.bottomAnchor).isActive = true
 
         armingProgressView.translatesAutoresizingMaskIntoConstraints = false
         armingProgressView.topAnchor.constraint(equalTo: topView.topAnchor).isActive = true
@@ -124,18 +124,19 @@ class ObjectView: UIView {
         statusDescriptionView.topAnchor.constraint(equalTo: iconsContainer.bottomAnchor, constant: 8).isActive = true
 
         addressView.translatesAutoresizingMaskIntoConstraints = false
+        addressView.topAnchor.constraint(equalTo: statusDescriptionView.bottomAnchor, constant: 8).isActive = true
         addressView.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
-        addressView.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -8).isActive = true
-        bottomAppBar.translatesAutoresizingMaskIntoConstraints = false
-        bottomAppBar.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        bottomAppBar.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        bottomAppBar.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
 
         bottomView.translatesAutoresizingMaskIntoConstraints = false
         bottomView.topAnchor.constraint(equalTo: topView.bottomAnchor).isActive = true
         bottomView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         bottomView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         bottomView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
+
+        bottomAppBar.translatesAutoresizingMaskIntoConstraints = false
+        bottomAppBar.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        bottomAppBar.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        bottomAppBar.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     // swiftlint:enable function_body_length line_length
 
@@ -166,20 +167,6 @@ class ObjectView: UIView {
         label.textColor = .white.withAlphaComponent(0.5)
         label.alpha = 0
         label.text = " "
-        return label
-    }()
-
-    let statusDescriptionView: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        label.textColor = .white
-        return label
-    }()
-
-    let addressView: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .white
         return label
     }()
 
@@ -243,6 +230,20 @@ class ObjectView: UIView {
         let image = UIImage.assets(.electricityMalfunction)
         let imageView = UIImageView(image: image)
         return imageView
+    }()
+
+    let statusDescriptionView: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        label.textColor = .white
+        return label
+    }()
+
+    let addressView: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.textColor = .white
+        return label
     }()
 
     let bottomView: UIView = {
