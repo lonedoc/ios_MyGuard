@@ -129,7 +129,7 @@ class TestPresenter {
 
     @objc func tick() {
         if counter <= 0 {
-            startTestMode()
+            endTestMode()
             stopCountDownTimer()
             return
         }
