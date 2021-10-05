@@ -12,6 +12,12 @@ import Swinject
 
 extension ObjectViewController: ObjectContract.View {
 
+    func setName(_ name: String) {
+        DispatchQueue.main.async {
+            self.title = name
+        }
+    }
+
     func setStatusDescription(_ description: String) {
         DispatchQueue.main.async {
             self.rootView.statusDescriptionView.text = description

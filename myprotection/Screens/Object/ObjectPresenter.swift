@@ -203,6 +203,7 @@ class ObjectPresenter {
     }
 
     private func updateView() {
+        view?.setName(facility.name)
         view?.setStatusDescription(facility.status)
         view?.setAddress(facility.address)
         view?.setStatusIcon(facility.statusCode)
@@ -237,7 +238,9 @@ class ObjectPresenter {
                 onNext: { [weak self] success in
                     defer { self?.objectsGateway.close() }
 
-                    if !success {
+                    if success {
+                        self?.view?.setName(name)
+                    } else {
                         self?.view?.showAlertDialog(
                             title: "Error".localized,
                             message: "The operation could not be performed".localized

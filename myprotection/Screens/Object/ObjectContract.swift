@@ -13,6 +13,7 @@ enum ExecutingCommandType {
 }
 
 protocol IObjectView: UIViewController, AlertDialog {
+    func setName(_ name: String)
     func setStatusDescription(_ description: String)
     func setAddress(_ address: String)
     func setStatusIcon(_ status: StatusCode)
