@@ -52,37 +52,73 @@ extension ObjectPresenter: ObjectContract.Presenter {
     }
 
     func armButtonTapped() {
+        guard facility.armingEnabled else {
+            view?.showAlertDialog(
+                title: "Feature is not available".localized,
+                message: "The arming/disarming feature is not available. In order to use this feature, contact your security company".localized // swiftlint:disable:this line_length
+            )
+            return
+        }
+
         guard facility.online && facility.onlineEnabled else { return }
 
         if !facility.statusCode.isGuarded {
-            view?.showConfirmDialog(message: "Are you sure you want to arm the object?".localized) {
+            view?.showConfirmDialog(
+                message: "Are you sure you want to arm the object?".localized,
+                proceedText: "Arm the object".localized
+            ) {
                 self.view?.setArmButtonEnabled(false)
                 self.changeStatus(1)
             }
             return
         }
 
-        view?.showConfirmDialog(message: "Are you sure you want to disarm the object?".localized) {
+        view?.showConfirmDialog(
+            message: "Are you sure you want to disarm the object?".localized,
+            proceedText: "Disarm the object".localized
+        ) {
             self.view?.setArmButtonEnabled(false)
             self.changeStatus(0)
         }
     }
 
     func armButtonLongPressed() {
-        guard facility.online && facility.onlineEnabled else { return }
+        guard facility.armingEnabled else {
+            view?.showAlertDialog(
+                title: "Feature is not available".localized,
+                message: "The arming/disarming feature is not available. In order to use this feature, contact your security company".localized // swiftlint:disable:this line_length
+            )
+            return
+        }
+
+        guard facility.armingEnabled && facility.online && facility.onlineEnabled else { return }
 
         if facility.statusCode.isGuarded {
             return
         }
 
-        view?.showConfirmDialog(message: "Are you sure you want to arm the object's perimeter?".localized) {
+        view?.showConfirmDialog(
+            message: "Are you sure you want to arm the object's perimeter?".localized,
+            proceedText: "Arm the object's perimeter".localized
+        ) {
             self.view?.setArmButtonEnabled(false)
             self.changeStatus(2)
         }
     }
 
     func alarmButtonTapped() {
-        view?.showConfirmDialog(message: "Are you sure you want to start alarm?".localized) {
+        guard facility.alarmButtonEnabled else {
+            view?.showAlertDialog(
+                title: "Feature is not available".localized,
+                message: "The alarm feature is not available. In order to use this feature, contact your security company".localized // swiftlint:disable:this line_length
+            )
+            return
+        }
+
+        view?.showConfirmDialog(
+            message: "Are you sure you want to start alarm?".localized,
+            proceedText: "Start alarm".localized
+        ) {
             if self.facility.statusCode != .alarm {
                 self.startAlarm()
             }
@@ -90,7 +126,10 @@ extension ObjectPresenter: ObjectContract.Presenter {
     }
 
     func testAlarmButtonTapped() {
-        view?.showConfirmDialog(message: "Are you sure you want to start testing mode?".localized) {
+        view?.showConfirmDialog(
+            message: "Are you sure you want to start testing mode?".localized,
+            proceedText: "Start testing mode".localized
+        ) {
             self.view?.showTestAlarmView(objectId: self.facility.id, communicationData: self.communicationData)
         }
     }

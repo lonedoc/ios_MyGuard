@@ -122,7 +122,7 @@ extension ObjectViewController: ObjectContract.View {
         }
     }
 
-    func showConfirmDialog(message: String, proceed: @escaping () -> Void) {
+    func showConfirmDialog(message: String, proceedText: String, proceed: @escaping () -> Void) {
         let dialog = UIAlertController(
             title: "Confirmation required".localized,
             message: message,
@@ -131,7 +131,7 @@ extension ObjectViewController: ObjectContract.View {
 
         dialog.view.tintColor = .primaryColor
 
-        let proceedAction = UIAlertAction(title: "Proceed".localized, style: .default, handler: { _ in proceed() })
+        let proceedAction = UIAlertAction(title: proceedText, style: .default, handler: { _ in proceed() })
         dialog.addAction(proceedAction)
 
         let cancelAction = UIAlertAction(title: "Cancel".localized, style: .cancel, handler: nil)

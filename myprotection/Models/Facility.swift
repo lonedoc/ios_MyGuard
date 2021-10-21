@@ -19,6 +19,8 @@ class Facility {
     var status: String
     var batteryMalfunction: Bool
     var powerSupplyMalfunction: Bool
+    var armingEnabled: Bool
+    var alarmButtonEnabled: Bool
 
     init(_ dto: FacilityDTO) {
         id = dto.id
@@ -30,6 +32,8 @@ class Facility {
         status = dto.status
         batteryMalfunction = dto.batteryMalfunction == 1
         powerSupplyMalfunction = dto.powerSupplyMalfunction == 1
+        armingEnabled = dto.armingEnabled != 1
+        alarmButtonEnabled = dto.alarmButtonEnabled == 1
 
         statusCode = StatusCode(
             text: dto.statusCode,

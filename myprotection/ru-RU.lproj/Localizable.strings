@@ -96,3 +96,11 @@
 "Press the alarm button" = "Нажмите тревожную кнопку";
 "The alarm button has been pressed" = "Тревожная кнопка была нажата";
 "The alarm button has been tested. Press the next alarm button" = "Тревожная кнопка протестирована. Нажмите следующую тревожную кнопку";
+"Arm the object" = "Поставить на охрану";
+"Disarm the object" = "Снять с охраны";
+"Arm the object's perimeter" = "Поставить периметр на охрану";
+"Start alarm" = "Начать тревогу";
+"Start testing mode" = "Начать проверку ТК";
+"Feature is not available" = "Функция недоступна";
+"The arming/disarming feature is not available. In order to use this feature, contact your security company" = "Функция постановки/снятия с охраны недоступна. Для того, чтобы использовать данную функцию обратитесь в охранное предприятие";
+"The alarm feature is not available. In order to use this feature, contact your security company" = "Функция тревожной кнопки недоступна. Для того, чтобы использовать данную функцию обратитесь в охранное предприятие";

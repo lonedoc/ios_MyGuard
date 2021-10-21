@@ -96,3 +96,11 @@
 "Press the alarm button" = "Press the alarm button";
 "The alarm button has been pressed" = "The alarm button has been pressed";
 "The alarm button has been tested. Press the next alarm button" = "The alarm button has been tested. Press the next alarm button";
+"Arm the object" = "Arm the object";
+"Disarm the object" = "Disarm the object";
+"Arm the object's perimeter" = "Arm the object's perimeter";
+"Start alarm" = "Start alarm";
+"Start testing mode" = "Start testing mode";
+"Feature is not available" = "Feature is not available";
+"The arming/disarming feature is not available. In order to use this feature, contact your security company" = "The arming/disarming feature is not available. In order to use this feature, contact your security company";
+"The alarm feature is not available. In order to use this feature, contact your security company" = "The alarm feature is not available. In order to use this feature, contact your security company";

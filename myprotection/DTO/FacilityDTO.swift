@@ -21,6 +21,8 @@ struct FacilityDTO: Decodable {
     let perimeterOnly: Int?
     let batteryMalfunction: Int?
     let powerSupplyMalfunction: Int?
+    let armingEnabled: Int?
+    let alarmButtonEnabled: Int?
 
     enum CodingKeys: String, CodingKey {
         case id                     = "n_abs"
@@ -34,6 +36,8 @@ struct FacilityDTO: Decodable {
         case perimeterOnly          = "p"
         case batteryMalfunction     = "akb"
         case powerSupplyMalfunction = "220"
+        case armingEnabled          = "bohr"
+        case alarmButtonEnabled     = "tk"
     }
 
     static func deserialize(from json: String) throws -> FacilityDTO {
