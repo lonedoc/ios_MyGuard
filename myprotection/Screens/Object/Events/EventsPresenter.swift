@@ -76,6 +76,7 @@ extension EventsPresenter: EventsContract.Presenter {
 // MARK: -
 
 private let attemptsCount = 2
+private let pollingInterval: TimeInterval = 15
 
 class EventsPresenter {
 
@@ -107,7 +108,7 @@ class EventsPresenter {
     private func startPolling() {
         timer?.invalidate()
         timer = Timer.scheduledTimer(
-            timeInterval: 10,
+            timeInterval: pollingInterval,
             target: self,
             selector: #selector(tick),
             userInfo: nil,

@@ -18,13 +18,13 @@ extension PasswordPresenter: PasswordContract.Presenter {
 
     func viewDidLoad() {
         communicationData = getCommunicationData()
-        requestPassword()
+        requestPasswordAndStartCountDown()
     }
 
     func didHitRetryButton() {
         view?.hideRetryButton()
         communicationData?.invalidateAddress()
-        requestPassword()
+        requestPasswordAndStartCountDown()
     }
 
     func didHitCancelButton() {
@@ -49,7 +49,7 @@ extension PasswordPresenter: PasswordContract.Presenter {
 // MARK: -
 
 private let driverPort: Int32 = 8301
-private let timeToRetry = 40
+private let timeToRetry = 15
 
 class PasswordPresenter {
 
@@ -93,6 +93,14 @@ class PasswordPresenter {
         return try? CommunicationData(addresses: addresses, token: nil)
     }
 
+    private func requestPasswordAndStartCountDown() {
+        requestPassword()
+
+        DispatchQueue.main.async {
+            self.startCountDown()
+        }
+    }
+
     private func requestPassword() {
         // swiftlint:disable:next identifier_name
         guard let cd = communicationData else {
@@ -123,13 +131,7 @@ class PasswordPresenter {
     private func makePasswordRequest(address: InetAddress, phone: String) {
         passwordGateway.requestPassword(address: address, phone: phone)
             .subscribe(
-                onNext: { [weak self] passwordSent in
-                    if passwordSent {
-                        DispatchQueue.main.async {
-                            self?.startCountDown()
-                        }
-                    }
-
+                onNext: { [weak self] _ in
                     self?.passwordGateway.close()
                 },
                 onError: { [weak self] error in

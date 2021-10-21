@@ -139,7 +139,7 @@ extension ObjectPresenter: ObjectContract.Presenter {
 // MARK: -
 
 private let shortPollingInterval: TimeInterval = 1
-private let longPollingInterval: TimeInterval = 10
+private let longPollingInterval: TimeInterval = 15
 private let attemptsCount = 2
 
 class ObjectPresenter {

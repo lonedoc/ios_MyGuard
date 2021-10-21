@@ -87,10 +87,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let endTime = DispatchTime.now()
 
-        let distanceNano = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
-        let distanceSec = distanceNano / nano
+        let elapsedTimeNano = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
+        let elapsedTimeSec = elapsedTimeNano / nano
 
-        if distanceSec > autoLogoutInterval {
+        if elapsedTimeSec > autoLogoutInterval {
             window?.rootViewController = getRootViewController()
             window?.makeKeyAndVisible()
         }

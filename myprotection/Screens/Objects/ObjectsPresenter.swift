@@ -66,6 +66,7 @@ extension ObjectsPresenter: ObjectsContract.Presenter {
 // MARK: -
 
 private let attemptsCount = 2
+private let pollingInterval = 15
 
 class ObjectsPresenter {
 
@@ -90,7 +91,7 @@ class ObjectsPresenter {
     private func startPolling() {
         timer?.invalidate()
         timer = Timer.scheduledTimer(
-            timeInterval: 10,
+            timeInterval: 15,
             target: self,
             selector: #selector(tick),
             userInfo: nil,
