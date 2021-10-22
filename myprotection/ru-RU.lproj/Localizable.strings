@@ -88,7 +88,7 @@
 "Are you sure you want to arm the object?" = "Вы уверены, что хотите поставить объект на охрану?";
 "Are you sure you want to disarm the object?" = "Вы уверены, что хотите снять объект с охраны?";
 "Are you sure you want to arm the object's perimeter?" = "Вы уверены, что хотите поставить периметр объекта на охрану?";
-"Are you sure you want to start alarm?" = "Вы уверены, что хотите начать тревогу?";
+"Are you sure you want to start alarm?" = "Вы уверены, что хотите нажать тревожную кнопку?";
 "Are you sure you want to start testing mode?" = "Вы уверены, что хотите начать тестирование тревожных кнопок?";
 "Facility's name" = "Название объекта";
 "Reset" = "Сбросить";
@@ -99,7 +99,7 @@
 "Arm the object" = "Поставить на охрану";
 "Disarm the object" = "Снять с охраны";
 "Arm the object's perimeter" = "Поставить периметр на охрану";
-"Start alarm" = "Начать тревогу";
+"Start alarm" = "Подтвердить";
 "Start testing mode" = "Начать проверку ТК";
 "Feature is not available" = "Функция недоступна";
 "The arming/disarming feature is not available. In order to use this feature, contact your security company" = "Функция постановки/снятия с охраны недоступна. Для того, чтобы использовать данную функцию обратитесь в охранное предприятие";
