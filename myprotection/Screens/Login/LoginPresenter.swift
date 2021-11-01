@@ -73,7 +73,7 @@ extension LoginPresenter: LoginContract.Presenter {
 
 // MARK: -
 
-private let ipAddresses = ["94.177.183.4", "194.125.255.105"]
+private let ipAddresses = ["94.177.183.4", "91.189.160.38"]
 private let port: Int32 = 8300
 
 class LoginPresenter {
