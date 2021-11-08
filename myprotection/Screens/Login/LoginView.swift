@@ -46,10 +46,6 @@ class LoginView: UIView {
 
         cityTextField.inputView = cityPicker
         companyTextField.inputView = companyPicker
-
-        cityTextField.inputAccessoryView = toolbar
-        companyTextField.inputAccessoryView = toolbar
-        phoneTextField.inputAccessoryView = toolbar
     }
 
     // swiftlint:disable:next function_body_length

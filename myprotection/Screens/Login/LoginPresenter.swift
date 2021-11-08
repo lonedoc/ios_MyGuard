@@ -32,6 +32,10 @@ extension LoginPresenter: LoginContract.Presenter {
         selectedCity = city
         selectedCompany = nil
 
+        let cities = getCities()
+        let cityIndex = cities.firstIndex(of: city) ?? 0
+        view?.selectCityPickerRow(cityIndex)
+
         let companiesInCity = getCompanyNames(by: city)
         view?.setCompanies(companiesInCity)
         view?.selectCompanyPickerRow(0)
@@ -42,6 +46,11 @@ extension LoginPresenter: LoginContract.Presenter {
     func didSelect(company: String) {
         view?.setCompany(company)
         selectedCompany = companies.first { $0.city == selectedCity && $0.name == company }
+
+        let companiesInCity = getCompanyNames(by: selectedCity ?? "")
+        let companyIndex = companiesInCity.firstIndex(of: company) ?? 0
+        view?.selectCompanyPickerRow(companyIndex)
+
         view?.setSubmitButtonEnabled(isReadyForSubmit())
     }
 
@@ -73,7 +82,7 @@ extension LoginPresenter: LoginContract.Presenter {
 
 // MARK: -
 
-private let ipAddresses = ["94.177.183.4", "91.189.160.38"]
+private let ipAddresses = ["90.188.236.100", "94.177.183.4", "91.189.160.38"]
 private let port: Int32 = 8300
 
 class LoginPresenter {
@@ -189,7 +198,7 @@ class LoginPresenter {
 
         guard
             let company = selectedCompany,
-            let companyIndex = (companiesInCity.firstIndex { $0 == company.name })
+            let companyIndex = companiesInCity.firstIndex(of: company.name)
         else {
             selectedCompany = nil
 

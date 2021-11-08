@@ -127,6 +127,10 @@ class LoginViewController: UIViewController {
     }
 
     private func setup() {
+        rootView.cityTextField.inputAccessoryView = rootView.toolbar
+        rootView.companyTextField.inputAccessoryView = rootView.toolbar
+        rootView.phoneTextField.inputAccessoryView = rootView.toolbar
+
         rootView.cityPicker.dataSource = self
         rootView.cityPicker.delegate = self
 
@@ -244,16 +248,29 @@ extension LoginViewController: UITextFieldDelegate {
         shouldChangeCharactersIn range: NSRange,
         replacementString string: String
     ) -> Bool {
+        guard let text = getUpdatedText(text: textField.text, range: range, replacementString: string) else {
+            return false
+        }
+
         if textField == rootView.phoneTextField {
-            guard
-                let updatedText = getUpdatedText(text: textField.text, range: range, replacementString: string)
-            else {
+            presenter.didChangePhone(value: text)
+            return false
+        }
+
+        if textField == rootView.cityTextField {
+            guard cities.contains(text) else {
                 return false
             }
 
-            presenter.didChangePhone(value: updatedText)
+            presenter.didSelect(city: text)
+        }
 
-            return false
+        if textField == rootView.companyTextField {
+            guard companies.contains(text) else {
+                return false
+            }
+
+            presenter.didSelect(company: text)
         }
 
         return true
