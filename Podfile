@@ -12,6 +12,7 @@ target 'myprotection' do
   pod 'RxCocoa', '6.0.0-rc.1'
   pod 'Swinject'  
   pod 'BlueSocket', '~> 1.0.46'
+  pod 'Alamofire', '~> 5.4'
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
   pod 'MobileVLCKit'

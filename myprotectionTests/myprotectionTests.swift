@@ -20,8 +20,29 @@ class MyprotectionTests: XCTestCase {
     }
 
     func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let stringsRotator = Rotator<String>.create(items: ["1", "2", "3"])
+        XCTAssertEqual("1", stringsRotator.current)
+        XCTAssertEqual("2", stringsRotator.next())
+        XCTAssertEqual("2", stringsRotator.current)
+        XCTAssertEqual("3", stringsRotator.next())
+        XCTAssertEqual("3", stringsRotator.current)
+        XCTAssertEqual("1", stringsRotator.next())
+
+        let numbersRotator = stringsRotator.map { (item: String) in Int(item)! }
+        XCTAssertEqual(1, numbersRotator.current)
+        XCTAssertEqual(2, numbersRotator.next())
+        XCTAssertEqual(2, numbersRotator.current)
+        XCTAssertEqual(3, numbersRotator.next())
+        XCTAssertEqual(3, numbersRotator.current)
+        XCTAssertEqual(1, numbersRotator.next())
+
+        let anotherStringRotator = numbersRotator.map { (item: Int) in "\(item)" }
+        XCTAssertEqual("1", anotherStringRotator.current)
+        XCTAssertEqual("2", anotherStringRotator.next())
+        XCTAssertEqual("2", anotherStringRotator.current)
+        XCTAssertEqual("3", anotherStringRotator.next())
+        XCTAssertEqual("3", anotherStringRotator.current)
+        XCTAssertEqual("1", anotherStringRotator.next())
     }
 
     func testPerformanceExample() throws {

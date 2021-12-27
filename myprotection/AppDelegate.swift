@@ -41,24 +41,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func getRootViewController() -> UIViewController {
-        let appDataRepository = Container.shared.resolve(AppDataRepository.self)!
+        let userDefaultsHelper = Assembler.shared.resolver.resolve(UserDefaultsHelper.self)!
 
-        if isRegistered(appDataRepository) {
-            let viewController = Container.shared.resolve(PasscodeContract.View.self)!
+        if isRegistered(userDefaultsHelper) {
+            let viewController = PasscodeViewController()
             return NavigationController(rootViewController: viewController)
         } else {
-            return Container.shared.resolve(LoginContract.View.self)!
+            return LoginViewController()
         }
     }
 
-    private func isRegistered(_ repository: AppDataRepository) -> Bool {
+    private func isRegistered(_ userDefaultsHelper: UserDefaultsHelper) -> Bool {
         return
-            repository.getCompany()  != nil &&
-            repository.getPhone()    != nil &&
-            repository.getUser()     != nil &&
-            repository.getFactory()  != nil &&
-            repository.getToken()    != nil &&
-            repository.getPasscode() != nil
+            userDefaultsHelper.getCompany()      != nil &&
+            userDefaultsHelper.getPhone()        != nil &&
+            userDefaultsHelper.getUser()         != nil &&
+            userDefaultsHelper.getGuardService() != nil &&
+            userDefaultsHelper.getToken()        != nil &&
+            userDefaultsHelper.getPasscode()     != nil
     }
 
     private func configureFirebase(for application: UIApplication) {
@@ -120,7 +120,7 @@ extension AppDelegate: MessagingDelegate, UNUserNotificationCenterDelegate {
             print("FCM Token: \(fcmToken ?? "")")
         #endif
 
-        UserDefaultsAppDataRepository().set(fcmToken: fcmToken ?? "")
+        UserDefaultsHelperImpl().set(fcmToken: fcmToken ?? "")
     }
 
     func userNotificationCenter(

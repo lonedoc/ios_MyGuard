@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (5.4.4)
   - BlueSocket (1.0.52)
   - Firebase/Core (7.1.0):
     - Firebase/CoreOnly
@@ -157,6 +158,7 @@ PODS:
   - Swinject (2.7.1)
 
 DEPENDENCIES:
+  - Alamofire (~> 5.4)
   - BlueSocket (~> 1.0.46)
   - Firebase/Core
   - Firebase/Messaging
@@ -171,6 +173,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - Alamofire
     - BlueSocket
     - Firebase
     - FirebaseAnalytics
@@ -197,6 +200,7 @@ SPEC REPOS:
     - RubegProtocol-v2.0
 
 SPEC CHECKSUMS:
+  Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
   BlueSocket: 1acd943acb07b55905291d608649fcfbf8cbd57d
   Firebase: 78e8dd2e39d653de6270432ad84fe8b59f7bf4e8
   FirebaseAnalytics: 7f165a56dea86ddd5b8ce02af3bee982c683405c
@@ -221,6 +225,6 @@ SPEC CHECKSUMS:
   SkeletonView: cc84ce90a804dd0dd7198dd802833411c8a64eaf
   Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
 
-PODFILE CHECKSUM: e62f385819145cc4587dccdf5b03f06de217a24e
+PODFILE CHECKSUM: 992d152b8b4e13d71eefe768bcc597729e3d6e80
 
 COCOAPODS: 1.9.3
