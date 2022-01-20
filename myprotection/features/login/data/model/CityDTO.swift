@@ -10,10 +10,10 @@ import Foundation
 
 struct CityDTO: Decodable {
     let name: String
-    let companies: [CompanyDTO]
+    let guardServices: [GuardServiceDTO]
 
     enum CodingKeys: String, CodingKey {
-        case name      = "name"
-        case companies = "pr"
+        case name          = "name"
+        case guardServices = "pr"
     }
 }

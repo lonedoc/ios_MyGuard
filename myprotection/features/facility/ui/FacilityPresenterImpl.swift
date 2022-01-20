@@ -140,6 +140,10 @@ extension FacilityPresenterImpl: FacilityPresenter {
         view?.showSensorsView(facilityId: facility.id)
     }
 
+    func accountButtonTapped() {
+        view?.showAccountView()
+    }
+
 }
 
 // MARK: -

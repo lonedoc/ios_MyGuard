@@ -48,10 +48,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private func isRegistered(_ userDefaultsHelper: UserDefaultsHelper) -> Bool {
         return
-            userDefaultsHelper.getCompany()      != nil &&
+            userDefaultsHelper.getGuardService() != nil &&
             userDefaultsHelper.getPhone()        != nil &&
             userDefaultsHelper.getUser()         != nil &&
-            userDefaultsHelper.getGuardService() != nil &&
             userDefaultsHelper.getToken()        != nil &&
             userDefaultsHelper.getPasscode()     != nil
     }

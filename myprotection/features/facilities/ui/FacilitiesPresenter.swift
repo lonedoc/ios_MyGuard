@@ -10,6 +10,7 @@ import Foundation
 
 protocol FacilitiesPresenter {
     func attach(view: FacilitiesView)
+    func viewDidLoad()
     func viewWillAppear()
     func viewWillDisappear()
     func refresh()

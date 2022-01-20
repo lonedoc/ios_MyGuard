@@ -48,6 +48,7 @@ enum AssetsImage: String {
     case humidityIcon            = "humidity_icon"
     case eventsIcon              = "events_icon"
     case sensorsIcon             = "sensors_icon"
+    case accountIcon             = "account_icon"
 }
 
 extension UIImage {

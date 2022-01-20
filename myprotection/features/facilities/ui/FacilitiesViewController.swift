@@ -121,6 +121,7 @@ class FacilitiesViewController: UIViewController, SortingDialogDelegate {
         super.viewDidLoad()
         setup()
         presenter.attach(view: self)
+        presenter.viewDidLoad()
     }
 
     private func setup() {

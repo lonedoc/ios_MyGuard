@@ -28,29 +28,29 @@ extension LoginPresenterImpl: LoginPresenter {
 
     func didSelect(city: String) {
         view?.setCity(city)
-        view?.setCompany("")
+        view?.setGuardService("")
 
         selectedCity = city
-        selectedCompany = nil
+        selectedGuardService = nil
 
         let cities = getCities()
         let cityIndex = cities.firstIndex(of: city) ?? 0
         view?.selectCityPickerRow(cityIndex)
 
-        let companiesInCity = getCompanyNames(by: city)
-        view?.setCompanies(companiesInCity)
-        view?.selectCompanyPickerRow(0)
+        let guardServicesInCity = getGuardServicesNames(by: city)
+        view?.setGuardServices(guardServicesInCity)
+        view?.selectGuardServicePickerRow(0)
 
         view?.setSubmitButtonEnabled(isReadyForSubmit())
     }
 
-    func didSelect(company: String) {
-        view?.setCompany(company)
-        selectedCompany = companies.first { $0.city == selectedCity && $0.name == company }
+    func didSelect(guardService: String) {
+        view?.setGuardService(guardService)
+        selectedGuardService = guardServices.first { $0.city == selectedCity && $0.name == guardService }
 
-        let companiesInCity = getCompanyNames(by: selectedCity ?? "")
-        let companyIndex = companiesInCity.firstIndex(of: company) ?? 0
-        view?.selectCompanyPickerRow(companyIndex)
+        let guardServicesInCity = getGuardServicesNames(by: selectedCity ?? "")
+        let companyIndex = guardServicesInCity.firstIndex(of: guardService) ?? 0
+        view?.selectGuardServicePickerRow(companyIndex)
 
         view?.setSubmitButtonEnabled(isReadyForSubmit())
     }
@@ -74,7 +74,7 @@ extension LoginPresenterImpl: LoginPresenter {
         saveDataInCache()
 
         let communicationData = Assembler.shared.resolver.resolve(CommunicationData.self)!
-        communicationData.setAddresses(selectedCompany?.ip ?? [])
+        communicationData.setAddresses(selectedGuardService?.ip ?? [])
 
         view?.openPasswordScreen()
     }
@@ -90,9 +90,9 @@ class LoginPresenterImpl {
     private let interactor: LoginInteractor
     private let disposeBag = DisposeBag()
 
-    private var companies: [Company] = []
+    private var guardServices: [GuardService] = []
     private var selectedCity: String?
-    private var selectedCompany: Company?
+    private var selectedGuardService: GuardService?
     private var phoneNumber: String?
 
     init(interactor: LoginInteractor) {
@@ -100,12 +100,12 @@ class LoginPresenterImpl {
     }
 
     private func loadCachedData() {
-        if let company = interactor.getUserCompany() {
-            selectedCity = company.city
-            view?.setCity(company.city)
+        if let guardService = interactor.getUserGuardService() {
+            selectedCity = guardService.city
+            view?.setCity(guardService.city)
 
-            selectedCompany = company
-            view?.setCompany(company.name)
+            selectedGuardService = guardService
+            view?.setGuardService(guardService.name)
         }
 
         if let phone = interactor.getUserPhone() {
@@ -116,20 +116,22 @@ class LoginPresenterImpl {
     }
 
     private func loadCompaniesData() {
-        interactor.getCompanies(
-            success: { [weak self] companies in
-                self?.companies = companies
-                self?.updateCachedData()
-            },
-            failure: { [weak self] error in
-                let errorMessage = getErrorMessage(by: error)
+        interactor.getGuardServices()
+            .subscribe(
+                onNext: { [weak self] guardServices in
+                    self?.guardServices = guardServices
+                    self?.updateCachedData()
+                },
+                onError: { [weak self] error in
+                    let errorMessage = getErrorMessage(by: error)
 
-                self?.view?.showAlertDialog(
-                    title: "Error".localized,
-                    message: errorMessage
-                )
-            }
-        )
+                    self?.view?.showAlertDialog(
+                        title: "Error".localized,
+                        message: errorMessage
+                    )
+                }
+            )
+            .disposed(by: disposeBag)
     }
 
     private func updateCachedData() {
@@ -141,39 +143,39 @@ class LoginPresenterImpl {
             let index = cities.firstIndex(of: city)
         else {
             selectedCity = nil
-            selectedCompany = nil
+            selectedGuardService = nil
 
             view?.setCity("")
-            view?.setCompany("")
-            view?.setCompanies([""])
+            view?.setGuardService("")
+            view?.setGuardServices([""])
             view?.selectCityPickerRow(0)
-            view?.selectCompanyPickerRow(0)
+            view?.selectGuardServicePickerRow(0)
 
             return
         }
 
         view?.selectCityPickerRow(index)
 
-        let companiesInCity = getCompanyNames(by: city)
-        view?.setCompanies(companiesInCity)
+        let guardServicesInCity = getGuardServicesNames(by: city)
+        view?.setGuardServices(guardServicesInCity)
 
         guard
-            let company = selectedCompany,
-            let companyIndex = companiesInCity.firstIndex(of: company.name)
+            let guardService = selectedGuardService,
+            let companyIndex = guardServicesInCity.firstIndex(of: guardService.name)
         else {
-            selectedCompany = nil
+            selectedGuardService = nil
 
-            view?.setCompany("")
-            view?.selectCompanyPickerRow(0)
+            view?.setGuardService("")
+            view?.selectGuardServicePickerRow(0)
 
             return
         }
 
-        view?.selectCompanyPickerRow(companyIndex)
+        view?.selectGuardServicePickerRow(companyIndex)
     }
 
     private func getCities() -> [String] {
-        var cities = companies
+        var cities = guardServices
             .map { $0.city }
             .distinct { $0 == $1 }
             .sorted()
@@ -182,19 +184,19 @@ class LoginPresenterImpl {
         return cities
     }
 
-    private func getCompanyNames(by city: String) -> [String] {
-        var companiesInCity = companies
+    private func getGuardServicesNames(by city: String) -> [String] {
+        var guardServicesInCity = guardServices
             .filter { $0.city == city }
             .map { $0.name }
             .sorted()
 
-        companiesInCity.insert("", at: 0)
-        return companiesInCity
+        guardServicesInCity.insert("", at: 0)
+        return guardServicesInCity
     }
 
     private func saveDataInCache() {
-        if let company = selectedCompany {
-            interactor.saveUserCompany(company)
+        if let guardService = selectedGuardService {
+            interactor.saveUserGuardService(guardService)
         }
 
         if let phone = phoneNumber {
@@ -203,10 +205,10 @@ class LoginPresenterImpl {
     }
 
     private func isReadyForSubmit() -> Bool {
-        let companyIsSelected = selectedCompany != nil
+        let isGuardServiceSelected = selectedGuardService != nil
         let phoneNumberIsValid = PhoneMask().validate(phoneNumber ?? "")
 
-        return companyIsSelected && phoneNumberIsValid
+        return isGuardServiceSelected && phoneNumberIsValid
     }
 
     private func extractDigits(text: String) -> String {

@@ -33,7 +33,7 @@ class LoginScreenLayout: UIView {
         contentView.addSubview(logoView)
         contentView.addSubview(logoTextView)
         contentView.addSubview(cityTextField)
-        contentView.addSubview(companyTextField)
+        contentView.addSubview(guardServiceTextField)
         contentView.addSubview(phoneTextField)
         contentView.addSubview(submitButton)
 
@@ -42,10 +42,13 @@ class LoginScreenLayout: UIView {
 
         addSubview(scrollView)
 
-        toolbar.setItems([prevButtonItem, gap, nextButtonItem, spacer, doneButtonItem], animated: false)
+        toolbar.setItems(
+            [prevButtonItem, gap, nextButtonItem, spacer, doneButtonItem],
+            animated: false
+        )
 
         cityTextField.inputView = cityPicker
-        companyTextField.inputView = companyPicker
+        guardServiceTextField.inputView = guardServicePicker
     }
 
     // swiftlint:disable:next function_body_length
@@ -91,15 +94,15 @@ class LoginScreenLayout: UIView {
         cityTextField.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
         cityTextField.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
 
-        companyTextField.translatesAutoresizingMaskIntoConstraints = false
-        companyTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        companyTextField.topAnchor.constraint(equalTo: cityTextField.bottomAnchor, constant: 1).isActive = true
-        companyTextField.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-        companyTextField.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        guardServiceTextField.translatesAutoresizingMaskIntoConstraints = false
+        guardServiceTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        guardServiceTextField.topAnchor.constraint(equalTo: cityTextField.bottomAnchor, constant: 1).isActive = true
+        guardServiceTextField.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        guardServiceTextField.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
 
         phoneTextField.translatesAutoresizingMaskIntoConstraints = false
         phoneTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        phoneTextField.topAnchor.constraint(equalTo: companyTextField.bottomAnchor, constant: 1).isActive = true
+        phoneTextField.topAnchor.constraint(equalTo: guardServiceTextField.bottomAnchor, constant: 1).isActive = true
         phoneTextField.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
         phoneTextField.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
 
@@ -145,7 +148,7 @@ class LoginScreenLayout: UIView {
         let view = UILabel(frame: .zero)
         view.textColor = .white
         view.font = UIFont.boldSystemFont(ofSize: 30)
-        view.text = "Рубеж НПО" // It needn't be localized, as it's part of the logo
+        view.text = "Рубеж НПО" // It shouldn't be localized, as it's part of the logo
         return view
     }()
 
@@ -166,7 +169,7 @@ class LoginScreenLayout: UIView {
         return textField
     }()
 
-    let companyTextField: UITextField = {
+    let guardServiceTextField: UITextField = {
         let textField = UITextField(frame: .zero)
         textField.setLeftPadding(16)
         textField.setRightPadding(16)
@@ -220,7 +223,7 @@ class LoginScreenLayout: UIView {
         return picker
     }()
 
-    let companyPicker: UIPickerView = {
+    let guardServicePicker: UIPickerView = {
         let picker = UIPickerView(frame: .zero)
         return picker
     }()

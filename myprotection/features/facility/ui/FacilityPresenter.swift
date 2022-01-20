@@ -23,4 +23,5 @@ protocol FacilityPresenter {
     func newNameProvided(name: String)
     func eventsButtonTapped()
     func sensorsButtonTapped()
+    func accountButtonTapped()
 }

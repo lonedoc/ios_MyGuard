@@ -104,3 +104,8 @@
 "Feature is not available" = "Feature is not available";
 "The arming/disarming feature is not available. In order to use this feature, contact your security company" = "The arming/disarming feature is not available. In order to use this feature, contact your security company";
 "The alarm feature is not available. In order to use this feature, contact your security company" = "The alarm feature is not available. In order to use this feature, contact your security company";
+
+// MARK: Account
+"Account:" = "Account:";
+"Sum:" = "Sum:";
+"Pay" = "Pay";

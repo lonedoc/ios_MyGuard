@@ -51,7 +51,7 @@ class PasscodeInteractor {
     }
 
     func getIpAddresses() -> [String] {
-        return userDefaultsHelper.getCompany()?.ip ?? []
+        return userDefaultsHelper.getGuardService()?.ip ?? []
     }
 
     func getToken() -> String? {

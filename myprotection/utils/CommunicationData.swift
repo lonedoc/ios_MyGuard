@@ -11,11 +11,12 @@ import Foundation
 class CommunicationData {
 
     private(set) var addressRotator: Rotator<String>
-
+    let port: Int32
     var token: String?
 
-    init(addresses: [String], token: String? = nil) {
+    init(addresses: [String], port: Int32, token: String? = nil) {
         addressRotator = Rotator<String>.create(items: addresses)
+        self.port = port
         self.token = token
     }
 

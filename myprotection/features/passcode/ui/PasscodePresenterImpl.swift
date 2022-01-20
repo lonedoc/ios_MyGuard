@@ -154,7 +154,7 @@ class PasscodePresenterImpl {
     }
 
     private func callGuardService() {
-        guard let phone = interactor.getGuardService()?.phone else {
+        guard let phoneNumber = interactor.getGuardService()?.phoneNumber else {
             view?.showAlertDialog(
                 title: "Error".localized,
                 message: "Phone not found".localized
@@ -162,7 +162,7 @@ class PasscodePresenterImpl {
             return
         }
 
-        guard let url = URL(string: "tel://+7\(phone)") else {
+        guard let url = URL(string: "tel://+7\(phoneNumber)") else {
             view?.showAlertDialog(
                 title: "Error".localized,
                 message: "The phone number cannot be called".localized

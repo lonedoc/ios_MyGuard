@@ -27,4 +27,5 @@ protocol FacilityView: UIViewController, AlertDialog {
     func showTestAlarmView(facilityId: String)
     func showEventsView(facilityId: String)
     func showSensorsView(facilityId: String)
+    func showAccountView()
 }

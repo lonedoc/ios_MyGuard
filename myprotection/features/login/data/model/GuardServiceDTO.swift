@@ -9,7 +9,7 @@
 import Foundation
 
 // swiftlint:disable identifier_name
-struct CompanyDTO: Decodable {
+struct GuardServiceDTO: Decodable {
     let name: String
     let ip: [String]
 

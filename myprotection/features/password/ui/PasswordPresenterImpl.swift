@@ -185,7 +185,7 @@ class PasswordPresenterImpl {
 
     private func saveData(_ loginResponse: LoginResponse) {
         interactor.saveUser(loginResponse.user)
-        interactor.saveGuardService(loginResponse.guardService)
+        interactor.saveGuardServiceContact(guardServiceContact: loginResponse.guardServiceContact)
         interactor.saveToken(loginResponse.token)
     }
 

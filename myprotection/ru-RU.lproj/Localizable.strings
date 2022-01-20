@@ -104,3 +104,8 @@
 "Feature is not available" = "Функция недоступна";
 "The arming/disarming feature is not available. In order to use this feature, contact your security company" = "Функция постановки/снятия с охраны недоступна. Для того, чтобы использовать данную функцию обратитесь в охранное предприятие";
 "The alarm feature is not available. In order to use this feature, contact your security company" = "Функция тревожной кнопки недоступна. Для того, чтобы использовать данную функцию обратитесь в охранное предприятие";
+
+// MARK: Account
+"Account:" = "Лицевой счет:";
+"Sum:" = "Сумма:";
+"Pay" = "Оплатить";

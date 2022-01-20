@@ -8,14 +8,14 @@
 
 import Foundation
 
-struct CompaniesDTO: Decodable {
+struct GuardServicesDTO: Decodable {
     let data: [CityDTO]
 
     enum CodingKeys: String, CodingKey {
         case data = "city"
     }
 
-    static func parse(json: String) throws -> CompaniesDTO {
-        return try JSONDecoder().decode(CompaniesDTO.self, from: json.data(using: .utf8)!)
+    static func parse(json: String) throws -> GuardServicesDTO {
+        return try JSONDecoder().decode(GuardServicesDTO.self, from: json.data(using: .utf8)!)
     }
 }

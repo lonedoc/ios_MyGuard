@@ -143,11 +143,15 @@ extension UdpLoginApi: RubegSocketDelegate {
             }
 
             let user = User(id: userId, name: name)
-            let guardService = GuardService(name: serviceName, phone: servicePhone)
+
+            let guardServiceContact = GuardServiceContact(
+                name: serviceName,
+                phoneNumber: servicePhone
+            )
 
             let result = LoginResponse(
                 user: user,
-                guardService: guardService,
+                guardServiceContact: guardServiceContact,
                 token: guid,
                 stat: stat
             )

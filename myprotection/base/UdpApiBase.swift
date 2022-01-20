@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RxSwift
 import RubegProtocol_v2_0
 
 class UdpApiBase {
@@ -27,7 +28,7 @@ class UdpApiBase {
     init(communicationData: CommunicationData) {
         // swiftlint:disable:next identifier_name
         addresses = communicationData.addressRotator.map { ip in
-            InetAddress.create(ip: ip, port: 8301)
+            InetAddress.create(ip: ip, port: communicationData.port)
         }
 
         token = communicationData.token
@@ -75,6 +76,38 @@ class UdpApiBase {
                 self?.makeRequest(
                     query: query,
                     publishError: publishError,
+                    attempts - 1
+                )
+            }
+        }
+    }
+
+    func makeRequest<T>(
+        query: String,
+        subject: PublishSubject<T>,
+        _ attempts: Int = 3
+    ) {
+        if attempts < 1 {
+            subject.onError(CommunicationError.serverError)
+            return
+        }
+
+        guard let address = addresses.current else {
+            subject.onError(CommunicationError.socketError) // TODO: Replace with dedicated error
+            return
+        }
+
+        #if DEBUG
+            print("-> \(query)")
+        #endif
+
+        socket.send(message: query, token: token, to: address) { [weak self] success in
+            if !success {
+                _ = self?.addresses.next()
+
+                self?.makeRequest(
+                    query: query,
+                    subject: subject,
                     attempts - 1
                 )
             }

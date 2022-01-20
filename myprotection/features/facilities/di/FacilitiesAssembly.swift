@@ -13,13 +13,21 @@ class FacilitiesAssembly: Assembly {
 
     func assemble(container: Container) {
         container.register(FacilitiesInteractor.self) { resolver in
+            let userDefaultsHelper = resolver.resolve(UserDefaultsHelper.self)!
+            let guardServicesApi = resolver.resolve(GuardServicesApi.self)!
             let facilitiesApi = resolver.resolve(FacilitiesApi.self)!
-            return FacilitiesInteractor(facilitiesApi: facilitiesApi)
+
+            return FacilitiesInteractor(
+                userDefaultsHelper: userDefaultsHelper,
+                guardServicesApi: guardServicesApi,
+                facilitiesApi: facilitiesApi
+            )
         }
 
         container.register(FacilitiesPresenter.self) { resolver in
             let interactor = resolver.resolve(FacilitiesInteractor.self)!
-            return FacilitiesPresenterImpl(interactor: interactor)
+            let communicationData = resolver.resolve(CommunicationData.self)!
+            return FacilitiesPresenterImpl(interactor: interactor, communicationData: communicationData)
         }
     }
 

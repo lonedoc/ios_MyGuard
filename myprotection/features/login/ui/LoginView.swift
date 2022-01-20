@@ -11,11 +11,11 @@ import UIKit
 
 protocol LoginView: UIViewController, AlertDialog {
     func setCities(_ cities: [String])
-    func setCompanies(_ companies: [String])
+    func setGuardServices(_ guardServices: [String])
     func selectCityPickerRow(_ row: Int)
-    func selectCompanyPickerRow(_ row: Int)
+    func selectGuardServicePickerRow(_ row: Int)
     func setCity(_ value: String)
-    func setCompany(_ value: String)
+    func setGuardService(_ value: String)
     func setPhoneNumber(_ value: String)
     func setSubmitButtonEnabled(_ enabled: Bool)
     func openPasswordScreen()

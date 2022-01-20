@@ -9,13 +9,15 @@
 import Foundation
 import Swinject
 
+private let driverPort: Int32 = 8301
+
 class CommonAssembly: Assembly {
 
     func assemble(container: Container) {
         container.register(UserDefaultsHelper.self) { _ in UserDefaultsHelperImpl() }
 
         container
-            .register(CommunicationData.self) { _ in CommunicationData(addresses: [], token: nil)}
+            .register(CommunicationData.self) { _ in CommunicationData(addresses: [], port: driverPort, token: nil) }
             .inObjectScope(.container)
 
         container.register(LoginApi.self) { resolver in

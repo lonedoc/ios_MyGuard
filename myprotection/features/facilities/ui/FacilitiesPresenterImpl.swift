@@ -16,6 +16,31 @@ extension FacilitiesPresenterImpl: FacilitiesPresenter {
         self.view = view
     }
 
+    func viewDidLoad() {
+        guard let cachedGuardService = interactor.getGuardService() else {
+            return
+        }
+
+        interactor.getAddresses(cityName: cachedGuardService.city, guardServiceName: cachedGuardService.name)
+            .subscribe(
+                onNext: { [weak self] addresses in
+                    self?.communicationData.setAddresses(addresses)
+
+                    let guardService = GuardService(
+                        city: cachedGuardService.city,
+                        name: cachedGuardService.name,
+                        ip: addresses,
+                        displayedName: cachedGuardService.displayedName,
+                        phoneNumber: cachedGuardService.phoneNumber
+                    )
+
+                    self?.interactor.saveGuardService(guardService)
+                },
+                onError: { _ in }
+            )
+            .disposed(by: disposeBag)
+    }
+
     func viewWillAppear() {
         if facilities.count == 0 {
             view?.showPlaceholder()
@@ -72,6 +97,7 @@ class FacilitiesPresenterImpl {
 
     private var view: FacilitiesView?
     private let interactor: FacilitiesInteractor
+    private let communicationData: CommunicationData
 
     private var facilities = [Facility]()
     private var sorting: FacilitiesSorting = .byStatus
@@ -81,8 +107,9 @@ class FacilitiesPresenterImpl {
 
     private var timer: Timer?
 
-    init(interactor: FacilitiesInteractor) {
+    init(interactor: FacilitiesInteractor, communicationData: CommunicationData) {
         self.interactor = interactor
+        self.communicationData = communicationData
     }
 
     private func startPolling() {

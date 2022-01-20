@@ -13,8 +13,6 @@ import Foundation
 protocol UserDefaultsHelper {
     func set(fcmToken: String)
     func getFcmToken() -> String?
-    func set(company: Company)
-    func getCompany() -> Company?
     func set(phone: String)
     func getPhone() -> String?
     func set(password: String)
@@ -56,13 +54,15 @@ class UserDefaultsHelperImpl: UserDefaultsHelper {
         return UserDefaults.standard.string(forKey: UserDefaultsKey.fcmToken.rawValue)
     }
 
-    func set(company: Company) {
-        UserDefaults.standard.set(company.city, forKey: UserDefaultsKey.city.rawValue)
-        UserDefaults.standard.set(company.name, forKey: UserDefaultsKey.company.rawValue)
-        UserDefaults.standard.set(company.ip, forKey: UserDefaultsKey.ip.rawValue)
+    func set(guardService: GuardService) {
+        UserDefaults.standard.set(guardService.city, forKey: UserDefaultsKey.city.rawValue)
+        UserDefaults.standard.set(guardService.name, forKey: UserDefaultsKey.company.rawValue)
+        UserDefaults.standard.set(guardService.ip, forKey: UserDefaultsKey.ip.rawValue)
+        UserDefaults.standard.set(guardService.displayedName, forKey: UserDefaultsKey.guardServiceName.rawValue)
+        UserDefaults.standard.set(guardService.phoneNumber, forKey: UserDefaultsKey.guardServicePhone.rawValue)
     }
 
-    func getCompany() -> Company? {
+    func getGuardService() -> GuardService? {
         guard
             let city = UserDefaults.standard.string(forKey: UserDefaultsKey.city.rawValue),
             let company = UserDefaults.standard.string(forKey: UserDefaultsKey.company.rawValue),
@@ -71,7 +71,16 @@ class UserDefaultsHelperImpl: UserDefaultsHelper {
             return nil
         }
 
-        return Company(city: city, name: company, ip: ip)
+        let displayedName = UserDefaults.standard.string(forKey: UserDefaultsKey.guardServiceName.rawValue)
+        let phoneNumber = UserDefaults.standard.string(forKey: UserDefaultsKey.guardServicePhone.rawValue)
+
+        return GuardService(
+            city: city,
+            name: company,
+            ip: ip,
+            displayedName: displayedName,
+            phoneNumber: phoneNumber
+        )
     }
 
     func set(phone: String) {
@@ -107,22 +116,6 @@ class UserDefaultsHelperImpl: UserDefaultsHelper {
         let id = UserDefaults.standard.integer(forKey: UserDefaultsKey.userId.rawValue)
 
         return User(id: id, name: name)
-    }
-
-    func set(guardService: GuardService) {
-        UserDefaults.standard.set(guardService.name, forKey: UserDefaultsKey.guardServiceName.rawValue)
-        UserDefaults.standard.set(guardService.phone, forKey: UserDefaultsKey.guardServicePhone.rawValue)
-    }
-
-    func getGuardService() -> GuardService? {
-        guard
-            let factoryName = UserDefaults.standard.string(forKey: UserDefaultsKey.guardServiceName.rawValue),
-            let factoryPhone = UserDefaults.standard.string(forKey: UserDefaultsKey.guardServicePhone.rawValue)
-        else {
-            return nil
-        }
-
-        return GuardService(name: factoryName, phone: factoryPhone)
     }
 
     func set(token: String) {

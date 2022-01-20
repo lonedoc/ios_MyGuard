@@ -30,7 +30,8 @@ extension Assembler {
                 FacilityAssembly(),
                 EventsAssembly(),
                 SensorsAssembly(),
-                TestAssembly()
+                TestAssembly(),
+                AccountAssembly()
             ],
             container: container
         )

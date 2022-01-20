@@ -19,10 +19,10 @@ extension LoginViewController: LoginView {
         }
     }
 
-    func setCompanies(_ companies: [String]) {
+    func setGuardServices(_ guardServices: [String]) {
         DispatchQueue.main.async {
-            self.companies = companies
-            self.rootView.companyPicker.reloadAllComponents()
+            self.guardServices = guardServices
+            self.rootView.guardServicePicker.reloadAllComponents()
         }
     }
 
@@ -32,9 +32,9 @@ extension LoginViewController: LoginView {
         }
     }
 
-    func selectCompanyPickerRow(_ row: Int) {
+    func selectGuardServicePickerRow(_ row: Int) {
         DispatchQueue.main.async {
-            self.rootView.companyPicker.selectRow(row, inComponent: 0, animated: false)
+            self.rootView.guardServicePicker.selectRow(row, inComponent: 0, animated: false)
         }
     }
 
@@ -44,9 +44,9 @@ extension LoginViewController: LoginView {
         }
     }
 
-    func setCompany(_ value: String) {
+    func setGuardService(_ value: String) {
         DispatchQueue.main.async {
-            self.rootView.companyTextField.text = value
+            self.rootView.guardServiceTextField.text = value
         }
     }
 
@@ -93,7 +93,7 @@ class LoginViewController: UIViewController {
     private var rootView: LoginScreenLayout { return self.view as! LoginScreenLayout }
 
     private var cities = [""]
-    private var companies = [""]
+    private var guardServices = [""]
 
     init() {
         self.presenter = Assembler.shared.resolver.resolve(LoginPresenter.self)!
@@ -129,14 +129,14 @@ class LoginViewController: UIViewController {
 
     private func setup() {
         rootView.cityTextField.inputAccessoryView = rootView.toolbar
-        rootView.companyTextField.inputAccessoryView = rootView.toolbar
+        rootView.guardServiceTextField.inputAccessoryView = rootView.toolbar
         rootView.phoneTextField.inputAccessoryView = rootView.toolbar
 
         rootView.cityPicker.dataSource = self
         rootView.cityPicker.delegate = self
 
-        rootView.companyPicker.dataSource = self
-        rootView.companyPicker.delegate = self
+        rootView.guardServicePicker.dataSource = self
+        rootView.guardServicePicker.delegate = self
 
         rootView.prevButtonItem.target = self
         rootView.prevButtonItem.action = #selector(focusPrevControl)
@@ -148,7 +148,7 @@ class LoginViewController: UIViewController {
         rootView.doneButtonItem.action = #selector(endInput)
 
         rootView.cityTextField.delegate = self
-        rootView.companyTextField.delegate = self
+        rootView.guardServiceTextField.delegate = self
         rootView.phoneTextField.delegate = self
 
         rootView.submitButton.addTarget(
@@ -171,9 +171,9 @@ class LoginViewController: UIViewController {
     }
 
     private func moveFocus(next: Bool) {
-        let controls = [rootView.cityTextField, rootView.companyTextField, rootView.phoneTextField]
+        let controls = [rootView.cityTextField, rootView.guardServiceTextField, rootView.phoneTextField]
 
-        guard let index = (controls.firstIndex { control in control.isFirstResponder }) else {
+        guard let index = (controls.firstIndex { $0.isFirstResponder }) else {
             return
         }
 
@@ -192,7 +192,7 @@ class LoginViewController: UIViewController {
 
     @objc func endInput() {
         rootView.cityTextField.resignFirstResponder()
-        rootView.companyTextField.resignFirstResponder()
+        rootView.guardServiceTextField.resignFirstResponder()
         rootView.phoneTextField.resignFirstResponder()
     }
 
@@ -213,8 +213,17 @@ class LoginViewController: UIViewController {
     }
 
     private func unsubscibe() {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
 
     @objc func keyboardWillShow(notification: Notification) {
@@ -224,7 +233,13 @@ class LoginViewController: UIViewController {
 
         let keyboardSize = keyboardFrame.cgRectValue
 
-        rootView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        rootView.scrollView.contentInset = UIEdgeInsets(
+            top: 0,
+            left: 0,
+            bottom: keyboardSize.height,
+            right: 0
+        )
+
         rootView.scrollView.scrollIndicatorInsets = rootView.scrollView.contentInset
     }
 
@@ -249,7 +264,11 @@ extension LoginViewController: UITextFieldDelegate {
         shouldChangeCharactersIn range: NSRange,
         replacementString string: String
     ) -> Bool {
-        guard let text = getUpdatedText(text: textField.text, range: range, replacementString: string) else {
+        guard let text = getUpdatedText(
+            text: textField.text,
+            range: range,
+            replacementString: string
+        ) else {
             return false
         }
 
@@ -266,12 +285,12 @@ extension LoginViewController: UITextFieldDelegate {
             presenter.didSelect(city: text)
         }
 
-        if textField == rootView.companyTextField {
-            guard companies.contains(text) else {
+        if textField == rootView.guardServiceTextField {
+            guard guardServices.contains(text) else {
                 return false
             }
 
-            presenter.didSelect(company: text)
+            presenter.didSelect(guardService: text)
         }
 
         return true
@@ -302,8 +321,8 @@ extension LoginViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         switch pickerView {
         case rootView.cityPicker:
             return cities.count
-        case rootView.companyPicker:
-            return companies.count
+        case rootView.guardServicePicker:
+            return guardServices.count
         default:
             return 0
         }
@@ -313,8 +332,8 @@ extension LoginViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         switch pickerView {
         case rootView.cityPicker:
             return cities[row]
-        case rootView.companyPicker:
-            return companies[row]
+        case rootView.guardServicePicker:
+            return guardServices[row]
         default:
             return nil
         }
@@ -324,8 +343,8 @@ extension LoginViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         switch pickerView {
         case rootView.cityPicker:
             presenter.didSelect(city: cities[row])
-        case rootView.companyPicker:
-            presenter.didSelect(company: companies[row])
+        case rootView.guardServicePicker:
+            presenter.didSelect(guardService: guardServices[row])
         default:
             return
         }

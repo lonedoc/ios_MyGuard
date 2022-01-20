@@ -10,6 +10,7 @@ import UIKit
 import MaterialComponents.MaterialBottomAppBar
 import MaterialComponents.MaterialProgressView
 
+// swiftlint:disable:next type_body_length
 class FacilityScreenLayout: UIView {
 
     override init(frame: CGRect) {
@@ -48,19 +49,37 @@ class FacilityScreenLayout: UIView {
         topView.addSubview(addressView)
 
         bottomAppBar.leadingBarButtonItems = [eventsButton, sensorsButton]
-        bottomAppBar.trailingBarButtonItems = [testAlarmButton]
+        bottomAppBar.trailingBarButtonItems = [testAlarmButton, accountButton]
 
-        addSubview(topView)
-        addSubview(bottomView)
-        addSubview(bottomAppBar)
+        wrapperView.addSubview(topView)
+        wrapperView.addSubview(bottomView)
+        wrapperView.addSubview(bottomAppBar)
+
+        scrollView.addSubview(wrapperView)
+
+        addSubview(scrollView)
     }
 
     // swiftlint:disable function_body_length line_length
     private func setupConstraints() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
+
+        wrapperView.translatesAutoresizingMaskIntoConstraints = false
+        wrapperView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        wrapperView.heightAnchor.constraint(equalTo: scrollView.heightAnchor).isActive = true
+        wrapperView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        wrapperView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        wrapperView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+        wrapperView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+
         topView.translatesAutoresizingMaskIntoConstraints = false
-        topView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
-        topView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        topView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        topView.topAnchor.constraint(equalTo: wrapperView.topAnchor).isActive = true
+        topView.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor).isActive = true
+        topView.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor).isActive = true
         topView.heightAnchor.constraint(equalToConstant: 250).isActive = true
 
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
@@ -130,18 +149,28 @@ class FacilityScreenLayout: UIView {
 
         bottomView.translatesAutoresizingMaskIntoConstraints = false
         bottomView.topAnchor.constraint(equalTo: topView.bottomAnchor).isActive = true
-        bottomView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        bottomView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        bottomView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
+        bottomView.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor).isActive = true
+        bottomView.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor).isActive = true
+        bottomView.bottomAnchor.constraint(equalTo: wrapperView.bottomAnchor).isActive = true
 
         bottomAppBar.translatesAutoresizingMaskIntoConstraints = false
-        bottomAppBar.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        bottomAppBar.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        bottomAppBar.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
+        bottomAppBar.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor).isActive = true
+        bottomAppBar.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor).isActive = true
+        bottomAppBar.bottomAnchor.constraint(equalTo: wrapperView.bottomAnchor).isActive = true
     }
     // swiftlint:enable function_body_length line_length
 
     // MARK: - Views
+
+    let scrollView: UIScrollView = {
+        let view = UIScrollView(frame: .zero)
+        return view
+    }()
+
+    let wrapperView: UIView = {
+        let view = UIView(frame: .zero)
+        return view
+    }()
 
     let topView: UIView = {
         let view = UIView(frame: .zero)
@@ -280,6 +309,13 @@ class FacilityScreenLayout: UIView {
     let sensorsButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
         button.image = UIImage.assets(.sensorsIcon)
+        button.tintColor = .white
+        return button
+    }()
+
+    let accountButton: UIBarButtonItem = {
+        let button = UIBarButtonItem()
+        button.image = UIImage.assets(.accountIcon)
         button.tintColor = .white
         return button
     }()

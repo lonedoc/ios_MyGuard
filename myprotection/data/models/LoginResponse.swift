@@ -10,7 +10,7 @@ import Foundation
 
 struct LoginResponse {
     let user: User
-    let guardService: GuardService
+    let guardServiceContact: GuardServiceContact
     let token: String
     let stat: Int
 }

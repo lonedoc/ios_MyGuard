@@ -12,14 +12,14 @@ import Swinject
 class LoginAssembly: Assembly {
 
     func assemble(container: Container) {
-        container.register(CompaniesApi.self) { _ in UdpCompaniesApi() }
+        container.register(GuardServicesApi.self) { _ in UdpGuardServicesApi() }
 
         container.register(LoginInteractor.self) { resolver in
-            let companiesApi = resolver.resolve(CompaniesApi.self)!
+            let guardServicesApi = resolver.resolve(GuardServicesApi.self)!
             let userDefaultsHelper = resolver.resolve(UserDefaultsHelper.self)!
 
             return LoginInteractor(
-                companiesApi: companiesApi,
+                guardServicesApi: guardServicesApi,
                 userDefaultsHelper: userDefaultsHelper
             )
         }

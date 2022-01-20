@@ -10,8 +10,6 @@ import Foundation
 import RxSwift
 import RubegProtocol_v2_0
 
-// TODO: Don't switch a driver
-
 class UdpTestApi: UdpApiBase, TestApi {
 
     private var startTestSubject: PublishSubject<Int>?
@@ -25,11 +23,13 @@ class UdpTestApi: UdpApiBase, TestApi {
 
     override init(communicationData: CommunicationData) {
         let currentAddress = communicationData.addressRotator.current
+        let port = communicationData.port
         let token = communicationData.token
 
         // swiftlint:disable:next identifier_name
         let cd = CommunicationData(
             addresses: currentAddress != nil ? [currentAddress!] : [],
+            port: port,
             token: token
         )
 

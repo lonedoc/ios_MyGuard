@@ -12,7 +12,7 @@ protocol LoginPresenter {
     func attach(view: LoginView)
     func viewDidLoad()
     func didSelect(city: String)
-    func didSelect(company: String)
+    func didSelect(guardService: String)
     func didChangePhone(value: String)
     func didHitSubmitButton()
 }

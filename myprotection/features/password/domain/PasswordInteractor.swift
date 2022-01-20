@@ -57,8 +57,18 @@ class PasswordInteractor {
         userDefaultsHelper.set(user: user)
     }
 
-    func saveGuardService(_ guardService: GuardService) {
-        userDefaultsHelper.set(guardService: guardService)
+    func saveGuardServiceContact(guardServiceContact: GuardServiceContact) {
+        if let cachedGuardService = userDefaultsHelper.getGuardService() {
+            let guardService = GuardService(
+                city: cachedGuardService.city,
+                name: cachedGuardService.name,
+                ip: cachedGuardService.ip,
+                displayedName: guardServiceContact.name,
+                phoneNumber: guardServiceContact.phoneNumber
+            )
+
+            userDefaultsHelper.set(guardService: guardService)
+        }
     }
 
     func saveToken(_ token: String) {

@@ -10,6 +10,8 @@ import UIKit
 import SkeletonView
 import Swinject
 
+// swiftlint:disable file_length
+
 extension FacilityViewController: FacilityView {
 
     func setName(_ name: String) {
@@ -111,6 +113,11 @@ extension FacilityViewController: FacilityView {
     }
 
     func showEventsView(facilityId: String) {
+        if let viewController = eventsViewController {
+            replaceChild(viewController: viewController)
+            return
+        }
+
         getUnitOfWork { unitOfWork in
             DispatchQueue.main.async {
                 let viewController = EventsViewController(
@@ -118,14 +125,25 @@ extension FacilityViewController: FacilityView {
                     unitOfWork: unitOfWork
                 )
 
-                self.include(viewController: viewController)
+                self.eventsViewController = viewController
+
+                self.replaceChild(viewController: viewController)
             }
         }
     }
 
     func showSensorsView(facilityId: String) {
-        let viewController = SensorsViewController(facilityId: facilityId)
-        self.include(viewController: viewController)
+        let viewController = sensorsViewController ?? SensorsViewController(facilityId: facilityId)
+        sensorsViewController = viewController
+
+        self.replaceChild(viewController: viewController)
+    }
+
+    func showAccountView() {
+        let viewController = accountViewController ?? AccountViewController()
+        accountViewController = viewController
+
+        self.replaceChild(viewController: viewController)
     }
 
     func showConfirmDialog(message: String, proceedText: String, proceed: @escaping () -> Void) {
@@ -218,6 +236,11 @@ class FacilityViewController: UIViewController {
     // swiftlint:disable:next force_cast
     private var rootView: FacilityScreenLayout { return view as! FacilityScreenLayout }
 
+    private var eventsViewController: EventsViewController?
+    private var sensorsViewController: SensorsViewController?
+    private var accountViewController: AccountViewController?
+    private var currentViewController: UIViewController?
+
     private let formatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy HH:mm:ss"
@@ -279,6 +302,9 @@ class FacilityViewController: UIViewController {
 
         rootView.sensorsButton.target = self
         rootView.sensorsButton.action = #selector(sensorsButtonTapped)
+
+        rootView.accountButton.target = self
+        rootView.accountButton.action = #selector(accountButtonTapped)
     }
 
     @objc func eventsButtonTapped() {
@@ -287,6 +313,10 @@ class FacilityViewController: UIViewController {
 
     @objc func sensorsButtonTapped() {
         presenter.sensorsButtonTapped()
+    }
+
+    @objc func accountButtonTapped() {
+        presenter.accountButtonTapped()
     }
 
     @objc func alarmButtonTapped() {
@@ -333,6 +363,20 @@ class FacilityViewController: UIViewController {
             name: TestViewController.willDisappear,
             object: nil
         )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -353,6 +397,18 @@ class FacilityViewController: UIViewController {
             name: TestViewController.willDisappear,
             object: nil
         )
+
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
 
     @objc private func viewWentBackground() {
@@ -361,6 +417,28 @@ class FacilityViewController: UIViewController {
 
     @objc private func viewWentForeground() {
         presenter.viewWentForeground()
+    }
+
+    @objc func keyboardWillShow(notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+            return
+        }
+
+        let keyboardSize = keyboardFrame.cgRectValue
+
+        rootView.scrollView.contentInset = UIEdgeInsets(
+            top: 0,
+            left: 0,
+            bottom: keyboardSize.height,
+            right: 0
+        )
+
+        rootView.scrollView.scrollIndicatorInsets = rootView.scrollView.contentInset
+    }
+
+    @objc func keyboardWillHide(_: Notification) {
+        rootView.scrollView.contentInset = .zero
+        rootView.scrollView.scrollIndicatorInsets = rootView.scrollView.contentInset
     }
 
     private func getStatusImage(_ status: StatusCode) -> UIImage? {
@@ -396,6 +474,16 @@ class FacilityViewController: UIViewController {
         }
     }
 
+    private func replaceChild(viewController: UIViewController) {
+        if let currentViewController = currentViewController {
+            remove(viewController: currentViewController)
+        }
+
+        include(viewController: viewController)
+
+        currentViewController = viewController
+    }
+
     private func include(viewController: UIViewController) {
         addChild(viewController)
 
@@ -403,6 +491,16 @@ class FacilityViewController: UIViewController {
         rootView.bottomView.addSubview(viewController.view)
 
         viewController.didMove(toParent: self)
+    }
+
+    private func remove(viewController: UIViewController) {
+        guard viewController.parent != nil else {
+            return
+        }
+
+        viewController.willMove(toParent: nil)
+        viewController.view.removeFromSuperview()
+        viewController.removeFromParent()
     }
 
 }
