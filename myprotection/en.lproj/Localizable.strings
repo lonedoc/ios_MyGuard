@@ -104,6 +104,11 @@
 "Feature is not available" = "Feature is not available";
 "The arming/disarming feature is not available. In order to use this feature, contact your security company" = "The arming/disarming feature is not available. In order to use this feature, contact your security company";
 "The alarm feature is not available. In order to use this feature, contact your security company" = "The alarm feature is not available. In order to use this feature, contact your security company";
+"Cancel the alarm" = "Cancel the alarm";
+"Go back" = "Go back";
+"Could not find the passcode to cancel the alarm" = "Could not find the passcode to cancel the alarm";
+"Could not cancel alarm" = "Could not cancel alarm";
+"You have already tried to cancel the alarm less then an hour ago" = "You have already tried to cancel the alarm less then an hour ago";
 
 // MARK: Account
 "Account:" = "Account:";

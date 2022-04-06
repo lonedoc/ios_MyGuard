@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<array>
+		<string>человек</string>
+		<string>время</string>
+		<string>жизнь</string>
+		<string>работа</string>
+		<string>система</string>
+		<string>земля</string>
+		<string>машина</string>
+		<string>компания</string>
+		<string>развитие</string>
+		<string>процесс</string>
+		<string>средство</string>
+		<string>условие</string>
+		<string>минута</string>
+		<string>организация</string>
+		<string>внимание</string>
+		<string>информация</string>
+		<string>движени</string>
+		<string>культура</string>
+		<string>принцип</string>
+		<string>характер</string>
+		<string>территория</string>
+		<string>свобода</string>
+		<string>природа</string>
+		<string>писатель</string>
+		<string>спектакль</string>
+		<string>основание</string>
+		<string>надежда</string>
+		<string>пространство</string>
+		<string>сознание</string>
+		<string>художник</string>
+		<string>безопасность</string>
+	</array>
+</plist>

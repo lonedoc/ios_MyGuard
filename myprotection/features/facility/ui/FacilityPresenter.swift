@@ -21,6 +21,7 @@ protocol FacilityPresenter {
     func alarmButtonTapped()
     func testAlarmButtonTapped()
     func newNameProvided(name: String)
+    func cancelAlarmPasscodeProvided(passcode: String)
     func eventsButtonTapped()
     func sensorsButtonTapped()
     func accountButtonTapped()

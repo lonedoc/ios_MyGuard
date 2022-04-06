@@ -14,8 +14,16 @@ extension AccountPresenterImpl: AccountPresenter {
         self.view = view
     }
 
-    func didChangeAccountId(accountId: String) {
-        self.accountId = accountId
+    func didSelectAccount(account: Account) {
+        self.account = account
+
+        view?.setAccount(account)
+
+        if let monthlyPayment = account.monthlyPayment {
+            self.sum = monthlyPayment
+            view?.setSum(String(monthlyPayment))
+        }
+
         view?.setSubmitButtonEnabled(isUserInputValid())
     }
 
@@ -24,17 +32,28 @@ extension AccountPresenterImpl: AccountPresenter {
         view?.setSubmitButtonEnabled(isUserInputValid())
     }
 
+    func didPushSubmitButton() {
+        guard
+            let accountId = account?.id,
+            let paymentSystemUrl = account?.paymentSystemUrl
+        else {
+            return
+        }
+
+        view?.showPaymentPage(accountId: accountId, sum: sum, paymentSystemUrl: paymentSystemUrl)
+    }
+
 }
 
 class AccountPresenterImpl {
 
     private var view: AccountView?
 
-    private var accountId: String = ""
+    private var account: Account?
     private var sum: Double = 0.0
 
     private func isUserInputValid() -> Bool {
-        return !accountId.isEmpty && sum > 0.0
+        return account != nil && sum > 0.0
     }
 
 }

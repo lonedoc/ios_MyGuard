@@ -13,7 +13,15 @@ class BrowserViewController: UIViewController {
     // swiftlint:disable:next force_cast
     private var rootView: BrowserScreenLayout { return view as! BrowserScreenLayout }
 
-    init() {
+    private let accountId: String
+    private let sum: Double
+    private let paymentSystemUrl: String
+
+    init(accountId: String, sum: Double, paymentSystemUrl: String) {
+        self.accountId = accountId
+        self.sum = sum
+        self.paymentSystemUrl = paymentSystemUrl
+
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
     }
@@ -55,9 +63,9 @@ class BrowserViewController: UIViewController {
                 </head>
                 <body>
                     <div>
-                        <form method='POST' action='https://demo.paykeeper.ru/create/'>
-                            <input type='text' name='sum' value='100'/>
-                            <input type='text' name='clientid' value='1234567890'/>
+                        <form method='POST' action='\(paymentSystemUrl)/create/'>
+                            <input type='text' name='sum' value='\(sum)'/>
+                            <input type='text' name='clientid' value='\(accountId)'/>
                             <input type='submit' value='pay'/>
                         </form>
                     </div>
@@ -67,7 +75,7 @@ class BrowserViewController: UIViewController {
                 </body>
                 </html>
             """,
-            baseURL: URL(string: "https://demo.paykeeper.ru/")
+            baseURL: URL(string: paymentSystemUrl)
         )
     }
 

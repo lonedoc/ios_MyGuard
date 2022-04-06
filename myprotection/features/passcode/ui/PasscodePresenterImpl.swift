@@ -10,8 +10,6 @@ import Foundation
 import RubegProtocol_v2_0
 import RxSwift
 
-//private let driverPort: Int32 = 8301
-
 extension PasscodePresenterImpl: PasscodePresenter {
 
     func attach(view: PasscodeView) {

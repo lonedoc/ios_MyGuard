@@ -15,4 +15,5 @@ protocol FacilitiesApi {
     func setName(facilityId: String, name: String) -> Observable<Bool>
     func setStatus(facilityId: String, statusCode: Int) -> Observable<Bool>
     func sendAlarm(facilityId: String) -> Observable<Bool>
+    func cancelAlarm(facilityId: String, passcode: String) -> Observable<Bool>
 }

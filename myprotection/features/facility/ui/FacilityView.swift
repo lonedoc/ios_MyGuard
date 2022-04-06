@@ -24,8 +24,9 @@ protocol FacilityView: UIViewController, AlertDialog {
     func setArmButtonEnabled(_ enabled: Bool)
     func showConfirmDialog(message: String, proceedText: String, proceed: @escaping () -> Void)
     func showEditNameDialog(currentName: String)
+    func showCancelAlarmDialog(passcodes: [String])
     func showTestAlarmView(facilityId: String)
     func showEventsView(facilityId: String)
     func showSensorsView(facilityId: String)
-    func showAccountView()
+    func showAccountView(accounts: [Account])
 }

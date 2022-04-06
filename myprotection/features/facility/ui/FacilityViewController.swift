@@ -133,15 +133,17 @@ extension FacilityViewController: FacilityView {
     }
 
     func showSensorsView(facilityId: String) {
-        let viewController = sensorsViewController ?? SensorsViewController(facilityId: facilityId)
-        sensorsViewController = viewController
-
-        self.replaceChild(viewController: viewController)
+//        let viewController = sensorsViewController ?? SensorsViewController(facilityId: facilityId)
+//        sensorsViewController = viewController
+//
+//        self.replaceChild(viewController: viewController)
     }
 
-    func showAccountView() {
+    func showAccountView(accounts: [Account]) {
         let viewController = accountViewController ?? AccountViewController()
         accountViewController = viewController
+
+        viewController.updateAccounts(accounts)
 
         self.replaceChild(viewController: viewController)
     }
@@ -204,6 +206,16 @@ extension FacilityViewController: FacilityView {
         }
     }
 
+    func showCancelAlarmDialog(passcodes: [String]) {
+        DispatchQueue.main.async {
+            let controller = CancelAlarmDialogController(passcodes: passcodes)
+            controller.delegate = self
+            controller.modalPresentationStyle = .overFullScreen
+            controller.modalTransitionStyle = .crossDissolve
+            self.present(controller, animated: true, completion: nil)
+        }
+    }
+
     func showTestAlarmView(facilityId: String) {
         DispatchQueue.main.async {
             let controller = TestViewController(facilityId: facilityId)
@@ -229,7 +241,7 @@ extension FacilityViewController: FacilityView {
 
 // MARK: -
 
-class FacilityViewController: UIViewController {
+class FacilityViewController: UIViewController, CancelAlarmDialogDelegate {
 
     private let presenter: FacilityPresenter
 
@@ -237,7 +249,6 @@ class FacilityViewController: UIViewController {
     private var rootView: FacilityScreenLayout { return view as! FacilityScreenLayout }
 
     private var eventsViewController: EventsViewController?
-    private var sensorsViewController: SensorsViewController?
     private var accountViewController: AccountViewController?
     private var currentViewController: UIViewController?
 
@@ -439,6 +450,10 @@ class FacilityViewController: UIViewController {
     @objc func keyboardWillHide(_: Notification) {
         rootView.scrollView.contentInset = .zero
         rootView.scrollView.scrollIndicatorInsets = rootView.scrollView.contentInset
+    }
+
+    func didSelectPasscode(passcode: String) {
+        presenter.cancelAlarmPasscodeProvided(passcode: passcode)
     }
 
     private func getStatusImage(_ status: StatusCode) -> UIImage? {

@@ -17,6 +17,7 @@ class UdpFacilitiesApi: UdpApiBase, FacilitiesApi {
     private var renamingResultSubject: PublishSubject<Bool>?
     private var statusSubject: PublishSubject<Bool>?
     private var alarmSubject: PublishSubject<Bool>?
+    private var cancelAlarmSubject: PublishSubject<Bool>?
 
     override var socketDelegate: RubegSocketDelegate {
         return self
@@ -115,6 +116,23 @@ class UdpFacilitiesApi: UdpApiBase, FacilitiesApi {
         return subject
     }
 
+    func cancelAlarm(facilityId: String, passcode: String) -> Observable<Bool> {
+        let isSocketReady = prepareSocket()
+
+        if !isSocketReady {
+            return Observable.error(CommunicationError.socketError)
+        }
+
+        let subject = cancelAlarmSubject ?? PublishSubject<Bool>()
+        cancelAlarmSubject = subject
+
+        let query = "{\"$c$\":\"newlk\",\"com\":\"cancelalarm\",\"obj\":\"\(facilityId)\",\"passcode\":\"\(passcode)\"}"
+
+        makeRequest(query: query, publishError: publishCancelAlarmError(_:))
+
+        return subject
+    }
+
     private func publishFacilitiesError(_ error: Error) {
         let subject = facilitiesSubject
         facilitiesSubject = nil
@@ -145,12 +163,19 @@ class UdpFacilitiesApi: UdpApiBase, FacilitiesApi {
         subject?.onError(error)
     }
 
+    private func publishCancelAlarmError(_ error: Error) {
+        let subject = cancelAlarmSubject
+        cancelAlarmSubject = nil
+        subject?.onError(error)
+    }
+
     private func reset() {
         facilitiesSubject = nil
         facilitySubject = nil
         renamingResultSubject = nil
         statusSubject = nil
         alarmSubject = nil
+        cancelAlarmSubject = nil
         socket.close()
     }
 
@@ -208,7 +233,7 @@ extension UdpFacilitiesApi: RubegSocketDelegate {
             defer { reset() }
 
             guard
-                let data = jsonMap["data"] as? [[String: Any]],
+                let data = jsonMap["data"] as? [String: Any],
                 let jsonData = try? JSONSerialization.data(
                     withJSONObject: data,
                     options: JSONSerialization.WritingOptions()
@@ -249,6 +274,15 @@ extension UdpFacilitiesApi: RubegSocketDelegate {
             }
 
             alarmSubject?.onNext(result == "ok")
+        case "cancelalarm":
+            defer { reset() }
+
+            guard let result = jsonMap["result"] as? String else {
+                publishCancelAlarmError(CommunicationError.parseError)
+                return
+            }
+
+            cancelAlarmSubject?.onNext(result == "ok")
         default:
             return
         }

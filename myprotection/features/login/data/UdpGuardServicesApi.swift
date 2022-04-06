@@ -76,7 +76,7 @@ extension UdpGuardServicesApi: RubegSocketDelegate {
             return
         }
 
-        switch(response.command) {
+        switch response.command {
         case "city":
             guard let guardServicesDTO = try? GuardServicesDTO.parse(json: response.data) else {
                 let subject = guardServicesSubject
@@ -95,7 +95,10 @@ extension UdpGuardServicesApi: RubegSocketDelegate {
             guardServicesSubject = nil
             socket.close()
         case "getip":
-            guard let addresses = try? JSONDecoder().decode([String].self, from: response.data.data(using: .utf8)!) else {
+            guard let addresses = try? JSONDecoder().decode(
+                [String].self,
+                from: response.data.data(using: .utf8)!
+            ) else {
                 let subject = addressesSubject
                 addressesSubject = nil
                 subject?.onError(CommunicationError.parseError)

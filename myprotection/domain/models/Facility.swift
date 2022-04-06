@@ -9,7 +9,7 @@
 import Foundation
 
 class Facility {
-    var id: String // swiftlint:disable:this identifier_name
+    var id: String
     var name: String
     var address: String
     var selfService: Bool
@@ -21,8 +21,10 @@ class Facility {
     var powerSupplyMalfunction: Bool
     var armingEnabled: Bool
     var alarmButtonEnabled: Bool
+    var passcode: String?
+    var accounts: [Account]
 
-    init(_ dto: FacilityDTO) {
+    init(_ dto: FacilityDTO) { // swiftlint:disable:this function_body_length
         id = dto.id
         name = dto.name
         address = dto.address
@@ -34,10 +36,55 @@ class Facility {
         powerSupplyMalfunction = dto.powerSupplyMalfunction == 1
         armingEnabled = dto.armingEnabled != 1
         alarmButtonEnabled = dto.alarmButtonEnabled == 1
+        passcode = dto.passcode
 
         statusCode = StatusCode(
             text: dto.statusCode,
             perimeterOnly: dto.perimeterOnly == 1
         )
+
+        accounts = []
+
+        if
+            let accountId = dto.account1,
+            let paymentSystemUrl = dto.paymentSystemUrl1
+        {
+            let account = Account(
+                id: accountId,
+                monthlyPayment: dto.monthlyPayment1,
+                guardServiceName: dto.guardServiceName1,
+                paymentSystemUrl: paymentSystemUrl
+            )
+
+            accounts.append(account)
+        }
+
+        if
+            let accountId = dto.account2,
+            let paymentSystemUrl = dto.paymentSystemUrl2
+        {
+            let account = Account(
+                id: accountId,
+                monthlyPayment: dto.monthlyPayment2,
+                guardServiceName: dto.guardServiceName2,
+                paymentSystemUrl: paymentSystemUrl
+            )
+
+            accounts.append(account)
+        }
+
+        if
+            let accountId = dto.account3,
+            let paymentSystemUrl = dto.paymentSystemUrl3
+        {
+            let account = Account(
+                id: accountId,
+                monthlyPayment: dto.monthlyPayment3,
+                guardServiceName: dto.guardServiceName3,
+                paymentSystemUrl: paymentSystemUrl
+            )
+
+            accounts.append(account)
+        }
     }
 }

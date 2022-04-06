@@ -49,6 +49,8 @@ enum AssetsImage: String {
     case eventsIcon              = "events_icon"
     case sensorsIcon             = "sensors_icon"
     case accountIcon             = "account_icon"
+    case radioButtonUnchecked    = "radio_button_unchecked"
+    case radioButtonChecked      = "radio_button_checked"
 }
 
 extension UIImage {

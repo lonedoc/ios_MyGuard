@@ -104,6 +104,11 @@
 "Feature is not available" = "Функция недоступна";
 "The arming/disarming feature is not available. In order to use this feature, contact your security company" = "Функция постановки/снятия с охраны недоступна. Для того, чтобы использовать данную функцию обратитесь в охранное предприятие";
 "The alarm feature is not available. In order to use this feature, contact your security company" = "Функция тревожной кнопки недоступна. Для того, чтобы использовать данную функцию обратитесь в охранное предприятие";
+"Cancel the alarm" = "Отменить тревогу";
+"Go back" = "Назад";
+"Could not find the passcode to cancel the alarm" = "Не удалось получить кодовое слово для отмены тревоги";
+"Could not cancel alarm" = "Не удалось отменить тревогу";
+"You have already tried to cancel the alarm less then an hour ago" = "Вы уже совершили попытку отмены тревоги меньше часа назад";
 
 // MARK: Account
 "Account:" = "Лицевой счет:";

@@ -35,6 +35,8 @@ class AccountScreenLayout: UIView {
             [prevButtonItem, gap, nextButtonItem, spacer, doneButtonItem],
             animated: false
         )
+
+        accountTextField.inputView = accountPicker
     }
 
     private func setupConstraints() {
@@ -105,6 +107,11 @@ class AccountScreenLayout: UIView {
         button.setBackgroundColor(.primaryColorPale, for: .disabled)
         button.isEnabled = false
         return button
+    }()
+
+    let accountPicker: UIPickerView = {
+        let picker = UIPickerView(frame: .zero)
+        return picker
     }()
 
     let prevButtonItem: UIBarButtonItem = {

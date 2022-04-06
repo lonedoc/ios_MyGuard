@@ -29,7 +29,6 @@ extension Assembler {
                 FacilitiesAssembly(),
                 FacilityAssembly(),
                 EventsAssembly(),
-                SensorsAssembly(),
                 TestAssembly(),
                 AccountAssembly()
             ],

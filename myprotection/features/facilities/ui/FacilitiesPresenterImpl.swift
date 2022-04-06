@@ -91,7 +91,7 @@ extension FacilitiesPresenterImpl: FacilitiesPresenter {
 // MARK: -
 
 private let attemptsCount = 2
-private let pollingInterval = 15
+private let pollingInterval: Double = 10
 
 class FacilitiesPresenterImpl {
 
@@ -115,7 +115,7 @@ class FacilitiesPresenterImpl {
     private func startPolling() {
         timer?.invalidate()
         timer = Timer.scheduledTimer(
-            timeInterval: 15,
+            timeInterval: pollingInterval,
             target: self,
             selector: #selector(tick),
             userInfo: nil,

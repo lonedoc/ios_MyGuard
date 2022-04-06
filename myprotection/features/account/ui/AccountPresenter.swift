@@ -10,6 +10,7 @@ import Foundation
 
 protocol AccountPresenter {
     func attach(view: AccountView)
-    func didChangeAccountId(accountId: String)
+    func didSelectAccount(account: Account)
     func didChangeSum(sum: String)
+    func didPushSubmitButton()
 }

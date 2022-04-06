@@ -328,7 +328,11 @@ extension LoginViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         }
     }
 
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(
+        _ pickerView: UIPickerView,
+        titleForRow row: Int,
+        forComponent component: Int
+    ) -> String? {
         switch pickerView {
         case rootView.cityPicker:
             return cities[row]
@@ -339,7 +343,11 @@ extension LoginViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         }
     }
 
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(
+        _ pickerView: UIPickerView,
+        didSelectRow row: Int,
+        inComponent component: Int
+    ) {
         switch pickerView {
         case rootView.cityPicker:
             presenter.didSelect(city: cities[row])

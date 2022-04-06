@@ -9,5 +9,8 @@
 import UIKit
 
 protocol AccountView: UIViewController, AlertDialog {
+    func setAccount(_ account: Account)
+    func setSum(_ sum: String)
     func setSubmitButtonEnabled(_ enabled: Bool)
+    func showPaymentPage(accountId: String, sum: Double, paymentSystemUrl: String)
 }

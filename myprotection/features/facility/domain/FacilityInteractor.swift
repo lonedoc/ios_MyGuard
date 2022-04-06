@@ -9,6 +9,8 @@
 import Foundation
 import RxSwift
 
+private let cancellationTimeKeyPrefix = "cancellation_time_"
+
 class FacilityInteractor {
 
     private let facilitiesApi: FacilitiesApi
@@ -31,6 +33,24 @@ class FacilityInteractor {
 
     func sendAlarm(facilityId: String) -> Observable<Bool> {
         return facilitiesApi.sendAlarm(facilityId: facilityId)
+    }
+
+    func cancelAlarm(facilityId: String, passcode: String) -> Observable<Bool> {
+        return facilitiesApi.cancelAlarm(facilityId: facilityId, passcode: passcode)
+    }
+
+    func setLastCancellationTime(facilityId: String, time: Int?) {
+        let key = "\(cancellationTimeKeyPrefix)\(facilityId)"
+
+        if time == nil {
+            UserDefaults.standard.removeObject(forKey: key)
+        } else {
+            UserDefaults.standard.set(time!, forKey: key)
+        }
+    }
+
+    func getLastCancellationTime(facilityId: String) -> Int? {
+        return UserDefaults.standard.integer(forKey: "\(cancellationTimeKeyPrefix)\(facilityId)")
     }
 
 }

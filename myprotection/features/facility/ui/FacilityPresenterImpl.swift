@@ -10,6 +10,9 @@ import Foundation
 import RubegProtocol_v2_0
 import RxSwift
 
+private let cancellationCooldown = 3600 // 1 hour
+
+// swiftlint:disable file_length
 extension FacilityPresenterImpl: FacilityPresenter {
 
     func attach(view: FacilityView) {
@@ -105,6 +108,42 @@ extension FacilityPresenterImpl: FacilityPresenter {
     }
 
     func alarmButtonTapped() {
+        if facility.statusCode.isAlarm {
+            if let lastCancellationTime = interactor.getLastCancellationTime(facilityId: facility.id) {
+                let timeSinceLastCancellation: Int = getUptime() - lastCancellationTime
+
+                if 0 ..< cancellationCooldown ~= timeSinceLastCancellation {
+                    view?.showAlertDialog(
+                        title: "Error".localized,
+                        message: "You have already tried to cancel the alarm less then an hour ago".localized
+                    )
+
+                    return
+                }
+            }
+
+            interactor.setLastCancellationTime(facilityId: facility.id, time: getUptime())
+
+            if
+                let passcode = facility.passcode,
+                let path = Bundle.main.path(forResource: "Passcodes", ofType: "plist"),
+                let allPasscodes = NSArray(contentsOfFile: path) as? [String]
+            {
+                var passcodes = getRandomElements(count: 3, source: allPasscodes)
+                passcodes.append(passcode)
+                passcodes.shuffle()
+
+                view?.showCancelAlarmDialog(passcodes: passcodes)
+            } else {
+                view?.showAlertDialog(
+                    title: "Error".localized,
+                    message: "Could not find the passcode to cancel the alarm".localized
+                )
+            }
+
+            return
+        }
+
         guard facility.alarmButtonEnabled else {
             view?.showAlertDialog(
                 title: "Feature is not available".localized,
@@ -121,6 +160,10 @@ extension FacilityPresenterImpl: FacilityPresenter {
                 self.startAlarm()
             }
         }
+    }
+
+    func cancelAlarmPasscodeProvided(passcode: String) {
+        cancelAlarm(passcode: passcode)
     }
 
     func testAlarmButtonTapped() {
@@ -141,7 +184,7 @@ extension FacilityPresenterImpl: FacilityPresenter {
     }
 
     func accountButtonTapped() {
-        view?.showAccountView()
+        view?.showAccountView(accounts: facility.accounts)
     }
 
 }
@@ -191,6 +234,10 @@ class FacilityPresenterImpl {
                     self?.completeStatusChange(updated: facility)
                     self?.facility = facility
                     self?.updateView()
+
+                    if !facility.statusCode.isAlarm {
+                        self?.interactor.setLastCancellationTime(facilityId: facility.id, time: nil)
+                    }
                 },
                 onError: { _ in }
             )
@@ -353,6 +400,65 @@ class FacilityPresenterImpl {
                 }
             )
             .disposed(by: disposeBag)
+    }
+
+    private func cancelAlarm(passcode: String) {
+        interactor.cancelAlarm(facilityId: facility.id, passcode: passcode)
+            .subscribe(
+                onNext: { [weak self] success in
+                    if !success {
+                        self?.view?.showAlertDialog(
+                            title: "Error".localized,
+                            message: "Could not cancel alarm".localized
+                        )
+                    }
+                },
+                onError: { [weak self] error in
+                    let errorMessage = getErrorMessage(by: error)
+
+                    self?.view?.showAlertDialog(
+                        title: "Error".localized,
+                        message: errorMessage
+                    )
+                }
+            )
+            .disposed(by: disposeBag)
+    }
+
+    private func getRandomElements<T>(count: Int, source: [T]) -> [T] {
+        if source.count <= count {
+            return source
+        }
+
+        var indexesUsed = Set<Int>()
+        var result = [T]()
+
+        while result.count < count {
+            let index = Int.random(in: 0..<source.count)
+
+            if !indexesUsed.contains(index) {
+                indexesUsed.insert(index)
+                result.append(source[index])
+            }
+        }
+
+        return result
+    }
+
+    
+    func getUptime() -> time_t {
+        var boottime = timeval()
+        var mib: [Int32] = [CTL_KERN, KERN_BOOTTIME]
+        var size = MemoryLayout<timeval>.size
+
+        var now = time_t()
+        var uptime: time_t = -1
+
+        time(&now)
+        if (sysctl(&mib, 2, &boottime, &size, nil, 0) != -1 && boottime.tv_sec != 0) {
+            uptime = now - boottime.tv_sec
+        }
+        return uptime
     }
 
 }
