@@ -48,7 +48,7 @@ class FacilityScreenLayout: UIView {
         topView.addSubview(statusDescriptionView)
         topView.addSubview(addressView)
 
-        bottomAppBar.leadingBarButtonItems = [eventsButton, sensorsButton]
+        bottomAppBar.leadingBarButtonItems = [eventsButton] // [eventsButton, sensorsButton]
         bottomAppBar.trailingBarButtonItems = [testAlarmButton, accountButton]
 
         wrapperView.addSubview(topView)
