@@ -22,16 +22,10 @@ class UdpApiBase {
         fatalError("Abstract property \"delegate\" of type RubegSocketDelegate must be implemented")
     }
 
-    let addresses: Rotator<InetAddress>
-    let token: String?
+    let communicationData: CommunicationData
 
     init(communicationData: CommunicationData) {
-        // swiftlint:disable:next identifier_name
-        addresses = communicationData.addressRotator.map { ip in
-            InetAddress.create(ip: ip, port: communicationData.port)
-        }
-
-        token = communicationData.token
+        self.communicationData = communicationData
     }
 
     func prepareSocket() -> Bool {
@@ -60,18 +54,20 @@ class UdpApiBase {
             return
         }
 
-        guard let address = addresses.current else {
+        guard let ipAddress = communicationData.addressRotator.current else {
             publishError(CommunicationError.socketError) // TODO: Replace with dedicated error
             return
         }
+
+        let address = InetAddress.create(ip: ipAddress, port: communicationData.port)
 
         #if DEBUG
             print("-> \(query)")
         #endif
 
-        socket.send(message: query, token: token, to: address) { [weak self] success in
+        socket.send(message: query, token: communicationData.token, to: address) { [weak self] success in
             if !success {
-                _ = self?.addresses.next()
+                _ = self?.communicationData.addressRotator.next()
 
                 self?.makeRequest(
                     query: query,
@@ -92,18 +88,20 @@ class UdpApiBase {
             return
         }
 
-        guard let address = addresses.current else {
+        guard let ipAddress = communicationData.addressRotator.current else {
             subject.onError(CommunicationError.socketError) // TODO: Replace with dedicated error
             return
         }
+
+        let address = InetAddress.create(ip: ipAddress, port: communicationData.port)
 
         #if DEBUG
             print("-> \(query)")
         #endif
 
-        socket.send(message: query, token: token, to: address) { [weak self] success in
+        socket.send(message: query, token: communicationData.token, to: address) { [weak self] success in
             if !success {
-                _ = self?.addresses.next()
+                _ = self?.communicationData.addressRotator.next()
 
                 self?.makeRequest(
                     query: query,
