@@ -230,7 +230,9 @@ extension AccountViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         didSelectRow row: Int,
         inComponent component: Int
     ) {
-        presenter.didSelectAccount(account: accounts[row])
+        if accounts.count > row {
+            presenter.didSelectAccount(account: accounts[row])
+        }
     }
 
 }
