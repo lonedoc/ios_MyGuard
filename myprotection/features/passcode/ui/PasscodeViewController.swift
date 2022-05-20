@@ -78,18 +78,6 @@ extension PasscodeViewController: PasscodeView {
         }
     }
 
-    func showAlertDialog(title: String, message: String, completion: ((UIAlertAction) -> Void)?) {
-        DispatchQueue.main.async {
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.view.tintColor = .primaryColor
-
-            let action = UIAlertAction(title: "OK", style: .default, handler: completion)
-            alert.addAction(action)
-
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
-
 }
 
 // MARK: -

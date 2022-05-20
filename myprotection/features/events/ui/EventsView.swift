@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol EventsView: UIViewController, AlertDialog {
+protocol EventsView: AlertDialog {
     func showPlaceholder()
     func hidePlaceholder()
     func hideRefresher()

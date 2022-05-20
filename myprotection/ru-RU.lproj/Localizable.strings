@@ -75,12 +75,12 @@
 "By address" = "По адресу";
 "By status" = "По статусу";
 
-// MARK: Objects
+// MARK: Facilities
 "Objects list" = "Список объектов";
 "Failed to load cached events" = "Не удалось загрузить сохраненные события";
 "Loading..." = "Загрузка...";
 
-// MARK: Object
+// MARK: Facility
 "Arming..." = "Постановка на охрану...";
 "Arming perimeter..." = "Постановка периметра...";
 "Disarming..." = "Снятие с охраны...";
@@ -114,3 +114,12 @@
 "Account:" = "Лицевой счет:";
 "Sum:" = "Сумма:";
 "Pay" = "Оплатить";
+
+// MARK: Applications
+"Application" = "Заявка";
+"Application:" = "Заявки:";
+"Application text:" = "Текст заявки:";
+"Date and time:" = "Дата и время:";
+"Apply" = "Отправить заявку";
+"Custom application" = "Свой вариант";
+"Could not send application" = "Не удалось отправить заявку";

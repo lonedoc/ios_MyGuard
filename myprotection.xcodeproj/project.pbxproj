@@ -71,6 +71,10 @@
 		5C35C47D27703367008DE206 /* UdpEventsApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C35C47C27703367008DE206 /* UdpEventsApi.swift */; };
 		5C4320022744F8BA00646D87 /* Rotator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4320012744F8BA00646D87 /* Rotator.swift */; };
 		5C4320042744FA7D00646D87 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4320032744FA7D00646D87 /* Atomic.swift */; };
+		5C5130222834F0E300862D80 /* ApplicationsApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5130212834F0E200862D80 /* ApplicationsApi.swift */; };
+		5C5130242834F51900862D80 /* UdpApplicationsApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5130232834F51900862D80 /* UdpApplicationsApi.swift */; };
+		5C53291E283628CB00173462 /* ApplicationsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C53291D283628CB00173462 /* ApplicationsInteractor.swift */; };
+		5C56BFAD2834B4CD009CDFD3 /* ApplicationsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C56BFAC2834B4CD009CDFD3 /* ApplicationsAssembly.swift */; };
 		5C5E3CCE276B3F2A009108A2 /* FacilitiesApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5E3CCD276B3F29009108A2 /* FacilitiesApi.swift */; };
 		5C5E3CD0276B3F38009108A2 /* UdpFacilitiesApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5E3CCF276B3F38009108A2 /* UdpFacilitiesApi.swift */; };
 		5C5E3CD3276B4476009108A2 /* FacilitiesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5E3CD2276B4476009108A2 /* FacilitiesInteractor.swift */; };
@@ -130,6 +134,11 @@
 		5CAD330F274CE6BF0079950E /* PasswordApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAD330E274CE6BF0079950E /* PasswordApi.swift */; };
 		5CBAC01724D42D3400723A95 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5CBAC01624D42D3400723A95 /* GoogleService-Info.plist */; };
 		5CBE0A922796AACA004B07D9 /* GuardServiceContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBE0A912796AACA004B07D9 /* GuardServiceContact.swift */; };
+		5CC189C82831EBBC001E83BD /* ApplicationsScreenLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC189C72831EBBC001E83BD /* ApplicationsScreenLayout.swift */; };
+		5CC189CA28320B40001E83BD /* ApplicationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC189C928320B40001E83BD /* ApplicationsViewController.swift */; };
+		5CC189CC28322E70001E83BD /* ApplicationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC189CB28322E70001E83BD /* ApplicationsView.swift */; };
+		5CC189CE28322E7F001E83BD /* ApplicationsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC189CD28322E7F001E83BD /* ApplicationsPresenter.swift */; };
+		5CC189D028322E8F001E83BD /* ApplicationsPresenterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC189CF28322E8F001E83BD /* ApplicationsPresenterImpl.swift */; };
 		5CC72CA926009EEE008A6D69 /* FacilitiesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC72CA826009EEE008A6D69 /* FacilitiesPresenter.swift */; };
 		5CC72CB126009F13008A6D69 /* FacilitiesScreenLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC72CB026009F13008A6D69 /* FacilitiesScreenLayout.swift */; };
 		5CC72CB526009F28008A6D69 /* FacilitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC72CB426009F28008A6D69 /* FacilitiesViewController.swift */; };
@@ -231,6 +240,10 @@
 		5C35C47C27703367008DE206 /* UdpEventsApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UdpEventsApi.swift; sourceTree = "<group>"; };
 		5C4320012744F8BA00646D87 /* Rotator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rotator.swift; sourceTree = "<group>"; };
 		5C4320032744FA7D00646D87 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
+		5C5130212834F0E200862D80 /* ApplicationsApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationsApi.swift; sourceTree = "<group>"; };
+		5C5130232834F51900862D80 /* UdpApplicationsApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UdpApplicationsApi.swift; sourceTree = "<group>"; };
+		5C53291D283628CB00173462 /* ApplicationsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationsInteractor.swift; sourceTree = "<group>"; };
+		5C56BFAC2834B4CD009CDFD3 /* ApplicationsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationsAssembly.swift; sourceTree = "<group>"; };
 		5C5E3CCD276B3F29009108A2 /* FacilitiesApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilitiesApi.swift; sourceTree = "<group>"; };
 		5C5E3CCF276B3F38009108A2 /* UdpFacilitiesApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UdpFacilitiesApi.swift; sourceTree = "<group>"; };
 		5C5E3CD2276B4476009108A2 /* FacilitiesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilitiesInteractor.swift; sourceTree = "<group>"; };
@@ -303,6 +316,11 @@
 		5CAD330E274CE6BF0079950E /* PasswordApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordApi.swift; sourceTree = "<group>"; };
 		5CBAC01624D42D3400723A95 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5CBE0A912796AACA004B07D9 /* GuardServiceContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuardServiceContact.swift; sourceTree = "<group>"; };
+		5CC189C72831EBBC001E83BD /* ApplicationsScreenLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationsScreenLayout.swift; sourceTree = "<group>"; };
+		5CC189C928320B40001E83BD /* ApplicationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationsViewController.swift; sourceTree = "<group>"; };
+		5CC189CB28322E70001E83BD /* ApplicationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationsView.swift; sourceTree = "<group>"; };
+		5CC189CD28322E7F001E83BD /* ApplicationsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationsPresenter.swift; sourceTree = "<group>"; };
+		5CC189CF28322E8F001E83BD /* ApplicationsPresenterImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationsPresenterImpl.swift; sourceTree = "<group>"; };
 		5CC72CA826009EEE008A6D69 /* FacilitiesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilitiesPresenter.swift; sourceTree = "<group>"; };
 		5CC72CB026009F13008A6D69 /* FacilitiesScreenLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilitiesScreenLayout.swift; sourceTree = "<group>"; };
 		5CC72CB426009F28008A6D69 /* FacilitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilitiesViewController.swift; sourceTree = "<group>"; };
@@ -392,6 +410,7 @@
 		5C07E0C827421E520014F0A8 /* features */ = {
 			isa = PBXGroup;
 			children = (
+				5CC189C52831EB7A001E83BD /* applications */,
 				5C07E0C927421E620014F0A8 /* login */,
 				5C7F57C027474A10009735C0 /* password */,
 				5C0E1A70274658F700878E9C /* passcode */,
@@ -700,6 +719,31 @@
 			path = cancelAlarmDialog;
 			sourceTree = "<group>";
 		};
+		5C5130202834F0CE00862D80 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				5C5130212834F0E200862D80 /* ApplicationsApi.swift */,
+				5C5130232834F51900862D80 /* UdpApplicationsApi.swift */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		5C53291C283628BB00173462 /* domain */ = {
+			isa = PBXGroup;
+			children = (
+				5C53291D283628CB00173462 /* ApplicationsInteractor.swift */,
+			);
+			path = domain;
+			sourceTree = "<group>";
+		};
+		5C56BFAB2834B4B0009CDFD3 /* di */ = {
+			isa = PBXGroup;
+			children = (
+				5C56BFAC2834B4CD009CDFD3 /* ApplicationsAssembly.swift */,
+			);
+			path = di;
+			sourceTree = "<group>";
+		};
 		5C5E3CD1276B4458009108A2 /* domain */ = {
 			isa = PBXGroup;
 			children = (
@@ -999,6 +1043,29 @@
 				5C681B1D25DE811E002F5690 /* UIImage+assets.swift */,
 			);
 			path = extensions;
+			sourceTree = "<group>";
+		};
+		5CC189C52831EB7A001E83BD /* applications */ = {
+			isa = PBXGroup;
+			children = (
+				5C53291C283628BB00173462 /* domain */,
+				5C5130202834F0CE00862D80 /* data */,
+				5C56BFAB2834B4B0009CDFD3 /* di */,
+				5CC189C62831EB88001E83BD /* ui */,
+			);
+			path = applications;
+			sourceTree = "<group>";
+		};
+		5CC189C62831EB88001E83BD /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				5CC189C72831EBBC001E83BD /* ApplicationsScreenLayout.swift */,
+				5CC189CB28322E70001E83BD /* ApplicationsView.swift */,
+				5CC189C928320B40001E83BD /* ApplicationsViewController.swift */,
+				5CC189CD28322E7F001E83BD /* ApplicationsPresenter.swift */,
+				5CC189CF28322E8F001E83BD /* ApplicationsPresenterImpl.swift */,
+			);
+			path = ui;
 			sourceTree = "<group>";
 		};
 		5CF10E162604853300FCB41A /* SortingDialog */ = {
@@ -1317,12 +1384,15 @@
 				5C7687CB24D2D5BD009FFA2E /* BiometryHelperImpl.swift in Sources */,
 				5C92BD352614377800872B17 /* EventRepository.swift in Sources */,
 				5C146E03260B3A22003AB5B0 /* FacilitiesSorting.swift in Sources */,
+				5C5130242834F51900862D80 /* UdpApplicationsApi.swift in Sources */,
 				5C7F57C827476065009735C0 /* LoginView.swift in Sources */,
+				5CC189C82831EBBC001E83BD /* ApplicationsScreenLayout.swift in Sources */,
 				5C0F2DE2265CEF5B00644867 /* TestPresenter.swift in Sources */,
 				5C02DFE524BEE60D003573A3 /* Socket+read.swift in Sources */,
 				5C4320022744F8BA00646D87 /* Rotator.swift in Sources */,
 				5C0F2DE4265CEF6600644867 /* TestPresenterImpl.swift in Sources */,
 				5C92BD0726140CDB00872B17 /* EventMO+CoreDataProperties.swift in Sources */,
+				5CC189CC28322E70001E83BD /* ApplicationsView.swift in Sources */,
 				5C1EF74E27F45DD400A97B93 /* CancelAlarmDialogController.swift in Sources */,
 				5CAAF6602772C1830026092C /* TestInteractor.swift in Sources */,
 				5CF10E22260873D700FCB41A /* CheckBox.swift in Sources */,
@@ -1339,6 +1409,7 @@
 				5C0E1A6A2746427600878E9C /* Assembler.swift in Sources */,
 				5C02DFD524BEE277003573A3 /* LoginScreenLayout.swift in Sources */,
 				5CF10E292609D65400FCB41A /* RadioGroup.swift in Sources */,
+				5CC189CE28322E7F001E83BD /* ApplicationsPresenter.swift in Sources */,
 				5C7F57DF27478E80009735C0 /* FacilitiesView.swift in Sources */,
 				5CF5A21024BEDF5E00FA19A4 /* SceneDelegate.swift in Sources */,
 				5C5E3CD3276B4476009108A2 /* FacilitiesInteractor.swift in Sources */,
@@ -1360,10 +1431,12 @@
 				5C223E7124C9502100F05C26 /* PasscodeViewController.swift in Sources */,
 				5C02E00C24BEE79B003573A3 /* AlertDialog.swift in Sources */,
 				5CAAF6642772C26F0026092C /* UdpTestApi.swift in Sources */,
+				5CC189D028322E8F001E83BD /* ApplicationsPresenterImpl.swift in Sources */,
 				5CC72CB526009F28008A6D69 /* FacilitiesViewController.swift in Sources */,
 				5C7F57D92747808D009735C0 /* BiometryHelper.swift in Sources */,
 				5C170DCB274E0F950034852B /* UdpPasswordApi.swift in Sources */,
 				5C7F57D727478076009735C0 /* BiometryType.swift in Sources */,
+				5C56BFAD2834B4CD009CDFD3 /* ApplicationsAssembly.swift in Sources */,
 				5C76F33027701C2A0042899D /* EventsInteractor.swift in Sources */,
 				5C146E1F260C93E3003AB5B0 /* FacilityViewController.swift in Sources */,
 				5C85166727901C7C00139C30 /* AccountPresenterImpl.swift in Sources */,
@@ -1373,11 +1446,14 @@
 				5C92BD44261B143000872B17 /* EventsScreenLayout.swift in Sources */,
 				5C223E7324C9B5BA00F05C26 /* UISecureTextField.swift in Sources */,
 				5C35C47B277032D9008DE206 /* EventsApi.swift in Sources */,
+				5CC189CA28320B40001E83BD /* ApplicationsViewController.swift in Sources */,
 				5C92BD2926141FC500872B17 /* Repository.swift in Sources */,
 				5C6D001025E8FC4F00FD43F2 /* User.swift in Sources */,
 				5C02E00424BEE753003573A3 /* GuardServicesDTO.swift in Sources */,
 				5C8310962692DE36001B713C /* GetErrorMessage.swift in Sources */,
+				5C53291E283628CB00173462 /* ApplicationsInteractor.swift in Sources */,
 				5C7F57CA27476123009735C0 /* PasswordPresenter.swift in Sources */,
+				5C5130222834F0E300862D80 /* ApplicationsApi.swift in Sources */,
 				5C7F57C627476038009735C0 /* LoginPresenter.swift in Sources */,
 				5C146E3F2611B4DF003AB5B0 /* EventDTO.swift in Sources */,
 				5C681B0F25DD254F002F5690 /* UITextField+padding.swift in Sources */,
@@ -1583,7 +1659,7 @@
 				CODE_SIGN_ENTITLEMENTS = myprotection/myprotection.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 76;
+				CURRENT_PROJECT_VERSION = 77;
 				DEVELOPMENT_TEAM = TZX223S8SD;
 				INFOPLIST_FILE = myprotection/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1591,7 +1667,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.52;
+				MARKETING_VERSION = 2.53;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.rubeg38.securitycenter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1608,7 +1684,7 @@
 				CODE_SIGN_ENTITLEMENTS = myprotection/myprotection.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 76;
+				CURRENT_PROJECT_VERSION = 77;
 				DEVELOPMENT_TEAM = TZX223S8SD;
 				INFOPLIST_FILE = myprotection/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1616,7 +1692,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.52;
+				MARKETING_VERSION = 2.53;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.rubeg38.securitycenter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

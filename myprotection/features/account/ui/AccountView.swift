@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AccountView: UIViewController, AlertDialog {
+protocol AccountView: AlertDialog {
     func setAccount(_ account: Account)
     func setSum(_ sum: String)
     func setSubmitButtonEnabled(_ enabled: Bool)

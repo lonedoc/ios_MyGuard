@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol TestView: UIViewController, AlertDialog {
+protocol TestView: AlertDialog {
     static var willAppear: Notification.Name { get }
     static var willDisappear: Notification.Name { get }
     func setTip(text: String)

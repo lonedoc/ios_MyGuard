@@ -225,15 +225,11 @@ extension FacilityViewController: FacilityView {
         }
     }
 
-    func showAlertDialog(title: String, message: String, completion: ((UIAlertAction) -> Void)?) {
+    func openApplicationScreen(facilityId: String) {
         DispatchQueue.main.async {
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.view.tintColor = .primaryColor
-
-            let action = UIAlertAction(title: "OK", style: .default, handler: completion)
-            alert.addAction(action)
-
-            self.present(alert, animated: true, completion: nil)
+            let controller = ApplicationsViewController(facilityId: facilityId)
+            controller.title = "Application".localized
+            self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
@@ -289,7 +285,10 @@ class FacilityViewController: UIViewController, CancelAlarmDialogDelegate {
         rootView.editButton.target = self
         rootView.editButton.action = #selector(editButtonTapped)
 
-        navigationItem.rightBarButtonItem = rootView.editButton
+        rootView.applyButton.target = self
+        rootView.applyButton.action = #selector(applyButtonTapped)
+
+        navigationItem.rightBarButtonItems = [rootView.applyButton, rootView.editButton]
 
         let gestureRecognizer = UILongPressGestureRecognizer(
             target: self,
@@ -340,6 +339,10 @@ class FacilityViewController: UIViewController, CancelAlarmDialogDelegate {
 
     @objc func editButtonTapped() {
         presenter.editButtonTapped()
+    }
+
+    @objc func applyButtonTapped() {
+        presenter.applyButtonTapped()
     }
 
     @objc func armButtonTapped() {

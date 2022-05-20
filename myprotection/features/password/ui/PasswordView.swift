@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol PasswordView: UIViewController, AlertDialog {
+protocol PasswordView: AlertDialog {
     func updateTimer(text: String)
     func showRetryButton()
     func showCountDown()

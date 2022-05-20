@@ -292,6 +292,16 @@ class FacilityScreenLayout: UIView {
         return button
     }()
 
+    let applyButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+            image: UIImage.assets(.apply),
+            style: .plain,
+            target: nil,
+            action: nil
+        )
+        return button
+    }()
+
     let testAlarmButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
         button.image = UIImage.assets(.checkAlarm)

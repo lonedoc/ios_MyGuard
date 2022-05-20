@@ -28,6 +28,7 @@ enum AssetsImage: String {
     case link                    = "link"
     case linkOff                 = "link_off"
     case edit                    = "edit"
+    case apply                   = "apply"
     case alarm                   = "alarm"
     case checkAlarm              = "check_alarm"
     case alarmStatusIcon         = "alarm_status"

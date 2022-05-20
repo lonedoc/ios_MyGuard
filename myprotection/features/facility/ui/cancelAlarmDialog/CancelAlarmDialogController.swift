@@ -81,7 +81,7 @@ class CancelAlarmDialogController: UIViewController, RadioButtonDelegate {
         self.dismiss(animated: true, completion: nil)
     }
 
-    func didCheckRadioButton(_ radioButton: RadioButton) { 
+    func didCheckRadioButton(_ radioButton: RadioButton) {
         let radioButtons = [
             rootView.radioButton0,
             rootView.radioButton1,

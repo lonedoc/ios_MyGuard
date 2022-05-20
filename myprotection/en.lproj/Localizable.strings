@@ -75,12 +75,12 @@
 "By address" = "By address";
 "By status" = "By status";
 
-// MARK: Objects
-"Objects list" = "Objects list";
+// MARK: Facilities
+"Objects list" = "Facilities list";
 "Failed to load cached events" = "Failed to load cached events";
 "Loading..." = "Loading...";
 
-// MARK: Object
+// MARK: Facility
 "Arming..." = "Arming...";
 "Arming perimeter..." = "Arming perimeter...";
 "Disarming..." = "Disarming...";
@@ -114,3 +114,12 @@
 "Account:" = "Account:";
 "Sum:" = "Sum:";
 "Pay" = "Pay";
+
+// MARK: Applications
+"Application" = "Application";
+"Application:" = "Application:";
+"Application text:" = "Application text:";
+"Date and time:" = "Date and time:";
+"Apply" = "Apply";
+"Custom application" = "Custom application";
+"Could not send application" = "Could not send application";

@@ -18,6 +18,7 @@ protocol FacilityPresenter {
     func armButtonTapped()
     func armButtonLongPressed()
     func editButtonTapped()
+    func applyButtonTapped()
     func alarmButtonTapped()
     func testAlarmButtonTapped()
     func newNameProvided(name: String)

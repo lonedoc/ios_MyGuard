@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol FacilityView: UIViewController, AlertDialog {
+protocol FacilityView: AlertDialog {
     func setName(_ name: String)
     func setStatusDescription(_ description: String)
     func setAddress(_ address: String)
@@ -29,4 +29,5 @@ protocol FacilityView: UIViewController, AlertDialog {
     func showEventsView(facilityId: String)
     func showSensorsView(facilityId: String)
     func showAccountView(accounts: [Account])
+    func openApplicationScreen(facilityId: String)
 }

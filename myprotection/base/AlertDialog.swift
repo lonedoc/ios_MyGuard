@@ -8,11 +8,23 @@
 
 import UIKit
 
-protocol AlertDialog { // TODO: Find more apropriate name
+protocol AlertDialog: UIViewController {
     func showAlertDialog(title: String, message: String, completion: ((UIAlertAction) -> Void)?)
 }
 
 extension AlertDialog {
+
+    func showAlertDialog(title: String, message: String, completion: ((UIAlertAction) -> Void)?) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.view.tintColor = .primaryColor
+
+            let action = UIAlertAction(title: "OK", style: .default, handler: completion)
+            alert.addAction(action)
+
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
 
     func showAlertDialog(title: String, message: String) {
         showAlertDialog(title: title, message: message, completion: nil)

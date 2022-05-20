@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol LoginView: UIViewController, AlertDialog {
+protocol LoginView: AlertDialog {
     func setCities(_ cities: [String])
     func setGuardServices(_ guardServices: [String])
     func selectCityPickerRow(_ row: Int)

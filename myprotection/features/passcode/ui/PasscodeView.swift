@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol PasscodeView: UIViewController, AlertDialog {
+protocol PasscodeView: AlertDialog {
     func call(_ url: URL)
     func setBiometryType(_ type: BiometryType)
     func setForgotPasscodeButtonIsHidden(_ hidden: Bool)

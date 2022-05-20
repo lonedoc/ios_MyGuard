@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol RadioButtonDelegate : AnyObject {
+protocol RadioButtonDelegate: AnyObject {
     func didCheckRadioButton(_ radioButton: RadioButton)
 }
 
@@ -73,7 +73,7 @@ class RadioButton: UIView {
         addSubview(titleView)
     }
 
-    private func setupConstraints() {        
+    private func setupConstraints() {
         iconView.translatesAutoresizingMaskIntoConstraints = false
         iconView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         iconView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true

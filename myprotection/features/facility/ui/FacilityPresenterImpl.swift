@@ -44,6 +44,10 @@ extension FacilityPresenterImpl: FacilityPresenter {
         view?.showEditNameDialog(currentName: facility.name)
     }
 
+    func applyButtonTapped() {
+        view?.openApplicationScreen(facilityId: facility.id)
+    }
+
     func newNameProvided(name: String) {
         if name == facility.name {
             return
