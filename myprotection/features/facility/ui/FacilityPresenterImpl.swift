@@ -20,6 +20,7 @@ extension FacilityPresenterImpl: FacilityPresenter {
     }
 
     func viewDidLoad() {
+        
         updateView()
         view?.showEventsView(facilityId: facility.id)
     }
@@ -279,6 +280,7 @@ class FacilityPresenterImpl {
     }
 
     private func updateView() {
+        view?.showNavigationItems(isApplicationsEnabled: facility.isApplicationsAvailable)
         view?.setName(facility.name)
         view?.setStatusDescription(facility.status)
         view?.setAddress(facility.address)

@@ -23,6 +23,7 @@ struct FacilityDTO: Decodable {
     let armingEnabled: Int?
     let alarmButtonEnabled: Int?
     let passcode: String?
+    let isApplicationsAvailable: Int?
     let account1: String?
     let monthlyPayment1: Double?
     let guardServiceName1: String?
@@ -37,32 +38,33 @@ struct FacilityDTO: Decodable {
     let paymentSystemUrl3: String?
 
     enum CodingKeys: String, CodingKey {
-        case id                     = "n_abs"
-        case name                   = "name"
-        case address                = "address"
-        case statusCode             = "status"
-        case status                 = "statuss"
-        case selfService            = "sam"
-        case online                 = "online"
-        case onlineEnabled          = "onlineon"
-        case perimeterOnly          = "p"
-        case batteryMalfunction     = "akb"
-        case powerSupplyMalfunction = "220"
-        case armingEnabled          = "bohr"
-        case alarmButtonEnabled     = "tk"
-        case passcode               = "password"
-        case account1               = "i1clic"
-        case monthlyPayment1        = "i1csum"
-        case guardServiceName1      = "company1"
-        case paymentSystemUrl1      = "company1_url"
-        case account2               = "i1clic2"
-        case monthlyPayment2        = "i1csum2"
-        case guardServiceName2      = "company2"
-        case paymentSystemUrl2      = "company2_url"
-        case account3               = "i1clic3"
-        case monthlyPayment3        = "i1csum3"
-        case guardServiceName3      = "company3"
-        case paymentSystemUrl3      = "company3_url"
+        case id                      = "n_abs"
+        case name                    = "name"
+        case address                 = "address"
+        case statusCode              = "status"
+        case status                  = "statuss"
+        case selfService             = "sam"
+        case online                  = "online"
+        case onlineEnabled           = "onlineon"
+        case perimeterOnly           = "p"
+        case batteryMalfunction      = "akb"
+        case powerSupplyMalfunction  = "220"
+        case armingEnabled           = "bohr"
+        case alarmButtonEnabled      = "tk"
+        case passcode                = "password"
+        case isApplicationsAvailable = "zay"
+        case account1                = "i1clic"
+        case monthlyPayment1         = "i1csum"
+        case guardServiceName1       = "company1"
+        case paymentSystemUrl1       = "company1_url"
+        case account2                = "i1clic2"
+        case monthlyPayment2         = "i1csum2"
+        case guardServiceName2       = "company2"
+        case paymentSystemUrl2       = "company2_url"
+        case account3                = "i1clic3"
+        case monthlyPayment3         = "i1csum3"
+        case guardServiceName3       = "company3"
+        case paymentSystemUrl3       = "company3_url"
     }
 
     static func deserialize(from json: String) throws -> FacilityDTO {

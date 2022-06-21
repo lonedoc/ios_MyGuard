@@ -29,5 +29,6 @@ protocol FacilityView: AlertDialog {
     func showEventsView(facilityId: String)
     func showSensorsView(facilityId: String)
     func showAccountView(accounts: [Account])
+    func showNavigationItems(isApplicationsEnabled: Bool)
     func openApplicationScreen(facilityId: String)
 }

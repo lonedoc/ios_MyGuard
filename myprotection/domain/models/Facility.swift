@@ -22,6 +22,7 @@ class Facility {
     var armingEnabled: Bool
     var alarmButtonEnabled: Bool
     var passcode: String?
+    var isApplicationsAvailable: Bool
     var accounts: [Account]
 
     init(_ dto: FacilityDTO) { // swiftlint:disable:this function_body_length
@@ -37,6 +38,7 @@ class Facility {
         armingEnabled = dto.armingEnabled != 1
         alarmButtonEnabled = dto.alarmButtonEnabled == 1
         passcode = dto.passcode
+        isApplicationsAvailable = dto.isApplicationsAvailable == 1
 
         statusCode = StatusCode(
             text: dto.statusCode,

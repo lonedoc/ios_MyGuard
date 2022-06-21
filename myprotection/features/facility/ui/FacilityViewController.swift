@@ -225,6 +225,14 @@ extension FacilityViewController: FacilityView {
         }
     }
 
+    func showNavigationItems(isApplicationsEnabled: Bool) {
+        DispatchQueue.main.async {
+            self.navigationItem.rightBarButtonItems = isApplicationsEnabled ?
+                [self.rootView.applyButton, self.rootView.editButton] :
+                [self.rootView.editButton]
+        }
+    }
+
     func openApplicationScreen(facilityId: String) {
         DispatchQueue.main.async {
             let controller = ApplicationsViewController(facilityId: facilityId)
@@ -287,8 +295,6 @@ class FacilityViewController: UIViewController, CancelAlarmDialogDelegate {
 
         rootView.applyButton.target = self
         rootView.applyButton.action = #selector(applyButtonTapped)
-
-        navigationItem.rightBarButtonItems = [rootView.applyButton, rootView.editButton]
 
         let gestureRecognizer = UILongPressGestureRecognizer(
             target: self,
