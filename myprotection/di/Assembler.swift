@@ -11,11 +11,7 @@ import Swinject
 
 extension Assembler {
 
-    private static var instance: Assembler = assemble()
-
-    static var shared: Assembler {
-        return instance
-    }
+    static let shared: Assembler = assemble()
 
     private static func assemble() -> Assembler {
         let container = Container()
@@ -29,6 +25,7 @@ extension Assembler {
                 FacilitiesAssembly(),
                 FacilityAssembly(),
                 EventsAssembly(),
+                SensorsAssembly(),
                 TestAssembly(),
                 AccountAssembly(),
                 ApplicationsAssembly()

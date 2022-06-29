@@ -10,10 +10,6 @@ import Foundation
 
 protocol SensorsPresenter {
     func attach(view: SensorsView)
-    func refresh()
     func viewDidLoad()
-    func viewWillAppear()
-    func viewWillDisappear()
-    func viewWentBackground()
-    func viewWentForeground()
+    func setDevices(_ devices: [Device])
 }

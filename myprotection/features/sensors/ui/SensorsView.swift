@@ -9,9 +9,9 @@
 import Foundation
 import UIKit
 
-protocol SensorsView: UIViewController, AlertDialog {
-    func showPlaceholder()
-    func hidePlaceholder()
-    func hideRefresher()
-    func setSensors(_ sensors: [Sensor])
+protocol SensorsView: AlertDialog {
+    func showEmptyListMessage()
+    func hideEmptyListMessage()
+    func setDevices(_ devices: [Device])
+    func updateDevices(_ devices: [Device])
 }

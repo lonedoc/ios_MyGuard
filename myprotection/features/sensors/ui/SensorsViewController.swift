@@ -11,37 +11,32 @@ import UIKit
 import Swinject
 import SkeletonView
 
-private let cellIdentifier = "sensorsCollectionViewCell"
+private let cerberThermostatCellIdentifier = "cerberThermostatCellIdentifier"
 private let animationDuration = 0.5
 
 extension SensorsViewController: SensorsView {
 
-    func showPlaceholder() {
+    func showEmptyListMessage() {
         DispatchQueue.main.async {
-            self.rootView.collectionView.showAnimatedSkeleton(
-                transition: .crossDissolve(animationDuration)
-            )
+            self.rootView.emptyListLabel.isHidden = false
+            self.rootView.collectionView.isHidden = true
         }
     }
 
-    func hidePlaceholder() {
+    func hideEmptyListMessage() {
         DispatchQueue.main.async {
-            self.rootView.collectionView.hideSkeleton(
-                reloadDataAfter: true,
-                transition: .crossDissolve(animationDuration)
-            )
+            self.rootView.emptyListLabel.isHidden = true
+            self.rootView.collectionView.isHidden = false
         }
     }
 
-    func hideRefresher() {
-        DispatchQueue.main.async {
-            self.rootView.refreshControl.endRefreshing()
-        }
+    func setDevices(_ devices: [Device]) {
+        presenter.setDevices(devices)
     }
 
-    func setSensors(_ sensors: [Sensor]) {
+    func updateDevices(_ devices: [Device]) {
         DispatchQueue.main.async {
-            self.sensors = sensors
+            self.devices = devices
             self.rootView.collectionView.reloadData()
         }
     }
@@ -67,16 +62,7 @@ class SensorsViewController: UIViewController {
     // swiftlint:disable:next force_cast
     private var rootView: SensorsScreenLayout { return view as! SensorsScreenLayout }
 
-    private var sensors = [Sensor]()
-
-//    private var sensors: [Sensor] = [
-//        Sensor(type: .temperature, name: "Temperature 1", data: 24.5),
-//        Sensor(type: .temperature, name: "Temperature 2", data: -31.2),
-//        Sensor(type: .temperature, name: "Temperature 3", data: 8.7),
-//        Sensor(type: .temperature, name: "Temperature 4", data: 26.4),
-//        Sensor(type: .humidity, name: "Humidity 1", data: 44),
-//        Sensor(type: .humidity, name: "Humidity 2", data: 70)
-//    ]
+    private var devices = [Device]()
 
     init(facilityId: String) {
         presenter = Assembler.shared.resolver.resolve(
@@ -104,111 +90,62 @@ class SensorsViewController: UIViewController {
 
     private func setupCollectionView() {
         rootView.collectionView.register(
-            SensorsCollectionViewCell.self,
-            forCellWithReuseIdentifier: cellIdentifier
+            CerberThermostatCell.self,
+            forCellWithReuseIdentifier: cerberThermostatCellIdentifier
         )
 
         rootView.collectionView.dataSource = self
         rootView.collectionView.delegate = self
-
-        rootView.refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        rootView.collectionView.addSubview(rootView.refreshControl)
-
-        rootView.collectionView.isSkeletonable = true
-        SkeletonAppearance.default.multilineCornerRadius = 5
-    }
-
-    @objc func refresh() {
-        presenter.refresh()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        presenter.viewWillAppear()
-        subscribe()
-    }
-
-    private func subscribe() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(viewWentBackground),
-            name: TestViewController.willAppear,
-            object: nil
-        )
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(viewWentForeground),
-            name: TestViewController.willDisappear,
-            object: nil
-        )
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        presenter.viewWillDisappear()
-        unsubscribe()
-    }
-
-    private func unsubscribe() {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: TestViewController.willAppear,
-            object: nil
-        )
-
-        NotificationCenter.default.removeObserver(
-            self,
-            name: TestViewController.willDisappear,
-            object: nil
-        )
-    }
-
-    @objc private func viewWentBackground() {
-        presenter.viewWentBackground()
-    }
-
-    @objc private func viewWentForeground() {
-        presenter.viewWentForeground()
     }
 
 }
 
+private let itemsPerRow: CGFloat = 2
+
+private let insets = UIEdgeInsets(
+    top: 16.0,
+    left: 16.0,
+    bottom: 16.0,
+    right: 16.0
+)
+
+private let itemHeight: Double = 128.0
+
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 
-extension SensorsViewController: SkeletonCollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
+extension SensorsViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
-    func collectionSkeletonView(
-        _ skeletonView: UICollectionView,
-        cellIdentifierForItemAt indexPath: IndexPath
-    ) -> ReusableCellIdentifier {
-        return cellIdentifier
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
     }
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return sensors.count
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
+        return devices.count
     }
 
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: cellIdentifier,
-            for: indexPath
-        ) as? SensorsCollectionViewCell {
-            let sensor = sensors[indexPath.row]
+        let device = devices[indexPath.row]
 
-            if sensor.type == .temperature {
-                cell.iconView.image = UIImage.assets(.temperatureIcon) // Get image by sensor type
-                cell.titleLabel.text = sensor.name
-                cell.valueLabel.text = String(sensor.data as? Double ?? 0.0) // Get string representation of the sensor value
-            } else {
-                cell.iconView.image = UIImage.assets(.humidityIcon)
-                cell.titleLabel.text = sensor.name
-                cell.valueLabel.text = String(sensor.data as? Int ?? 0) + "%"
+        switch device.deviceType {
+        case .cerberThermostat:
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: cerberThermostatCellIdentifier,
+                for: indexPath
+            )
+
+            if let thermostat = device as? CerberThermostat {
+                (cell as? CerberThermostatCell)?.bind(thermostat)
             }
+
             return cell
+        default:
+            break
         }
 
         fatalError("Could not dequeue reusable cell")
@@ -219,7 +156,27 @@ extension SensorsViewController: SkeletonCollectionViewDataSource, UICollectionV
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: collectionView.frame.width / 2 - 24, height: 115)
+        let gaps = insets.left * (itemsPerRow + 1)
+        let availableWidth = view.frame.width - gaps
+        let itemWidth = availableWidth / itemsPerRow
+
+        return CGSize(width: itemWidth, height: itemHeight)
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        return insets
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumLineSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        return insets.left
     }
 
 }

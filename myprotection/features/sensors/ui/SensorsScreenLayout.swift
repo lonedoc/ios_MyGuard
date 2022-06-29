@@ -26,6 +26,7 @@ class SensorsScreenLayout: UIView {
 
     private func setupViews() {
         addSubview(collectionView)
+        addSubview(emptyListLabel)
     }
 
     private func setupConstraints() {
@@ -34,6 +35,10 @@ class SensorsScreenLayout: UIView {
         collectionView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         collectionView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+
+        emptyListLabel.translatesAutoresizingMaskIntoConstraints = false
+        emptyListLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        emptyListLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -32).isActive = true
     }
 
     // MARK: - Views
@@ -47,10 +52,11 @@ class SensorsScreenLayout: UIView {
         return collectionView
     }()
 
-    let refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.tintColor = .primaryColor
-        return refreshControl
+    let emptyListLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.textColor = .black
+        label.text = "Empty".localized
+        return label
     }()
 
 }

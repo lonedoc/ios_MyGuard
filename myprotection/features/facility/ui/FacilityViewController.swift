@@ -40,6 +40,12 @@ extension FacilityViewController: FacilityView {
         }
     }
 
+    func setDevices(_ devices: [Device]) {
+        DispatchQueue.main.async {
+            self.sensorsViewController?.setDevices(devices)
+        }
+    }
+
     func setLinkIconHidden(_ hidden: Bool) {
         DispatchQueue.main.async {
             self.rootView.linkIconWrapper.isHidden = hidden
@@ -132,11 +138,13 @@ extension FacilityViewController: FacilityView {
         }
     }
 
-    func showSensorsView(facilityId: String) {
-//        let viewController = sensorsViewController ?? SensorsViewController(facilityId: facilityId)
-//        sensorsViewController = viewController
-//
-//        self.replaceChild(viewController: viewController)
+    func showSensorsView(facility: Facility) {
+        let viewController = sensorsViewController ?? SensorsViewController(facilityId: facility.id)
+        sensorsViewController = viewController
+
+        viewController.setDevices(facility.devices)
+
+        self.replaceChild(viewController: viewController)
     }
 
     func showAccountView(accounts: [Account]) {
@@ -253,6 +261,7 @@ class FacilityViewController: UIViewController, CancelAlarmDialogDelegate {
     private var rootView: FacilityScreenLayout { return view as! FacilityScreenLayout }
 
     private var eventsViewController: EventsViewController?
+    private var sensorsViewController: SensorsViewController?
     private var accountViewController: AccountViewController?
     private var currentViewController: UIViewController?
 

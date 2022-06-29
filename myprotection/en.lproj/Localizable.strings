@@ -110,6 +110,9 @@
 "Could not cancel alarm" = "Could not cancel alarm";
 "You have already tried to cancel the alarm less then an hour ago" = "You have already tried to cancel the alarm less then an hour ago";
 
+// MARK: Sensors
+"Empty" = "Empty";
+
 // MARK: Account
 "Account:" = "Account:";
 "Sum:" = "Sum:";

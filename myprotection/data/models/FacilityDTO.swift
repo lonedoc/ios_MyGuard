@@ -24,6 +24,7 @@ struct FacilityDTO: Decodable {
     let alarmButtonEnabled: Int?
     let passcode: String?
     let isApplicationsAvailable: Int?
+    let devices: [DeviceDTO]?
     let account1: String?
     let monthlyPayment1: Double?
     let guardServiceName1: String?
@@ -53,6 +54,7 @@ struct FacilityDTO: Decodable {
         case alarmButtonEnabled      = "tk"
         case passcode                = "password"
         case isApplicationsAvailable = "zay"
+        case devices                 = "device"
         case account1                = "i1clic"
         case monthlyPayment1         = "i1csum"
         case guardServiceName1       = "company1"

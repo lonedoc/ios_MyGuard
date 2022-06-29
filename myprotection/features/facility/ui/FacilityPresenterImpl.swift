@@ -20,7 +20,6 @@ extension FacilityPresenterImpl: FacilityPresenter {
     }
 
     func viewDidLoad() {
-        
         updateView()
         view?.showEventsView(facilityId: facility.id)
     }
@@ -185,7 +184,7 @@ extension FacilityPresenterImpl: FacilityPresenter {
     }
 
     func sensorsButtonTapped() {
-        view?.showSensorsView(facilityId: facility.id)
+        view?.showSensorsView(facility: facility)
     }
 
     func accountButtonTapped() {
@@ -290,6 +289,7 @@ class FacilityPresenterImpl {
         view?.setBatteryIconHidden(!facility.batteryMalfunction)
         view?.setLinkIcon(linked: facility.onlineEnabled)
         view?.setAlarmButtonEnabled(![.alarm].contains(facility.statusCode))
+        view?.setDevices(facility.devices)
     }
 
     private func updateFacilityName(_ name: String) {

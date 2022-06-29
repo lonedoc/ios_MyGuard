@@ -56,7 +56,11 @@ class UdpApplicationsApi: UdpApiBase, ApplicationsApi {
         let subject = sendApplicationSubject ?? PublishSubject<Bool>()
         sendApplicationSubject = subject
 
-        let query = "\"$c$\":\"newlk\",\"com\":\"application\",\"obj\":\"\(facilityId)\",\"text\":\"\(text)\",\"datetime\":\(timestamp)"
+        let query = "\"$c$\":\"newlk\"," +
+            "\"com\":\"application\"," +
+            "\"obj\":\"\(facilityId)\"," +
+            "\"text\":\"\(text)\"," +
+            "\"datetime\":\(timestamp)"
 
         makeRequest(
             query: query,

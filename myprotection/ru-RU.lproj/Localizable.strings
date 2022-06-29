@@ -110,6 +110,9 @@
 "Could not cancel alarm" = "Не удалось отменить тревогу";
 "You have already tried to cancel the alarm less then an hour ago" = "Вы уже совершили попытку отмены тревоги меньше часа назад";
 
+// MARK: Sensors
+"Empty" = "Пусто";
+
 // MARK: Account
 "Account:" = "Лицевой счет:";
 "Sum:" = "Сумма:";

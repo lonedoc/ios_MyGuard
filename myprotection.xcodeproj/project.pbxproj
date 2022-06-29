@@ -65,6 +65,13 @@
 		5C223E6F24C7F15500F05C26 /* PasscodeScreenLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C223E6E24C7F15500F05C26 /* PasscodeScreenLayout.swift */; };
 		5C223E7124C9502100F05C26 /* PasscodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C223E7024C9502100F05C26 /* PasscodeViewController.swift */; };
 		5C223E7324C9B5BA00F05C26 /* UISecureTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C223E7224C9B5BA00F05C26 /* UISecureTextField.swift */; };
+		5C262F4C28645E5E003D09E1 /* SensorsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68F85A2775CAF4007B73E8 /* SensorsAssembly.swift */; };
+		5C262F5128645E5E003D09E1 /* CerberThermostatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68F84D27757827007B73E8 /* CerberThermostatCell.swift */; };
+		5C262F5228645E5E003D09E1 /* SensorsScreenLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68F84B2775780C007B73E8 /* SensorsScreenLayout.swift */; };
+		5C262F5328645E5E003D09E1 /* SensorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68F8572775C560007B73E8 /* SensorsView.swift */; };
+		5C262F5428645E5E003D09E1 /* SensorsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68F849277577F7007B73E8 /* SensorsViewController.swift */; };
+		5C262F5528645E5E003D09E1 /* SensorsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68F8532775C520007B73E8 /* SensorsPresenter.swift */; };
+		5C262F5628645E5E003D09E1 /* SensorsPresenterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C68F8552775C534007B73E8 /* SensorsPresenterImpl.swift */; };
 		5C35C477277023CD008DE206 /* EventsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C35C476277023CD008DE206 /* EventsRepository.swift */; };
 		5C35C47927703217008DE206 /* EventsRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C35C47827703217008DE206 /* EventsRepositoryImpl.swift */; };
 		5C35C47B277032D9008DE206 /* EventsApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C35C47A277032D9008DE206 /* EventsApi.swift */; };
@@ -97,6 +104,9 @@
 		5C7AF9E82743662900262D2F /* CityDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7AF9E72743662800262D2F /* CityDTO.swift */; };
 		5C7AF9EA2743664000262D2F /* GuardServiceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7AF9E92743664000262D2F /* GuardServiceDTO.swift */; };
 		5C7AF9EC274398FB00262D2F /* Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7AF9EB274398FB00262D2F /* Coder.swift */; };
+		5C7DF0B92861AD1B00914E0E /* DeviceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DF0B82861AD1B00914E0E /* DeviceDTO.swift */; };
+		5C7DF0BB2861B19A00914E0E /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DF0BA2861B19A00914E0E /* Device.swift */; };
+		5C7DF0BD2861B1C100914E0E /* DeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DF0BC2861B1C100914E0E /* DeviceType.swift */; };
 		5C7DFE492754CB28007F935F /* PasscodeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DFE482754CB28007F935F /* PasscodeInteractor.swift */; };
 		5C7F57C427474A77009735C0 /* PasswordAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7F57C327474A77009735C0 /* PasswordAssembly.swift */; };
 		5C7F57C627476038009735C0 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7F57C527476038009735C0 /* LoginPresenter.swift */; };
@@ -259,15 +269,11 @@
 		5C681B1D25DE811E002F5690 /* UIImage+assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+assets.swift"; sourceTree = "<group>"; };
 		5C68F849277577F7007B73E8 /* SensorsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorsViewController.swift; sourceTree = "<group>"; };
 		5C68F84B2775780C007B73E8 /* SensorsScreenLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorsScreenLayout.swift; sourceTree = "<group>"; };
-		5C68F84D27757827007B73E8 /* SensorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorCollectionViewCell.swift; sourceTree = "<group>"; };
-		5C68F85127757CF0007B73E8 /* Sensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sensor.swift; sourceTree = "<group>"; };
+		5C68F84D27757827007B73E8 /* CerberThermostatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CerberThermostatCell.swift; sourceTree = "<group>"; };
 		5C68F8532775C520007B73E8 /* SensorsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorsPresenter.swift; sourceTree = "<group>"; };
 		5C68F8552775C534007B73E8 /* SensorsPresenterImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorsPresenterImpl.swift; sourceTree = "<group>"; };
 		5C68F8572775C560007B73E8 /* SensorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorsView.swift; sourceTree = "<group>"; };
 		5C68F85A2775CAF4007B73E8 /* SensorsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorsAssembly.swift; sourceTree = "<group>"; };
-		5C68F85D277954BF007B73E8 /* SensorsApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorsApi.swift; sourceTree = "<group>"; };
-		5C68F85F277954CD007B73E8 /* UdpSensorsApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UdpSensorsApi.swift; sourceTree = "<group>"; };
-		5C68F861277965DE007B73E8 /* SensorsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorsInteractor.swift; sourceTree = "<group>"; };
 		5C6D000F25E8FC4F00FD43F2 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		5C754319279FD93300C23278 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		5C761539279136A4004C07D2 /* BrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
@@ -279,6 +285,9 @@
 		5C7AF9E72743662800262D2F /* CityDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityDTO.swift; sourceTree = "<group>"; };
 		5C7AF9E92743664000262D2F /* GuardServiceDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuardServiceDTO.swift; sourceTree = "<group>"; };
 		5C7AF9EB274398FB00262D2F /* Coder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coder.swift; sourceTree = "<group>"; };
+		5C7DF0B82861AD1B00914E0E /* DeviceDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDTO.swift; sourceTree = "<group>"; };
+		5C7DF0BA2861B19A00914E0E /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		5C7DF0BC2861B1C100914E0E /* DeviceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceType.swift; sourceTree = "<group>"; };
 		5C7DFE482754CB28007F935F /* PasscodeInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeInteractor.swift; sourceTree = "<group>"; };
 		5C7F57C327474A77009735C0 /* PasswordAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordAssembly.swift; sourceTree = "<group>"; };
 		5C7F57C527476038009735C0 /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
@@ -508,6 +517,8 @@
 				5C0F2DEB266F2E8600644867 /* StatusCode.swift */,
 				5C0E2303274F7AD100893474 /* Credentials.swift */,
 				5C754319279FD93300C23278 /* Account.swift */,
+				5C7DF0BA2861B19A00914E0E /* Device.swift */,
+				5C7DF0BC2861B1C100914E0E /* DeviceType.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -756,8 +767,6 @@
 			isa = PBXGroup;
 			children = (
 				5C68F8592775CAE5007B73E8 /* di */,
-				5C68F85C277954A7007B73E8 /* data */,
-				5C68F84F27757CDB007B73E8 /* domain */,
 				5C68F848277577DF007B73E8 /* ui */,
 			);
 			path = sensors;
@@ -766,7 +775,7 @@
 		5C68F848277577DF007B73E8 /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				5C68F84D27757827007B73E8 /* SensorCollectionViewCell.swift */,
+				5C68F84D27757827007B73E8 /* CerberThermostatCell.swift */,
 				5C68F84B2775780C007B73E8 /* SensorsScreenLayout.swift */,
 				5C68F8572775C560007B73E8 /* SensorsView.swift */,
 				5C68F849277577F7007B73E8 /* SensorsViewController.swift */,
@@ -776,38 +785,12 @@
 			path = ui;
 			sourceTree = "<group>";
 		};
-		5C68F84F27757CDB007B73E8 /* domain */ = {
-			isa = PBXGroup;
-			children = (
-				5C68F85027757CE2007B73E8 /* models */,
-				5C68F861277965DE007B73E8 /* SensorsInteractor.swift */,
-			);
-			path = domain;
-			sourceTree = "<group>";
-		};
-		5C68F85027757CE2007B73E8 /* models */ = {
-			isa = PBXGroup;
-			children = (
-				5C68F85127757CF0007B73E8 /* Sensor.swift */,
-			);
-			path = models;
-			sourceTree = "<group>";
-		};
 		5C68F8592775CAE5007B73E8 /* di */ = {
 			isa = PBXGroup;
 			children = (
 				5C68F85A2775CAF4007B73E8 /* SensorsAssembly.swift */,
 			);
 			path = di;
-			sourceTree = "<group>";
-		};
-		5C68F85C277954A7007B73E8 /* data */ = {
-			isa = PBXGroup;
-			children = (
-				5C68F85D277954BF007B73E8 /* SensorsApi.swift */,
-				5C68F85F277954CD007B73E8 /* UdpSensorsApi.swift */,
-			);
-			path = data;
 			sourceTree = "<group>";
 		};
 		5C7DFE472754CB0D007F935F /* domain */ = {
@@ -899,6 +882,7 @@
 				5CF10E1226033D0D00FCB41A /* FacilityDTO.swift */,
 				5C60BFA82750BAEE001E8878 /* LoginResponse.swift */,
 				5CBE0A912796AACA004B07D9 /* GuardServiceContact.swift */,
+				5C7DF0B82861AD1B00914E0E /* DeviceDTO.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -1343,11 +1327,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C262F4C28645E5E003D09E1 /* SensorsAssembly.swift in Sources */,
+				5C262F5128645E5E003D09E1 /* CerberThermostatCell.swift in Sources */,
+				5C262F5228645E5E003D09E1 /* SensorsScreenLayout.swift in Sources */,
+				5C262F5328645E5E003D09E1 /* SensorsView.swift in Sources */,
+				5C262F5428645E5E003D09E1 /* SensorsViewController.swift in Sources */,
+				5C262F5528645E5E003D09E1 /* SensorsPresenter.swift in Sources */,
+				5C262F5628645E5E003D09E1 /* SensorsPresenterImpl.swift in Sources */,
 				5C938BCD265B91D50030ED3E /* TestScreenLayout.swift in Sources */,
 				5C02DFE624BEE60D003573A3 /* String+localized.swift in Sources */,
 				5C7F57EA274B3250009735C0 /* FacilityAssembly.swift in Sources */,
 				5C1C80FD278D654300D508E0 /* AccountScreenLayout.swift in Sources */,
 				5C146DF72609ECBD003AB5B0 /* PlainCheckBox.swift in Sources */,
+				5C7DF0B92861AD1B00914E0E /* DeviceDTO.swift in Sources */,
 				5C92BD4A261B143D00872B17 /* EventsPresenter.swift in Sources */,
 				5CC72CBD2600A56B008A6D69 /* Facility.swift in Sources */,
 				5C681B0B25DBAFEC002F5690 /* UIDevice+modelName.swift in Sources */,
@@ -1356,6 +1348,7 @@
 				5CD733B82567848B00A7A9E8 /* PasswordPresenterImpl.swift in Sources */,
 				5C92BD2D2614254200872B17 /* CoreDataRepository.swift in Sources */,
 				5C223E6F24C7F15500F05C26 /* PasscodeScreenLayout.swift in Sources */,
+				5C7DF0BB2861B19A00914E0E /* Device.swift in Sources */,
 				5C5E3CD0276B3F38009108A2 /* UdpFacilitiesApi.swift in Sources */,
 				5C0E1A6D2746431D00878E9C /* LoginAssembly.swift in Sources */,
 				5C92BD52261B146700872B17 /* EventsViewController.swift in Sources */,
@@ -1380,6 +1373,7 @@
 				5C146E14260C93C4003AB5B0 /* FacilityPresenter.swift in Sources */,
 				5C1C80F7278D64DC00D508E0 /* AccountView.swift in Sources */,
 				5CF10E182604854D00FCB41A /* SortingViewController.swift in Sources */,
+				5C7DF0BD2861B1C100914E0E /* DeviceType.swift in Sources */,
 				5C1EF74A27F3F21D00A97B93 /* RadioButton.swift in Sources */,
 				5C7687CB24D2D5BD009FFA2E /* BiometryHelperImpl.swift in Sources */,
 				5C92BD352614377800872B17 /* EventRepository.swift in Sources */,
@@ -1657,9 +1651,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = myprotection/myprotection.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 77;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 78;
 				DEVELOPMENT_TEAM = TZX223S8SD;
 				INFOPLIST_FILE = myprotection/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1667,10 +1661,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.53;
+				MARKETING_VERSION = 2.54;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.rubeg38.securitycenter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = MyGuardDev;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1683,16 +1677,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = myprotection/myprotection.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 77;
-				DEVELOPMENT_TEAM = TZX223S8SD;
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 78;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = myprotection/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.53;
+				MARKETING_VERSION = 2.54;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.rubeg38.securitycenter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

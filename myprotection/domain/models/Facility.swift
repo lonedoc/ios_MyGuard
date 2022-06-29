@@ -23,6 +23,7 @@ class Facility {
     var alarmButtonEnabled: Bool
     var passcode: String?
     var isApplicationsAvailable: Bool
+    var devices: [Device]
     var accounts: [Account]
 
     init(_ dto: FacilityDTO) { // swiftlint:disable:this function_body_length
@@ -44,6 +45,10 @@ class Facility {
             text: dto.statusCode,
             perimeterOnly: dto.perimeterOnly == 1
         )
+
+        devices = dto.devices?.compactMap { deviceDto in
+            return try? Device.create(from: deviceDto)
+        } ?? []
 
         accounts = []
 

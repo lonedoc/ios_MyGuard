@@ -15,31 +15,12 @@ extension SensorsPresenterImpl: SensorsPresenter {
     }
 
     func viewDidLoad() {
-        view?.showPlaceholder()
-        loadSensorsData()
+        updateView()
     }
 
-    func viewWillAppear() {
-        startPolling()
-    }
-
-    func viewWillDisappear() {
-        stopPolling()
-    }
-
-    func viewWentBackground() {
-        stopPolling()
-    }
-
-    func viewWentForeground() {
-        startPolling()
-    }
-
-    func refresh() {
-        loadSensorsData()
-        DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + .seconds(1)) {
-            self.view?.hideRefresher()
-        }
+    func setDevices(_ devices: [Device]) {
+        self.devices = devices
+        updateView()
     }
 
 }
@@ -51,50 +32,23 @@ private let pollingInterval: TimeInterval = 15
 class SensorsPresenterImpl {
 
     private var view: SensorsView?
-    private let interactor: SensorsInteractor
 
     private let facilityId: String
-    private var sensors = [Sensor]()
+    private var devices = [Device]()
 
     private var timer: Timer?
 
-    init(facilityid: String, interactor: SensorsInteractor) {
+    init(facilityid: String) {
         self.facilityId = facilityid
-        self.interactor = interactor
     }
 
-    private func startPolling() {
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(
-            timeInterval: pollingInterval,
-            target: self,
-            selector: #selector(tick),
-            userInfo: nil,
-            repeats: true
-        )
-    }
+    private func updateView() {
+        view?.updateDevices(devices)
 
-    private func stopPolling() {
-        timer?.invalidate()
-        timer = nil
-    }
-
-    @objc private func tick() {
-        loadSensorsData()
-    }
-
-    private func loadSensorsData() {
-        // TODO: load sensors data
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
-            self.view?.setSensors([
-                Sensor(type: .temperature, name: "Temperature 1", data: 24.5),
-                Sensor(type: .temperature, name: "Temperature 2", data: -31.2),
-                Sensor(type: .temperature, name: "Temperature 3", data: 8.7),
-                Sensor(type: .temperature, name: "Temperature 4", data: 26.4),
-                Sensor(type: .humidity, name: "Humidity 1", data: 44),
-                Sensor(type: .humidity, name: "Humidity 2", data: 70)
-            ])
-            self.view?.hidePlaceholder()
+        if devices.isEmpty {
+            view?.showEmptyListMessage()
+        } else {
+            view?.hideEmptyListMessage()
         }
     }
 

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct GuardServiceContact { // TODO: Find more appropriate name
+struct GuardServiceContact {
     let name: String
     let phoneNumber: String
 }

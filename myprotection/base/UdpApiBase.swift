@@ -29,7 +29,7 @@ class UdpApiBase {
     }
 
     func prepareSocket() -> Bool {
-        if !socket.opened { // TODO: Rename to isOpen
+        if !socket.opened {
             do {
                 try socket.open()
             } catch let error {
