@@ -20,6 +20,8 @@ class AccountScreenLayout: UIView {
     }
 
     private func setup() {
+        backgroundColor = .mainBackgroundColor
+
         setupViews()
         setupConstraints()
     }
@@ -70,7 +72,6 @@ class AccountScreenLayout: UIView {
     let accountLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = label.font.withSize(16)
-        label.textColor = .black
         label.text = "Account:".localized
         return label
     }()
@@ -84,7 +85,6 @@ class AccountScreenLayout: UIView {
     let sumLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = label.font.withSize(16)
-        label.textColor = .black
         label.text = "Sum:".localized
         return label
     }()

@@ -25,6 +25,10 @@ extension UIColor {
     static let guardedStatusColor = secondaryColor
     static let unknownStatusColor = UIColor.gray
 
+    static var mainBackgroundColor: UIColor {
+        return UIColor(named: "main_background_color") ?? .white
+    }
+
     static var backgroundColor: UIColor {
         return UIColor(named: "background_color") ?? .white
     }

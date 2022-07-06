@@ -20,12 +20,13 @@ class EventsScreenLayout: UIView {
     }
 
     private func setup() {
+        backgroundColor = .mainBackgroundColor
+
         setupViews()
         setupConstraints()
     }
 
     private func setupViews() {
-        backgroundColor = .white
         addSubview(tableView)
     }
 
@@ -43,6 +44,7 @@ class EventsScreenLayout: UIView {
         let tableView = UITableView(frame: .zero)
         tableView.rowHeight = 92
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 96, right: 0)
+        tableView.backgroundColor = .mainBackgroundColor
         return tableView
     }()
 

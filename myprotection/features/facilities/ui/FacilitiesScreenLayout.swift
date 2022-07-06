@@ -21,7 +21,7 @@ class FacilitiesScreenLayout: UIView {
     }
 
     private func setup() {
-        backgroundColor = .white
+        backgroundColor = .mainBackgroundColor
 
         setupViews()
         setupConstraints()
@@ -44,6 +44,7 @@ class FacilitiesScreenLayout: UIView {
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
         tableView.rowHeight = 112
+        tableView.backgroundColor = .mainBackgroundColor
         return tableView
     }()
 

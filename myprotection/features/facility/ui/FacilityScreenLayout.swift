@@ -23,15 +23,13 @@ class FacilityScreenLayout: UIView {
     }
 
     private func setup() {
-        backgroundColor = .white
+        backgroundColor = .mainBackgroundColor
 
         setupViews()
         setupConstraints()
     }
 
     private func setupViews() {
-        backgroundColor = .white
-
         linkIconWrapper.addSubview(linkIcon)
         electricityMalfunctionIconWrapper.addSubview(electricityMalfunctionIcon)
         batteryMalfunctionIconWrapper.addSubview(batteryMalfunctionIcon)
@@ -58,6 +56,7 @@ class FacilityScreenLayout: UIView {
         scrollView.addSubview(wrapperView)
 
         addSubview(scrollView)
+        addSubview(bottomAppBarBackground)
     }
 
     // swiftlint:disable function_body_length line_length
@@ -157,6 +156,12 @@ class FacilityScreenLayout: UIView {
         bottomAppBar.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor).isActive = true
         bottomAppBar.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor).isActive = true
         bottomAppBar.bottomAnchor.constraint(equalTo: wrapperView.bottomAnchor).isActive = true
+
+        bottomAppBarBackground.translatesAutoresizingMaskIntoConstraints = false
+        bottomAppBarBackground.topAnchor.constraint(equalTo: wrapperView.bottomAnchor).isActive = true
+        bottomAppBarBackground.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor).isActive = true
+        bottomAppBarBackground.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor).isActive = true
+        bottomAppBarBackground.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     }
     // swiftlint:enable function_body_length line_length
 
@@ -278,7 +283,7 @@ class FacilityScreenLayout: UIView {
 
     let bottomView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .white
+        view.backgroundColor = .mainBackgroundColor
         return view
     }()
 
@@ -341,6 +346,12 @@ class FacilityScreenLayout: UIView {
         appBar.floatingButton.setImageTintColor(.white, for: .disabled)
         appBar.floatingButton.disabledAlpha = 1
         return appBar
+    }()
+
+    let bottomAppBarBackground: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = .darkBackgroundColor
+        return view
     }()
 
 }
