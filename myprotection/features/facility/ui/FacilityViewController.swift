@@ -83,6 +83,16 @@ extension FacilityViewController: FacilityView {
         }
     }
 
+    func setAccountsButtonHidden(_ hidden: Bool) {
+        DispatchQueue.main.async {
+            let buttons = hidden ?
+                [self.rootView.testAlarmButton] :
+                [self.rootView.accountButton, self.rootView.testAlarmButton]
+
+            self.rootView.bottomAppBar.trailingBarButtonItems = buttons
+        }
+    }
+
     func showProgressBar(message: String, type: ExecutingCommandType) {
         DispatchQueue.main.async {
             let color: UIColor = type == .arming ? .guardedStatusColor : .notGuardedStatusColor

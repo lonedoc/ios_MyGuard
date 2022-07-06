@@ -19,6 +19,7 @@ protocol FacilityView: AlertDialog {
     func setLinkIcon(linked: Bool)
     func setElectricityIconHidden(_ hidden: Bool)
     func setBatteryIconHidden(_ hidden: Bool)
+    func setAccountsButtonHidden(_ hidden: Bool)
     func setAlarmButtonEnabled(_ enabled: Bool)
     func showProgressBar(message: String, type: ExecutingCommandType)
     func hideProgressBar()
