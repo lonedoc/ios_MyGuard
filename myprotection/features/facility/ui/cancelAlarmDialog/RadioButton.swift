@@ -97,6 +97,7 @@ class RadioButton: UIView {
 
     let titleView: UILabel = {
         let label = UILabel(frame: .zero)
+        label.textColor = .darkGray
         return label
     }()
 

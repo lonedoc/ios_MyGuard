@@ -62,7 +62,7 @@ class UdpApiBase {
         let address = InetAddress.create(ip: ipAddress, port: communicationData.port)
 
         #if DEBUG
-            print("-> \(query)")
+            print("[\(ipAddress)] -> \(query)")
         #endif
 
         socket.send(message: query, token: communicationData.token, to: address) { [weak self] success in

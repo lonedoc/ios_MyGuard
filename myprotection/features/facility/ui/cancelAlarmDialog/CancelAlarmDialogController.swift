@@ -64,18 +64,14 @@ class CancelAlarmDialogController: UIViewController, RadioButtonDelegate {
     }
 
     @objc private func didTapProceedButton() {
-        let passcodeIndex: Int
+        let radioButtons = [
+            rootView.radioButton0,
+            rootView.radioButton1,
+            rootView.radioButton2,
+            rootView.radioButton3
+        ]
 
-        if rootView.radioButton1.isChecked {
-            passcodeIndex = 1
-        } else if rootView.radioButton2.isChecked {
-            passcodeIndex = 2
-        } else if rootView.radioButton3.isChecked {
-            passcodeIndex = 3
-        } else {
-            passcodeIndex = 0
-        }
-
+        let passcodeIndex = radioButtons.firstIndex { radioButton in radioButton.isChecked } ?? 0
         delegate?.didSelectPasscode(passcode: passcodes[passcodeIndex])
 
         self.dismiss(animated: true, completion: nil)
