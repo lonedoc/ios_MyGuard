@@ -6,6 +6,7 @@
 //  Copyright © 2020 Rubeg NPO. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 class NavigationController: UINavigationController {
@@ -17,7 +18,7 @@ class NavigationController: UINavigationController {
         navigationBar.tintColor = .white
         navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
 
-        modalPresentationStyle = .fullScreen
+        modalPresentationStyle = .overFullScreen
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {

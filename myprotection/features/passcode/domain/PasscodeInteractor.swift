@@ -13,13 +13,16 @@ class PasscodeInteractor {
 
     private let loginApi: LoginApi
     private let userDefaultsHelper: UserDefaultsHelper
+    private let communicationData: CommunicationData
 
     init(
         loginApi: LoginApi,
-        userDefaultsHelper: UserDefaultsHelper
+        userDefaultsHelper: UserDefaultsHelper,
+        communicationData: CommunicationData
     ) {
         self.loginApi = loginApi
         self.userDefaultsHelper = userDefaultsHelper
+        self.communicationData = communicationData
     }
 
     func logOut() -> Observable<Bool> {
@@ -47,7 +50,14 @@ class PasscodeInteractor {
     }
 
     func resetUserData() {
+        let fcmToken = userDefaultsHelper.getFcmToken()
         userDefaultsHelper.reset()
+
+        if let fcmToken = fcmToken {
+            userDefaultsHelper.set(fcmToken: fcmToken)
+        }
+
+        communicationData.token = nil
     }
 
     func getIpAddresses() -> [String] {

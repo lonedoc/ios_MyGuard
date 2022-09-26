@@ -20,7 +20,7 @@ class EventsScreenLayout: UIView {
     }
 
     private func setup() {
-        backgroundColor = .mainBackgroundColor
+        backgroundColor = .screenBackgroundColor
 
         setupViews()
         setupConstraints()

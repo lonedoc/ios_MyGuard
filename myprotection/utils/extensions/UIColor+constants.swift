@@ -41,4 +41,20 @@ extension UIColor {
         return UIColor(named: "pale_text_color") ?? .gray
     }
 
+    static var screenBackgroundColor: UIColor {
+        return UIColor(named: "screen_background_color") ?? .white
+    }
+
+    static var screenForegroundColor: UIColor {
+        return UIColor(named: "screen_foreground_color") ?? .gray
+    }
+
+    static var surfaceBackgroundColor: UIColor {
+        return UIColor(named: "surface_background_color") ?? .lightGray
+    }
+
+    static var surfaceForegroundColor: UIColor {
+        return UIColor(named: "surface_foreground_color") ?? .black
+    }
+
 }

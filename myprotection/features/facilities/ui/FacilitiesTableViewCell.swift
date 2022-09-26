@@ -46,6 +46,8 @@ class FacilitiesTableViewCell: UITableViewCell {
     }
 
     private func setup() {
+        backgroundColor = .screenBackgroundColor
+
         setupViews()
         setupConstraints()
 
@@ -111,6 +113,7 @@ class FacilitiesTableViewCell: UITableViewCell {
     let titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = label.font.withSize(20)
+        label.textColor = .screenForegroundColor
         label.isSkeletonable = true
         return label
     }()
@@ -118,6 +121,7 @@ class FacilitiesTableViewCell: UITableViewCell {
     let addressLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = label.font.withSize(16)
+        label.textColor = .screenForegroundColor
         label.isSkeletonable = true
         return label
     }()
@@ -125,6 +129,7 @@ class FacilitiesTableViewCell: UITableViewCell {
     let statusLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = label.font.withSize(16)
+        label.textColor = .screenForegroundColor
         label.isSkeletonable = true
         return label
     }()

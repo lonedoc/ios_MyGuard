@@ -20,7 +20,7 @@ class SensorsScreenLayout: UIView {
     }
 
     private func setup() {
-        backgroundColor = .mainBackgroundColor
+        backgroundColor = .screenBackgroundColor
 
         setupViews()
         setupConstraints()
@@ -51,13 +51,14 @@ class SensorsScreenLayout: UIView {
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 96, right: 0)
-        collectionView.backgroundColor = .mainBackgroundColor
+        collectionView.backgroundColor = .screenBackgroundColor
 
         return collectionView
     }()
 
     let emptyListLabel: UILabel = {
         let label = UILabel(frame: .zero)
+        label.textColor = .screenForegroundColor
         label.text = "Empty".localized
         return label
     }()

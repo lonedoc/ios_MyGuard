@@ -20,7 +20,7 @@ class AccountScreenLayout: UIView {
     }
 
     private func setup() {
-        backgroundColor = .mainBackgroundColor
+        backgroundColor = .screenBackgroundColor
 
         setupViews()
         setupConstraints()
@@ -72,6 +72,7 @@ class AccountScreenLayout: UIView {
     let accountLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = label.font.withSize(16)
+        label.textColor = .screenForegroundColor
         label.text = "Account:".localized
         return label
     }()
@@ -79,18 +80,21 @@ class AccountScreenLayout: UIView {
     let accountTextField: UITextField = {
         let textField = UITextField(frame: .zero)
         textField.borderStyle = .line
+        textField.textColor = .screenForegroundColor
         return textField
     }()
 
     let sumLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = label.font.withSize(16)
+        label.textColor = .screenForegroundColor
         label.text = "Sum:".localized
         return label
     }()
 
     let sumTextField: UITextField = {
         let textField = UITextField(frame: .zero)
+        textField.textColor = .screenForegroundColor
         textField.borderStyle = .line
         textField.keyboardType = .decimalPad
         return textField

@@ -30,6 +30,8 @@ class CerberThermostatCell: UICollectionViewCell {
     }
 
     private func setup() {
+        backgroundColor = .screenBackgroundColor
+
         setupViews()
         setupConstraints()
     }
@@ -73,7 +75,7 @@ class CerberThermostatCell: UICollectionViewCell {
         valueLabel.bottomAnchor.constraint(equalTo: iconView.bottomAnchor).isActive = true
 
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 16).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: valueLabel.bottomAnchor, constant: 0).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16).isActive = true
     }
@@ -82,7 +84,7 @@ class CerberThermostatCell: UICollectionViewCell {
 
     let cardView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .white
+        view.backgroundColor = .surfaceBackgroundColor
         view.layer.cornerRadius = 16
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOpacity = 0.2
@@ -114,13 +116,15 @@ class CerberThermostatCell: UICollectionViewCell {
 
     let titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
+        label.textColor = .surfaceForegroundColor
+        label.backgroundColor = .red
         return label
     }()
 
     let valueLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = UIFont.boldSystemFont(ofSize: 18)
-        label.textColor = .black
+        label.textColor = .surfaceForegroundColor
         return label
     }()
 

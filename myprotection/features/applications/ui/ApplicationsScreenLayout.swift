@@ -20,7 +20,7 @@ class ApplicationsScreenLayout: UIView {
     }
 
     private func setup() {
-        backgroundColor = .white
+        backgroundColor = .screenBackgroundColor
 
         setupViews()
         setupConstraints()
@@ -92,43 +92,52 @@ class ApplicationsScreenLayout: UIView {
     let applicationsLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = label.font.withSize(16)
-        label.textColor = .black
+        label.textColor = .screenForegroundColor
         label.text = "Application:".localized
         return label
     }()
 
     let applicationsTextField: UITextField = {
         let textField = UITextField(frame: .zero)
+        textField.textColor = .screenForegroundColor
         textField.borderStyle = .line
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.screenForegroundColor.cgColor
         return textField
     }()
 
     let applicationTextLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = label.font.withSize(16)
-        label.textColor = .black
+        label.textColor = .screenForegroundColor
         label.text = "Application text:".localized
         return label
     }()
 
     let applicationTextField: UITextView = {
         let textField = UITextView(frame: .zero)
-        textField.layer.borderWidth = 1
         textField.font = { UITextField().font }()
+        textField.textColor = .screenForegroundColor
+        textField.backgroundColor = .screenBackgroundColor
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.screenForegroundColor.cgColor
         return textField
     }()
 
     let dateLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = label.font.withSize(16)
-        label.textColor = .black
+        label.textColor = .screenForegroundColor
         label.text = "Date and time:".localized
         return label
     }()
 
     let dateTextField: UITextField = {
         let textField = UITextField(frame: .zero)
+        textField.textColor = .screenForegroundColor
         textField.borderStyle = .line
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.screenForegroundColor.cgColor
         return textField
     }()
 

@@ -17,10 +17,12 @@ class PasscodeAssembly: Assembly {
         container.register(PasscodeInteractor.self) { resolver in
             let loginApi = resolver.resolve(LoginApi.self)!
             let userDefaultsHelper = resolver.resolve(UserDefaultsHelper.self)!
+            let communicationData = resolver.resolve(CommunicationData.self)!
 
             return PasscodeInteractor(
                 loginApi: loginApi,
-                userDefaultsHelper: userDefaultsHelper
+                userDefaultsHelper: userDefaultsHelper,
+                communicationData: communicationData
             )
         }
 

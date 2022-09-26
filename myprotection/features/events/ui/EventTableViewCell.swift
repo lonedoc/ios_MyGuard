@@ -46,6 +46,8 @@ class EventsTableViewCell: UITableViewCell {
     }
 
     private func setup() {
+        backgroundColor = .screenBackgroundColor
+
         setupViews()
         setupConstraints()
 
@@ -112,6 +114,7 @@ class EventsTableViewCell: UITableViewCell {
     let descriptionLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = UIFont.systemFont(ofSize: 18)
+        label.textColor = .screenForegroundColor
         label.isSkeletonable = true
         return label
     }()
@@ -119,6 +122,7 @@ class EventsTableViewCell: UITableViewCell {
     let zoneLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = label.font.withSize(16)
+        label.textColor = .screenForegroundColor
         label.isSkeletonable = true
         return label
     }()
@@ -126,6 +130,7 @@ class EventsTableViewCell: UITableViewCell {
     let timestampLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = label.font.withSize(16)
+        label.textColor = .screenForegroundColor
         label.isSkeletonable = true
         return label
     }()
