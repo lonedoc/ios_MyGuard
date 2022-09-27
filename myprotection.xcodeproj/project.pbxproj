@@ -349,7 +349,7 @@
 		5CF10E1D2604855800FCB41A /* SortingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingView.swift; sourceTree = "<group>"; };
 		5CF10E21260873D700FCB41A /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
 		5CF10E282609D65300FCB41A /* RadioGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioGroup.swift; sourceTree = "<group>"; };
-		5CF5A20A24BEDF5E00FA19A4 /* myprotection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = myprotection.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5CF5A20A24BEDF5E00FA19A4 /* Моя Охрана.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Моя Охрана.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CF5A20D24BEDF5E00FA19A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5CF5A20F24BEDF5E00FA19A4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		5CF5A21624BEDF6500FA19A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -1087,7 +1087,7 @@
 		5CF5A20B24BEDF5E00FA19A4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5CF5A20A24BEDF5E00FA19A4 /* myprotection.app */,
+				5CF5A20A24BEDF5E00FA19A4 /* Моя Охрана.app */,
 				5CF5A22024BEDF6500FA19A4 /* myprotectionTests.xctest */,
 			);
 			name = Products;
@@ -1155,7 +1155,7 @@
 			);
 			name = myprotection;
 			productName = myprotection;
-			productReference = 5CF5A20A24BEDF5E00FA19A4 /* myprotection.app */;
+			productReference = 5CF5A20A24BEDF5E00FA19A4 /* Моя Охрана.app */;
 			productType = "com.apple.product-type.application";
 		};
 		5CF5A21F24BEDF6500FA19A4 /* myprotectionTests */ = {
@@ -1653,17 +1653,18 @@
 				CODE_SIGN_ENTITLEMENTS = myprotection/myprotection.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 82;
 				DEVELOPMENT_TEAM = TZX223S8SD;
 				INFOPLIST_FILE = myprotection/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Моя Охрана";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.57;
+				MARKETING_VERSION = 2.58;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.rubeg38.securitycenter;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Моя Охрана";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1678,17 +1679,18 @@
 				CODE_SIGN_ENTITLEMENTS = myprotection/myprotection.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 82;
 				DEVELOPMENT_TEAM = TZX223S8SD;
 				INFOPLIST_FILE = myprotection/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Моя Охрана";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.57;
+				MARKETING_VERSION = 2.58;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.rubeg38.securitycenter;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Моя Охрана";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

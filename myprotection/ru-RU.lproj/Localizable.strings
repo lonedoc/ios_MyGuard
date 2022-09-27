@@ -112,6 +112,7 @@
 
 // MARK: Sensors
 "Empty" = "Пусто";
+"Unknown sensor" = "Неизвестный датчик";
 
 // MARK: Account
 "Account:" = "Лицевой счет:";

@@ -112,6 +112,7 @@
 
 // MARK: Sensors
 "Empty" = "Empty";
+"Unknown sensor" = "Unknown sensor";
 
 // MARK: Account
 "Account:" = "Account:";

@@ -22,11 +22,12 @@ class CerberThermostatCell: UICollectionViewCell {
     func bind(_ device: CerberThermostat) {
         let onlineIconBackgroundColor: UIColor = device.isOnline ? .secondaryColor : .errorColor
         let onlineIcon = device.isOnline ? UIImage.assets(.link) : UIImage.assets(.linkOff)
+        let description = device.description.isEmpty ? "Unknown sensor".localized : device.description
 
         self.isOnlineIconWrapper.backgroundColor = onlineIconBackgroundColor
         self.isOnlineIcon.image = onlineIcon
         self.valueLabel.text = "\(device.temperature)°C"
-        self.titleLabel.text = device.description
+        self.titleLabel.text = description
     }
 
     private func setup() {
@@ -117,7 +118,6 @@ class CerberThermostatCell: UICollectionViewCell {
     let titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.textColor = .surfaceForegroundColor
-        label.backgroundColor = .red
         return label
     }()
 
