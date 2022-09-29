@@ -289,6 +289,7 @@ class FacilityPresenterImpl {
         view?.setBatteryIconHidden(!facility.batteryMalfunction)
         view?.setLinkIcon(linked: facility.onlineEnabled)
         view?.setAccountsButtonHidden(facility.accounts.isEmpty)
+        view?.setAlarmButtonVariant(!facility.statusCode.isAlarm)
         view?.setAlarmButtonEnabled(![.alarm].contains(facility.statusCode))
         view?.setDevices(facility.devices)
     }

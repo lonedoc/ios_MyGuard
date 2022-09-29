@@ -83,6 +83,16 @@ extension FacilityViewController: FacilityView {
         }
     }
 
+    func setAlarmButtonVariant(_ isStartAlarmVariant: Bool) {
+        let backgroundColor = isStartAlarmVariant ? UIColor.errorColor : UIColor.secondaryColor
+        let icon = isStartAlarmVariant ? UIImage.assets(.alarm) : UIImage.assets(.cancelAlarm)
+
+        DispatchQueue.main.async {
+            self.rootView.bottomAppBar.floatingButton.setImage(icon, for: .normal)
+            self.rootView.bottomAppBar.floatingButton.setBackgroundColor(backgroundColor, for: .normal)
+        }
+    }
+
     func setAccountsButtonHidden(_ hidden: Bool) {
         DispatchQueue.main.async {
             let buttons = hidden ?
