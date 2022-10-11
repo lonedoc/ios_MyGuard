@@ -24,6 +24,10 @@ extension FacilitiesPresenterImpl: FacilitiesPresenter {
         interactor.getAddresses(cityName: cachedGuardService.city, guardServiceName: cachedGuardService.name)
             .subscribe(
                 onNext: { [weak self] addresses in
+                    if addresses.isEmpty {
+                        return
+                    }
+
                     self?.communicationData.setAddresses(addresses)
 
                     let guardService = GuardService(

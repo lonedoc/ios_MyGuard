@@ -54,11 +54,17 @@ class UdpGuardServicesApi: UdpApiBase, GuardServicesApi {
         let subject = addressesSubject ?? PublishSubject<[String]>()
         addressesSubject = subject
 
-        let query = "{\"$c$\":\"getip\",\"city\":\"\(cityName)\",\"pr\":\"\(guardServiceName)\"}"
+        let safeCityName = escapeQuotes(cityName)
+        let safeGuardServiceName = escapeQuotes(guardServiceName)
+        let query = "{\"$c$\":\"getip\",\"city\":\"\(safeCityName)\",\"pr\":\"\(safeGuardServiceName)\"}"
 
         makeRequest(query: query, subject: subject, 5)
 
         return subject
+    }
+
+    private func escapeQuotes(_ text: String) -> String {
+        return text.replacingOccurrences(of: "\"", with: "\\\"")
     }
 
 }

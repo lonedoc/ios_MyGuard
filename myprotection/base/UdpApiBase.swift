@@ -59,10 +59,12 @@ class UdpApiBase {
             return
         }
 
-        let address = InetAddress.create(ip: ipAddress, port: communicationData.port)
+        guard let address = try? InetAddress.create(ip: ipAddress, port: communicationData.port) else {
+            return
+        }
 
         #if DEBUG
-        print("[\(ipAddress)] -> \(query) token: \(communicationData.token ?? "empty")")
+            print("[\(ipAddress)] -> \(query) token: \(communicationData.token ?? "empty")")
         #endif
 
         socket.send(message: query, token: communicationData.token, to: address) { [weak self] success in
@@ -93,10 +95,12 @@ class UdpApiBase {
             return
         }
 
-        let address = InetAddress.create(ip: ipAddress, port: communicationData.port)
+        guard let address = try? InetAddress.create(ip: ipAddress, port: communicationData.port) else {
+            return
+        }
 
         #if DEBUG
-            print("-> \(query)")
+            print("-> [\(address.ip)] \(query)")
         #endif
 
         socket.send(message: query, token: communicationData.token, to: address) { [weak self] success in

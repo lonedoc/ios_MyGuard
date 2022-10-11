@@ -1653,7 +1653,7 @@
 				CODE_SIGN_ENTITLEMENTS = myprotection/myprotection.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 82;
+				CURRENT_PROJECT_VERSION = 85;
 				DEVELOPMENT_TEAM = TZX223S8SD;
 				INFOPLIST_FILE = myprotection/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Моя Охрана";
@@ -1662,7 +1662,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.58;
+				MARKETING_VERSION = 2.61;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.rubeg38.securitycenter;
 				PRODUCT_NAME = "Моя Охрана";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1679,7 +1679,7 @@
 				CODE_SIGN_ENTITLEMENTS = myprotection/myprotection.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 82;
+				CURRENT_PROJECT_VERSION = 85;
 				DEVELOPMENT_TEAM = TZX223S8SD;
 				INFOPLIST_FILE = myprotection/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Моя Охрана";
@@ -1688,7 +1688,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.58;
+				MARKETING_VERSION = 2.61;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.rubeg38.securitycenter;
 				PRODUCT_NAME = "Моя Охрана";
 				PROVISIONING_PROFILE_SPECIFIER = "";
