@@ -57,7 +57,7 @@ class UserDefaultsHelperImpl: UserDefaultsHelper {
     func set(guardService: GuardService) {
         UserDefaults.standard.set(guardService.city, forKey: UserDefaultsKey.city.rawValue)
         UserDefaults.standard.set(guardService.name, forKey: UserDefaultsKey.company.rawValue)
-        UserDefaults.standard.set(guardService.ip, forKey: UserDefaultsKey.ip.rawValue)
+        UserDefaults.standard.set(guardService.hosts, forKey: UserDefaultsKey.ip.rawValue)
         UserDefaults.standard.set(guardService.displayedName, forKey: UserDefaultsKey.guardServiceName.rawValue)
         UserDefaults.standard.set(guardService.phoneNumber, forKey: UserDefaultsKey.guardServicePhone.rawValue)
     }
@@ -66,7 +66,7 @@ class UserDefaultsHelperImpl: UserDefaultsHelper {
         guard
             let city = UserDefaults.standard.string(forKey: UserDefaultsKey.city.rawValue),
             let company = UserDefaults.standard.string(forKey: UserDefaultsKey.company.rawValue),
-            let ip = UserDefaults.standard.stringArray(forKey: UserDefaultsKey.ip.rawValue)
+            let hosts = UserDefaults.standard.stringArray(forKey: UserDefaultsKey.ip.rawValue)
         else {
             return nil
         }
@@ -77,7 +77,7 @@ class UserDefaultsHelperImpl: UserDefaultsHelper {
         return GuardService(
             city: city,
             name: company,
-            ip: ip,
+            hosts: hosts,
             displayedName: displayedName,
             phoneNumber: phoneNumber
         )

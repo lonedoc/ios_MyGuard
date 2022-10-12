@@ -11,10 +11,10 @@ import Foundation
 // swiftlint:disable identifier_name
 struct GuardServiceDTO: Decodable {
     let name: String
-    let ip: [String]
+    let hosts: [String]
 
     enum CodingKeys: String, CodingKey {
-        case name
-        case ip
+        case name  = "name"
+        case hosts = "ip"
     }
 }

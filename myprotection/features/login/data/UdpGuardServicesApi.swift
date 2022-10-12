@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 import RubegProtocol_v2_0
 
-private let ipAddresses = ["94.177.183.4", "91.189.160.38"]
+private let host: String = "lk.rubeg38.ru"
 private let port: Int32 = 8300
 
 class UdpGuardServicesApi: UdpApiBase, GuardServicesApi {
@@ -23,7 +23,7 @@ class UdpGuardServicesApi: UdpApiBase, GuardServicesApi {
     }
 
     init() {
-        let communicationData = CommunicationData(addresses: ipAddresses, port: port)
+        let communicationData = CommunicationData(hosts: [host], port: port)
         super.init(communicationData: communicationData)
     }
 
@@ -93,7 +93,7 @@ extension UdpGuardServicesApi: RubegSocketDelegate {
 
             let guardServices = guardServicesDTO.data.flatMap { city in
                 city.guardServices.map { guardServiceDTO in
-                    GuardService(city: city.name, name: guardServiceDTO.name, ip: guardServiceDTO.ip)
+                    GuardService(city: city.name, name: guardServiceDTO.name, hosts: guardServiceDTO.hosts)
                 }
             }
 

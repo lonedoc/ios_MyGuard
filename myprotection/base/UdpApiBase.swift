@@ -54,17 +54,13 @@ class UdpApiBase {
             return
         }
 
-        guard let ipAddress = communicationData.addressRotator.current else {
+        guard let address = communicationData.addressRotator.current else {
             publishError(CommunicationError.socketError) // TODO: Replace with dedicated error
             return
         }
 
-        guard let address = try? InetAddress.create(ip: ipAddress, port: communicationData.port) else {
-            return
-        }
-
         #if DEBUG
-            print("[\(ipAddress)] -> \(query) token: \(communicationData.token ?? "empty")")
+            print("[\(address.ip)] -> \(query) token: \(communicationData.token ?? "empty")")
         #endif
 
         socket.send(message: query, token: communicationData.token, to: address) { [weak self] success in
@@ -90,17 +86,13 @@ class UdpApiBase {
             return
         }
 
-        guard let ipAddress = communicationData.addressRotator.current else {
+        guard let address = communicationData.addressRotator.current else {
             subject.onError(CommunicationError.socketError) // TODO: Replace with dedicated error
             return
         }
 
-        guard let address = try? InetAddress.create(ip: ipAddress, port: communicationData.port) else {
-            return
-        }
-
         #if DEBUG
-            print("-> [\(address.ip)] \(query)")
+            print("[\(address.ip)] -> \(query) token: \(communicationData.token ?? "empty")")
         #endif
 
         socket.send(message: query, token: communicationData.token, to: address) { [weak self] success in

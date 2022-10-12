@@ -60,8 +60,8 @@ class PasscodeInteractor {
         communicationData.token = nil
     }
 
-    func getIpAddresses() -> [String] {
-        return userDefaultsHelper.getGuardService()?.ip ?? []
+    func getHosts() -> [String] {
+        return userDefaultsHelper.getGuardService()?.hosts ?? []
     }
 
     func getToken() -> String? {

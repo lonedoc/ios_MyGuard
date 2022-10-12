@@ -62,7 +62,7 @@ class PasswordInteractor {
             let guardService = GuardService(
                 city: cachedGuardService.city,
                 name: cachedGuardService.name,
-                ip: cachedGuardService.ip,
+                hosts: cachedGuardService.hosts,
                 displayedName: guardServiceContact.name,
                 phoneNumber: guardServiceContact.phoneNumber
             )

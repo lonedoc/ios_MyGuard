@@ -10,6 +10,8 @@ import Foundation
 import RubegProtocol_v2_0
 import RxSwift
 
+private let driverPort: Int32 = 8301
+
 extension FacilitiesPresenterImpl: FacilitiesPresenter {
 
     func attach(view: FacilitiesView) {
@@ -23,17 +25,19 @@ extension FacilitiesPresenterImpl: FacilitiesPresenter {
 
         interactor.getAddresses(cityName: cachedGuardService.city, guardServiceName: cachedGuardService.name)
             .subscribe(
-                onNext: { [weak self] addresses in
-                    if addresses.isEmpty {
+                onNext: { [weak self] hosts in
+                    if hosts.isEmpty {
                         return
                     }
+
+                    let addresses = InetAddress.createAll(hosts: hosts, port: driverPort)
 
                     self?.communicationData.setAddresses(addresses)
 
                     let guardService = GuardService(
                         city: cachedGuardService.city,
                         name: cachedGuardService.name,
-                        ip: addresses,
+                        hosts: hosts,
                         displayedName: cachedGuardService.displayedName,
                         phoneNumber: cachedGuardService.phoneNumber
                     )

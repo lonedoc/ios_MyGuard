@@ -23,15 +23,10 @@ class UdpTestApi: UdpApiBase, TestApi {
 
     override init(communicationData: CommunicationData) {
         let currentAddress = communicationData.addressRotator.current
-        let port = communicationData.port
+        let addresses = currentAddress != nil ? [currentAddress!] : []
         let token = communicationData.token
 
-        // swiftlint:disable:next identifier_name
-        let cd = CommunicationData(
-            addresses: currentAddress != nil ? [currentAddress!] : [],
-            port: port,
-            token: token
-        )
+        let cd = CommunicationData(addresses: addresses, token: token) // swiftlint:disable:this identifier_name
 
         super.init(communicationData: cd)
     }

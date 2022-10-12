@@ -6,7 +6,7 @@ inhibit_all_warnings!
 target 'myprotection' do
   use_frameworks!
 
-  pod 'RubegProtocol-v2.0', '~> 0.2.4'
+  pod 'RubegProtocol-v2.0', '~> 0.2.6'
 
   pod 'RxSwift', '6.0.0-rc.1'
   pod 'RxCocoa', '6.0.0-rc.1'

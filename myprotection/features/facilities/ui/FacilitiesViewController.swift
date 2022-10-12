@@ -83,8 +83,6 @@ class FacilitiesViewController: UIViewController, SortingDialogDelegate {
         self.presenter = Assembler.shared.resolver.resolve(FacilitiesPresenter.self)!
 
         super.init(nibName: nil, bundle: nil)
-//        modalPresentationStyle = .fullScreen//.fullScreen
-        
         title = "Objects list".localized
     }
 

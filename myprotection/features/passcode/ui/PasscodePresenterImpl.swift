@@ -10,6 +10,8 @@ import Foundation
 import RubegProtocol_v2_0
 import RxSwift
 
+private let driverPort: Int32 = 8301
+
 extension PasscodePresenterImpl: PasscodePresenter {
 
     func attach(view: PasscodeView) {
@@ -129,10 +131,11 @@ class PasscodePresenterImpl {
     }
 
     private func prepareCommunicationData() {
-        let ipAddresses = interactor.getIpAddresses()
+        let hosts = interactor.getHosts()
         let token = interactor.getToken()
+        let addresses = InetAddress.createAll(hosts: hosts, port: driverPort)
 
-        communicationData.setAddresses(ipAddresses)
+        communicationData.setAddresses(addresses)
         communicationData.token = token
     }
 

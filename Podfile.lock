@@ -190,7 +190,7 @@ DEPENDENCIES:
   - MaterialComponents/BottomAppBar
   - MaterialComponents/ProgressView
   - MobileVLCKit
-  - RubegProtocol-v2.0 (~> 0.2.4)
+  - RubegProtocol-v2.0 (~> 0.2.6)
   - RxCocoa (= 6.0.0-rc.1)
   - RxSwift (= 6.0.0-rc.1)
   - SkeletonView
@@ -248,6 +248,6 @@ SPEC CHECKSUMS:
   SkeletonView: 77079530e1348a72f48b79ae30dcb966c1b18b6a
   Swinject: 97112918bd7e0785dc2df7036213f3c8cbba6586
 
-PODFILE CHECKSUM: 992d152b8b4e13d71eefe768bcc597729e3d6e80
+PODFILE CHECKSUM: fa6e5e162c289d068037c67b8380d5338e20c364
 
 COCOAPODS: 1.11.3

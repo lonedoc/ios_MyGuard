@@ -17,7 +17,7 @@ class CommonAssembly: Assembly {
         container.register(UserDefaultsHelper.self) { _ in UserDefaultsHelperImpl() }
 
         container
-            .register(CommunicationData.self) { _ in CommunicationData(addresses: [], port: driverPort, token: nil) }
+            .register(CommunicationData.self) { _ in CommunicationData(hosts: [], port: driverPort, token: nil) }
             .inObjectScope(.container)
 
         container.register(LoginApi.self) { resolver in

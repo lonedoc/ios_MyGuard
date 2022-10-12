@@ -6,22 +6,26 @@
 //  Copyright © 2021 Rubeg NPO. All rights reserved.
 //
 
-import Foundation
+import RubegProtocol_v2_0
 
 class CommunicationData {
 
-    private(set) var addressRotator: Rotator<String>
-    let port: Int32
+    private(set) var addressRotator: Rotator<InetAddress>
     var token: String?
 
-    init(addresses: [String], port: Int32, token: String? = nil) {
-        addressRotator = Rotator<String>.create(items: addresses)
-        self.port = port
+    init(hosts: [String], port: Int32, token: String? = nil) {
+        let addresses = InetAddress.createAll(hosts: hosts, port: port)
+        addressRotator = Rotator<InetAddress>.create(items: addresses)
         self.token = token
     }
 
-    func setAddresses(_ addresses: [String]) {
-        addressRotator = Rotator<String>.create(items: addresses)
+    init(addresses: [InetAddress], token: String? = nil) {
+        addressRotator = Rotator<InetAddress>.create(items: addresses)
+        self.token = token
+    }
+
+    func setAddresses(_ addresses: [InetAddress]) {
+        addressRotator = Rotator<InetAddress>.create(items: addresses)
     }
 
 }

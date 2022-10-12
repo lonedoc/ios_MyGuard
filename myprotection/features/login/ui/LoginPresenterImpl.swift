@@ -11,6 +11,8 @@ import RubegProtocol_v2_0
 import RxSwift
 import Swinject
 
+private let driverPort: Int32 = 8301
+
 extension LoginPresenterImpl: LoginPresenter {
 
     func attach(view: LoginView) {
@@ -74,7 +76,8 @@ extension LoginPresenterImpl: LoginPresenter {
         saveDataInCache()
 
         let communicationData = Assembler.shared.resolver.resolve(CommunicationData.self)!
-        communicationData.setAddresses(selectedGuardService?.ip ?? [])
+        let addresses = InetAddress.createAll(hosts: selectedGuardService?.hosts ?? [], port: driverPort)
+        communicationData.setAddresses(addresses)
 
         view?.openPasswordScreen()
     }
