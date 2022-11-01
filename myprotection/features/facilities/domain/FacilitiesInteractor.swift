@@ -33,7 +33,7 @@ class FacilitiesInteractor {
         return guardServicesApi.getAddresses(cityName: cityName, guardServiceName: guardServiceName)
     }
 
-    func getFacilities(userInitiated: Bool) -> Observable<[Facility]> {
+    func getFacilities(userInitiated: Bool) -> Observable<FacilitiesResponse> {
         let attempts = userInitiated ? 3 : 1
         return facilitiesApi.getFacilities(attempts: attempts)
     }

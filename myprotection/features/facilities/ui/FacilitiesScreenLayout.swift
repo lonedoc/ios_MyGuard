@@ -64,4 +64,14 @@ class FacilitiesScreenLayout: UIView {
         return button
     }()
 
+    let phoneButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+            image: UIImage.assets(.phone),
+            style: .plain,
+            target: nil,
+            action: nil
+        )
+        return button
+    }()
+
 }

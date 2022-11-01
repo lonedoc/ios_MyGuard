@@ -12,7 +12,7 @@ import RubegProtocol_v2_0
 
 class UdpFacilitiesApi: UdpApiBase, FacilitiesApi {
 
-    private var facilitiesSubject: PublishSubject<[Facility]>?
+    private var facilitiesSubject: PublishSubject<FacilitiesResponse>?
     private var facilitySubject: PublishSubject<Facility>?
     private var renamingResultSubject: PublishSubject<Bool>?
     private var statusSubject: PublishSubject<Bool>?
@@ -27,14 +27,14 @@ class UdpFacilitiesApi: UdpApiBase, FacilitiesApi {
         super.init(communicationData: communicationData)
     }
 
-    func getFacilities(attempts: Int = 1) -> Observable<[Facility]> {
+    func getFacilities(attempts: Int = 1) -> Observable<FacilitiesResponse> {
         let isSocketReady = prepareSocket()
 
         if !isSocketReady {
             return Observable.error(CommunicationError.socketError)
         }
 
-        let subject = facilitiesSubject ?? PublishSubject<[Facility]>()
+        let subject = facilitiesSubject ?? PublishSubject<FacilitiesResponse>()
         facilitiesSubject = subject
 
         let query = "{\"$c$\":\"newlk\",\"com\":\"getobject\"}"
@@ -227,8 +227,10 @@ extension UdpFacilitiesApi: RubegSocketDelegate {
                 return
             }
 
+            let guardServicePhoneNumber = jsonMap["factorytel"] as? String
             let facilities = facilitiesDTO.map { Facility($0) }
-            facilitiesSubject?.onNext(facilities)
+
+            facilitiesSubject?.onNext((facilities, guardServicePhoneNumber))
         case "objectdata":
             defer { reset() }
 

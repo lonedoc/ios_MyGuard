@@ -75,6 +75,10 @@ extension FacilitiesPresenterImpl: FacilitiesPresenter {
         view?.showSortingDialog(options: sortingOptions, defaultValue: sorting.rawValue)
     }
 
+    func phoneButtonTapped() {
+        callGuardService()
+    }
+
     func sortingChanged(_ sortingValue: Int) {
         guard
             let newSorting = FacilitiesSorting(rawValue: sortingValue),
@@ -143,8 +147,12 @@ class FacilitiesPresenterImpl {
     private func fetchFacilities(userInitiated: Bool = false) {
         interactor.getFacilities(userInitiated: userInitiated)
             .subscribe(
-                onNext: { [weak self] data in
-                    self?.updateFacilities(data)
+                onNext: { [weak self] response in
+                    self?.update(facilities: response.facilities)
+
+                    if let phoneNumber = response.guardServicePhoneNumber {
+                        self?.update(guardServicePhoneNumber: phoneNumber)
+                    }
                 },
                 onError: { [weak self] error in
                     if !userInitiated {
@@ -162,13 +170,29 @@ class FacilitiesPresenterImpl {
             .disposed(by: disposeBag)
     }
 
-    private func updateFacilities(_ data: [Facility]) {
-        let sorted = data.sorted(by: comparator.compare(_:_:))
-        facilities = sorted
+    private func update(facilities: [Facility]) {
+        let sorted = facilities.sorted(by: comparator.compare(_:_:))
+        self.facilities = sorted
 
-        view?.updateData(facilities: facilities)
+        view?.updateData(facilities: self.facilities)
         view?.hidePlaceholder()
         view?.hideRefresher()
+    }
+
+    private func update(guardServicePhoneNumber: String) {
+        guard let cachedGuardService = interactor.getGuardService() else {
+            return
+        }
+
+        let guardService = GuardService(
+            city: cachedGuardService.city,
+            name: cachedGuardService.name,
+            hosts: cachedGuardService.hosts,
+            displayedName: cachedGuardService.displayedName,
+            phoneNumber: guardServicePhoneNumber
+        )
+
+        interactor.saveGuardService(guardService)
     }
 
     private func getSortingOptions() -> [SortingOption] {
@@ -207,6 +231,26 @@ class FacilitiesPresenterImpl {
         case .byAddressDescending:
             return AddressFirstFacilitiesComparator(ascending: false)
         }
+    }
+
+    private func callGuardService() {
+        guard let phoneNumber = interactor.getGuardService()?.phoneNumber else {
+            view?.showAlertDialog(
+                title: "Error".localized,
+                message: "Phone not found".localized
+            )
+            return
+        }
+
+        guard let url = URL(string: "tel://+7\(phoneNumber)") else {
+            view?.showAlertDialog(
+                title: "Error".localized,
+                message: "The phone number cannot be called".localized
+            )
+            return
+        }
+
+        view?.call(url)
     }
 
 }

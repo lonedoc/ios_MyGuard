@@ -40,6 +40,19 @@ extension FacilitiesViewController: FacilitiesView {
         }
     }
 
+    func call(_ url: URL) {
+        DispatchQueue.main.async {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            } else {
+                self.showAlertDialog(
+                    title: "Error".localized,
+                    message: "The number cannot be dialed".localized
+                )
+            }
+        }
+    }
+
     func showSortingDialog(options: [SortingOption], defaultValue: Int) {
         DispatchQueue.main.async {
             let sortingDialog = SortingDialogController()
@@ -124,6 +137,11 @@ class FacilitiesViewController: UIViewController, SortingDialogDelegate {
 
         rootView.sortButton.target = self
         rootView.sortButton.action = #selector(sortButtonTapped)
+
+        rootView.phoneButton.target = self
+        rootView.phoneButton.action = #selector(phoneButtonTapped)
+
+        navigationItem.leftBarButtonItem = rootView.phoneButton
         navigationItem.rightBarButtonItem = rootView.sortButton
     }
 
@@ -133,6 +151,10 @@ class FacilitiesViewController: UIViewController, SortingDialogDelegate {
 
     @objc private func sortButtonTapped() {
         presenter.sortButtonTapped()
+    }
+
+    @objc private func phoneButtonTapped() {
+        presenter.phoneButtonTapped()
     }
 
     func sortingChanged(sorting: Int) {

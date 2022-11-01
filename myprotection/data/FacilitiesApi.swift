@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol FacilitiesApi {
-    func getFacilities(attempts: Int) -> Observable<[Facility]>
+    func getFacilities(attempts: Int) -> Observable<FacilitiesResponse>
     func getFacility(facilityId: String) -> Observable<Facility>
     func setName(facilityId: String, name: String) -> Observable<Bool>
     func setStatus(facilityId: String, statusCode: Int) -> Observable<Bool>

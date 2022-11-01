@@ -121,6 +121,7 @@
 		5C7F57E32747A0A2009735C0 /* FacilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7F57E22747A0A2009735C0 /* FacilityView.swift */; };
 		5C7F57E52747A0D3009735C0 /* ExecutingCommandType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7F57E42747A0D3009735C0 /* ExecutingCommandType.swift */; };
 		5C7F57EA274B3250009735C0 /* FacilityAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7F57E9274B3250009735C0 /* FacilityAssembly.swift */; };
+		5C82B7F129068A10004DA706 /* FacilitiesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C82B7F029068A10004DA706 /* FacilitiesResponse.swift */; };
 		5C8310962692DE36001B713C /* GetErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8310952692DE36001B713C /* GetErrorMessage.swift */; };
 		5C851665279017C600139C30 /* AccountAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C851664279017C600139C30 /* AccountAssembly.swift */; };
 		5C85166727901C7C00139C30 /* AccountPresenterImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C85166627901C7C00139C30 /* AccountPresenterImpl.swift */; };
@@ -302,6 +303,7 @@
 		5C7F57E22747A0A2009735C0 /* FacilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilityView.swift; sourceTree = "<group>"; };
 		5C7F57E42747A0D3009735C0 /* ExecutingCommandType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutingCommandType.swift; sourceTree = "<group>"; };
 		5C7F57E9274B3250009735C0 /* FacilityAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilityAssembly.swift; sourceTree = "<group>"; };
+		5C82B7F029068A10004DA706 /* FacilitiesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilitiesResponse.swift; sourceTree = "<group>"; };
 		5C8310952692DE36001B713C /* GetErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetErrorMessage.swift; sourceTree = "<group>"; };
 		5C851664279017C600139C30 /* AccountAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAssembly.swift; sourceTree = "<group>"; };
 		5C85166627901C7C00139C30 /* AccountPresenterImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPresenterImpl.swift; sourceTree = "<group>"; };
@@ -883,6 +885,7 @@
 				5C60BFA82750BAEE001E8878 /* LoginResponse.swift */,
 				5CBE0A912796AACA004B07D9 /* GuardServiceContact.swift */,
 				5C7DF0B82861AD1B00914E0E /* DeviceDTO.swift */,
+				5C82B7F029068A10004DA706 /* FacilitiesResponse.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -1408,6 +1411,7 @@
 				5CF5A21024BEDF5E00FA19A4 /* SceneDelegate.swift in Sources */,
 				5C5E3CD3276B4476009108A2 /* FacilitiesInteractor.swift in Sources */,
 				5C7F57CF274765A6009735C0 /* PasscodeView.swift in Sources */,
+				5C82B7F129068A10004DA706 /* FacilitiesResponse.swift in Sources */,
 				5C0F2DEC266F2E8600644867 /* StatusCode.swift in Sources */,
 				5C35C477277023CD008DE206 /* EventsRepository.swift in Sources */,
 				5C0D2D6C274B49B600F401A4 /* EventsAssembly.swift in Sources */,

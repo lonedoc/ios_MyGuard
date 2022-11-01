@@ -14,6 +14,7 @@ protocol FacilitiesView: AlertDialog {
     func hidePlaceholder()
     func hideRefresher()
     func updateData(facilities: [Facility])
+    func call(_ url: URL)
     func showSortingDialog(options: [SortingOption], defaultValue: Int)
     func openObjectScreen(facility: Facility)
 }
