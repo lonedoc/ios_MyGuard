@@ -10,131 +10,111 @@ import UIKit
 import SkeletonView
 import Swinject
 
-// swiftlint:disable file_length
+// swiftlint:disable file_length type_body_length
+class FacilityViewController: UIViewController, FacilityView, CancelAlarmDialogDelegate {
 
-extension FacilityViewController: FacilityView {
+    private let presenter: FacilityPresenter
 
-    func setName(_ name: String) {
+    // swiftlint:disable:next force_cast
+    private var rootView: FacilityScreenLayout { return view as! FacilityScreenLayout }
+
+    private let tabTitles = [
+        "Events".localized,
+        "Sensors".localized,
+        "Payment".localized,
+        "Application".localized
+    ]
+
+    private var eventsViewController: EventsViewController?
+    private var sensorsViewController: SensorsViewController?
+    private var accountViewController: AccountViewController?
+    private var applicationsViewController: ApplicationsViewController?
+    private var currentViewController: UIViewController?
+
+    private let formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy HH:mm:ss"
+        return formatter
+    }()
+
+    init(facility: Facility) {
+        self.presenter = Assembler.shared.resolver.resolve(
+            FacilityPresenter.self,
+            argument: facility
+        )!
+
+        super.init(nibName: nil, bundle: nil)
+        modalPresentationStyle = .fullScreen
+        title = "Details".localized
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func setAlarmButtonHidden(_ hidden: Bool) {
         DispatchQueue.main.async {
-            self.title = name
+            self.rootView.alarmButton.isHidden = hidden
+        }
+    }
+
+    func setCancelAlarmButtonHidden(_ hidden: Bool) {
+        DispatchQueue.main.async {
+            self.rootView.cancelAlarmButton.isHidden = hidden
+        }
+    }
+
+    func setArmButtonHidden(_ hidden: Bool) {
+        DispatchQueue.main.async {
+            self.rootView.armButton.isHidden = hidden
+        }
+    }
+
+    func setDisarmButtonHidden(_ hidden: Bool) {
+        DispatchQueue.main.async {
+            self.rootView.disarmButton.isHidden = hidden
+        }
+    }
+
+    func setTitle(_ title: String) {
+        DispatchQueue.main.async {
+            self.rootView.titleLabel.text = title
         }
     }
 
     func setStatusDescription(_ description: String) {
         DispatchQueue.main.async {
-            self.rootView.statusDescriptionView.text = description
-        }
-    }
-
-    func setAddress(_ address: String) {
-        DispatchQueue.main.async {
-            self.rootView.addressView.text = address
+            self.rootView.statusLabel.text = description
         }
     }
 
     func setStatusIcon(_ status: StatusCode) {
         DispatchQueue.main.async {
-            if let image = self.getStatusImage(status) {
-                self.rootView.armButton.setImage(image, for: .normal)
-            }
+            self.rootView.updateStatus(statusCode: status)
+        }
+    }
+
+    func setOnlineChannelIconHidden(_ hidden: Bool) {
+        DispatchQueue.main.async {
+            self.rootView.onlineChannelIcon.isHidden = hidden
+        }
+    }
+
+    func setElectricityIconHidden(_ hidden: Bool) {
+        DispatchQueue.main.async {
+            self.rootView.powerSupplyMalfunctionIcon.isHidden = hidden
+        }
+    }
+
+    func setBatteryIconHidden(_ hidden: Bool) {
+        DispatchQueue.main.async {
+            self.rootView.batteryMalfunctionIcon.isHidden = hidden
         }
     }
 
     func setDevices(_ devices: [Device]) {
         DispatchQueue.main.async {
             self.sensorsViewController?.setDevices(devices)
-        }
-    }
-
-    func setLinkIconHidden(_ hidden: Bool) {
-        DispatchQueue.main.async {
-            self.rootView.linkIconWrapper.isHidden = hidden
-        }
-    }
-
-    func setElectricityIconHidden(_ hidden: Bool) {
-        DispatchQueue.main.async {
-            self.rootView.electricityMalfunctionIconWrapper.isHidden = hidden
-        }
-    }
-
-    func setBatteryIconHidden(_ hidden: Bool) {
-        DispatchQueue.main.async {
-            self.rootView.batteryMalfunctionIconWrapper.isHidden = hidden
-        }
-    }
-
-    func setLinkIcon(linked: Bool) {
-        DispatchQueue.main.async {
-            let iconResource: AssetsImage = linked ? .link : .linkOff
-            self.rootView.linkIcon.image = UIImage.assets(iconResource)
-        }
-    }
-
-    func setArmButtonEnabled(_ enabled: Bool) {
-        DispatchQueue.main.async {
-            self.rootView.armButton.isEnabled = enabled
-        }
-    }
-
-    func setAlarmButtonEnabled(_ enabled: Bool) {
-        DispatchQueue.main.async {
-            self.rootView.bottomAppBar.floatingButton.setEnabled(enabled, animated: true)
-        }
-    }
-
-    func setAlarmButtonVariant(_ isStartAlarmVariant: Bool) {
-        let backgroundColor = isStartAlarmVariant ? UIColor.errorColor : UIColor.secondaryColor
-        let icon = isStartAlarmVariant ? UIImage.assets(.alarm) : UIImage.assets(.cancelAlarm)
-
-        DispatchQueue.main.async {
-            self.rootView.bottomAppBar.floatingButton.setImage(icon, for: .normal)
-            self.rootView.bottomAppBar.floatingButton.setBackgroundColor(backgroundColor, for: .normal)
-        }
-    }
-
-    func setAccountsButtonHidden(_ hidden: Bool) {
-        DispatchQueue.main.async {
-            let buttons = hidden ?
-                [self.rootView.testAlarmButton] :
-                [self.rootView.accountButton, self.rootView.testAlarmButton]
-
-            self.rootView.bottomAppBar.trailingBarButtonItems = buttons
-        }
-    }
-
-    func showProgressBar(message: String, type: ExecutingCommandType) {
-        DispatchQueue.main.async {
-            let color: UIColor = type == .arming ? .guardedStatusColor : .notGuardedStatusColor
-
-            self.rootView.armingProgressText.text = message
-            self.rootView.armingProgressView.progressTintColor = color
-            self.rootView.armingProgressView.trackTintColor = color.withAlphaComponent(0.5)
-
-            self.rootView.armingProgressView.alpha = 0
-            self.rootView.armingProgressText.alpha = 0
-            self.rootView.armingProgressView.startAnimating()
-
-            UIView.animate(withDuration: 1) {
-                self.rootView.armingProgressView.alpha = 1
-                self.rootView.armingProgressText.alpha = 1
-            }
-        }
-    }
-
-    func hideProgressBar() {
-        DispatchQueue.main.async {
-            self.rootView.armingProgressView.alpha = 1
-            self.rootView.armingProgressText.alpha = 1
-
-            UIView.animate(
-                withDuration: 1,
-                animations: {
-                    self.rootView.armingProgressView.alpha = 0
-                    self.rootView.armingProgressText.alpha = 0
-                },
-                completion: { _ in self.rootView.armingProgressView.stopAnimating() }
-            )
         }
     }
 
@@ -164,7 +144,7 @@ extension FacilityViewController: FacilityView {
 
         viewController.setDevices(facility.devices)
 
-        self.replaceChild(viewController: viewController)
+        replaceChild(viewController: viewController)
     }
 
     func showAccountView(accounts: [Account]) {
@@ -173,7 +153,14 @@ extension FacilityViewController: FacilityView {
 
         viewController.updateAccounts(accounts)
 
-        self.replaceChild(viewController: viewController)
+        replaceChild(viewController: viewController)
+    }
+
+    func showApplicationView(facilityId: String) {
+        let viewController = applicationsViewController ?? ApplicationsViewController(facilityId: facilityId)
+        applicationsViewController = viewController
+
+        replaceChild(viewController: viewController)
     }
 
     func showConfirmDialog(message: String, proceedText: String, proceed: @escaping () -> Void) {
@@ -183,7 +170,7 @@ extension FacilityViewController: FacilityView {
             preferredStyle: .alert
         )
 
-        dialog.view.tintColor = .primaryColor
+        dialog.view.tintColor = UIColor(color: .accent)
 
         let proceedAction = UIAlertAction(title: proceedText, style: .default, handler: { _ in proceed() })
         dialog.addAction(proceedAction)
@@ -202,7 +189,7 @@ extension FacilityViewController: FacilityView {
                 preferredStyle: .alert
             )
 
-            controller.view.tintColor = .primaryColor
+            controller.view.tintColor = UIColor(color: .accent)
 
             controller.addTextField { textField in
                 textField.text = currentName
@@ -253,56 +240,12 @@ extension FacilityViewController: FacilityView {
         }
     }
 
-    func showNavigationItems(isApplicationsEnabled: Bool) {
-        DispatchQueue.main.async {
-            self.navigationItem.rightBarButtonItems = isApplicationsEnabled ?
-                [self.rootView.applyButton, self.rootView.editButton] :
-                [self.rootView.editButton]
-        }
-    }
-
-    func openApplicationScreen(facilityId: String) {
+    func openApplicationView(facilityId: String) {
         DispatchQueue.main.async {
             let controller = ApplicationsViewController(facilityId: facilityId)
             controller.title = "Application".localized
             self.navigationController?.pushViewController(controller, animated: true)
         }
-    }
-
-}
-
-// MARK: -
-
-class FacilityViewController: UIViewController, CancelAlarmDialogDelegate {
-
-    private let presenter: FacilityPresenter
-
-    // swiftlint:disable:next force_cast
-    private var rootView: FacilityScreenLayout { return view as! FacilityScreenLayout }
-
-    private var eventsViewController: EventsViewController?
-    private var sensorsViewController: SensorsViewController?
-    private var accountViewController: AccountViewController?
-    private var currentViewController: UIViewController?
-
-    private let formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy HH:mm:ss"
-        return formatter
-    }()
-
-    init(facility: Facility) {
-        self.presenter = Assembler.shared.resolver.resolve(
-            FacilityPresenter.self,
-            argument: facility
-        )!
-
-        super.init(nibName: nil, bundle: nil)
-        modalPresentationStyle = .fullScreen
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     override func loadView() {
@@ -318,66 +261,52 @@ class FacilityViewController: UIViewController, CancelAlarmDialogDelegate {
         presenter.viewDidLoad()
     }
 
-    private func setup() {
-        rootView.editButton.target = self
-        rootView.editButton.action = #selector(editButtonTapped)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter.viewWillAppear()
+        subscribeForAppEvents()
+        subscribeForKeyboardEvents()
+    }
 
-        rootView.applyButton.target = self
-        rootView.applyButton.action = #selector(applyButtonTapped)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        presenter.viewWillDisappear()
+        unsubscribeFromAppEvents()
+        unsubscribeFromKeyboardEvents()
+    }
+
+    private func setup() {
+        navigationItem.rightBarButtonItems = [rootView.testModeButton, rootView.renameButton]
+
+        rootView.testModeButton.target = self
+        rootView.testModeButton.action = #selector(testAlarmButtonTapped)
+
+        rootView.renameButton.target = self
+        rootView.renameButton.action = #selector(editButtonTapped)
 
         let gestureRecognizer = UILongPressGestureRecognizer(
             target: self,
-            action: #selector(armButtonLongPressed)
+            action: #selector(self.armButtonLongPressed)
         )
 
-        rootView.armButton.addGestureRecognizer(gestureRecognizer)
+        rootView.alarmButton.addTarget(self, action: #selector(alarmButtonTapped), for: .touchUpInside)
+        rootView.cancelAlarmButton.addTarget(self, action: #selector(cancelAlarmButtonTapped), for: .touchUpInside)
         rootView.armButton.addTarget(self, action: #selector(armButtonTapped), for: .touchUpInside)
+        rootView.disarmButton.addTarget(self, action: #selector(disarmButtonTapped), for: .touchUpInside)
+        rootView.armButton.addGestureRecognizer(gestureRecognizer)
 
-        rootView.bottomAppBar.floatingButton.addTarget(
-            self,
-            action: #selector(alarmButtonTapped),
-            for: .touchUpInside
-        )
+        rootView.tabs.titles = tabTitles
+        rootView.tabs.menuDelegate = self
 
-        rootView.testAlarmButton.target = self
-        rootView.testAlarmButton.action = #selector(testAlarmButtonTapped)
-
-        rootView.eventsButton.target = self
-        rootView.eventsButton.action = #selector(eventsButtonTapped)
-
-        rootView.sensorsButton.target = self
-        rootView.sensorsButton.action = #selector(sensorsButtonTapped)
-
-        rootView.accountButton.target = self
-        rootView.accountButton.action = #selector(accountButtonTapped)
-    }
-
-    @objc func eventsButtonTapped() {
-        presenter.eventsButtonTapped()
-    }
-
-    @objc func sensorsButtonTapped() {
-        presenter.sensorsButtonTapped()
-    }
-
-    @objc func accountButtonTapped() {
-        presenter.accountButtonTapped()
+        rootView.tabs.collectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: [])
     }
 
     @objc func alarmButtonTapped() {
         presenter.alarmButtonTapped()
     }
 
-    @objc func testAlarmButtonTapped() {
-        presenter.testAlarmButtonTapped()
-    }
-
-    @objc func editButtonTapped() {
-        presenter.editButtonTapped()
-    }
-
-    @objc func applyButtonTapped() {
-        presenter.applyButtonTapped()
+    @objc func cancelAlarmButtonTapped() {
+        presenter.cancelAlarmButtonTapped()
     }
 
     @objc func armButtonTapped() {
@@ -392,13 +321,35 @@ class FacilityViewController: UIViewController, CancelAlarmDialogDelegate {
         presenter.armButtonLongPressed()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        presenter.viewWillAppear()
-        subscribe()
+    @objc func disarmButtonTapped() {
+        presenter.disarmButtonTapped()
     }
 
-    private func subscribe() {
+    @objc func eventsButtonTapped() {
+        presenter.eventsButtonTapped()
+    }
+
+    @objc func sensorsButtonTapped() {
+        presenter.sensorsButtonTapped()
+    }
+
+    @objc func accountButtonTapped() {
+        presenter.accountButtonTapped()
+    }
+
+    @objc func testAlarmButtonTapped() {
+        presenter.testAlarmButtonTapped()
+    }
+
+    @objc func editButtonTapped() {
+        presenter.editButtonTapped()
+    }
+
+    @objc func applyButtonTapped() {
+        presenter.applyButtonTapped()
+    }
+
+    private func subscribeForAppEvents() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(viewWentBackground),
@@ -412,7 +363,9 @@ class FacilityViewController: UIViewController, CancelAlarmDialogDelegate {
             name: TestViewController.willDisappear,
             object: nil
         )
+    }
 
+    private func subscribeForKeyboardEvents() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardWillShow),
@@ -428,13 +381,7 @@ class FacilityViewController: UIViewController, CancelAlarmDialogDelegate {
         )
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        presenter.viewWillDisappear()
-        unsubscribe()
-    }
-
-    private func unsubscribe() {
+    private func unsubscribeFromAppEvents() {
         NotificationCenter.default.removeObserver(
             self,
             name: TestViewController.willAppear,
@@ -446,7 +393,9 @@ class FacilityViewController: UIViewController, CancelAlarmDialogDelegate {
             name: TestViewController.willDisappear,
             object: nil
         )
+    }
 
+    private func unsubscribeFromKeyboardEvents() {
         NotificationCenter.default.removeObserver(
             self,
             name: UIResponder.keyboardWillShowNotification,
@@ -483,6 +432,7 @@ class FacilityViewController: UIViewController, CancelAlarmDialogDelegate {
         )
 
         rootView.scrollView.scrollIndicatorInsets = rootView.scrollView.contentInset
+        rootView.scrollView.scrollRectToVisible(rootView.contentView.frame, animated: true)
     }
 
     @objc func keyboardWillHide(_: Notification) {
@@ -492,22 +442,6 @@ class FacilityViewController: UIViewController, CancelAlarmDialogDelegate {
 
     func didSelectPasscode(passcode: String) {
         presenter.cancelAlarmPasscodeProvided(passcode: passcode)
-    }
-
-    private func getStatusImage(_ status: StatusCode) -> UIImage? {
-        if status.isAlarm {
-            if status.isGuarded {
-                return UIImage.assets(.alarmGuardedStatus)
-            } else {
-                return UIImage.assets(.alarmNotGuardedStatus)
-            }
-        } else {
-            if status.isGuarded {
-                return UIImage.assets(.guardedStatus)
-            } else {
-                return UIImage.assets(.notGuardedStatus)
-            }
-        }
     }
 
     private func getUnitOfWork(completion: @escaping (UnitOfWork?) -> Void) {
@@ -540,8 +474,12 @@ class FacilityViewController: UIViewController, CancelAlarmDialogDelegate {
     private func include(viewController: UIViewController) {
         addChild(viewController)
 
-        viewController.view.frame = rootView.bottomView.bounds
-        rootView.bottomView.addSubview(viewController.view)
+        rootView.contentView.addSubview(viewController.view)
+        viewController.view.translatesAutoresizingMaskIntoConstraints = false
+        viewController.view.topAnchor.constraint(equalTo: rootView.contentView.topAnchor).isActive = true
+        viewController.view.leadingAnchor.constraint(equalTo: rootView.contentView.leadingAnchor).isActive = true
+        viewController.view.trailingAnchor.constraint(equalTo: rootView.contentView.trailingAnchor).isActive = true
+        viewController.view.bottomAnchor.constraint(equalTo: rootView.contentView.bottomAnchor).isActive = true
 
         viewController.didMove(toParent: self)
     }
@@ -554,6 +492,25 @@ class FacilityViewController: UIViewController, CancelAlarmDialogDelegate {
         viewController.willMove(toParent: nil)
         viewController.view.removeFromSuperview()
         viewController.removeFromParent()
+    }
+
+}
+
+extension FacilityViewController: MenuBarDelegate {
+
+    func menuBarDidSelectItemAt(menu: MenuTabsView, index: Int) {
+        switch index {
+        case 0:
+            presenter.eventsButtonTapped()
+        case 1:
+            presenter.sensorsButtonTapped()
+        case 2:
+            presenter.accountButtonTapped()
+        case 3:
+            presenter.applyButtonTapped()
+        default:
+            return
+        }
     }
 
 }

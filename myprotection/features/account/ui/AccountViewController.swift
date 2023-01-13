@@ -19,7 +19,7 @@ extension AccountViewController: AccountView {
 
     func setSum(_ sum: String) {
         DispatchQueue.main.async {
-            self.rootView.sumTextField.text = sum
+            self.rootView.amountTextField.text = sum
         }
     }
 
@@ -84,8 +84,8 @@ class AccountViewController: UIViewController {
         rootView.accountPicker.dataSource = self
         rootView.accountPicker.delegate = self
 
-        rootView.accountTextField.inputAccessoryView = rootView.toolbar
-        rootView.sumTextField.inputAccessoryView = rootView.toolbar
+//        rootView.accountTextField.inputAccessoryView = rootView.toolbar
+//        rootView.amountTextField.inputAccessoryView = rootView.toolbar
 
         rootView.prevButtonItem.target = self
         rootView.prevButtonItem.action = #selector(focusPrevControl)
@@ -97,11 +97,11 @@ class AccountViewController: UIViewController {
         rootView.doneButtonItem.action = #selector(endInput)
 
         rootView.accountTextField.delegate = self
-        rootView.sumTextField.delegate = self
+        rootView.amountTextField.delegate = self
 
         rootView.submitButton.addTarget(
             self,
-            action: #selector(didHitSubmitButton),
+            action: #selector(submitButtonTapped),
             for: .touchUpInside
         )
     }
@@ -115,7 +115,7 @@ class AccountViewController: UIViewController {
     }
 
     private func moveFocus(next: Bool) {
-        let controls = [rootView.accountTextField, rootView.sumTextField]
+        let controls = [rootView.accountTextField, rootView.amountTextField]
 
         guard let index = (controls.firstIndex { $0.isFirstResponder }) else {
             return
@@ -136,12 +136,75 @@ class AccountViewController: UIViewController {
 
     @objc func endInput() {
         rootView.accountTextField.resignFirstResponder()
-        rootView.sumTextField.resignFirstResponder()
+        rootView.amountTextField.resignFirstResponder()
     }
 
-    @objc func didHitSubmitButton() {
+    @objc func submitButtonTapped() {
         presenter.didPushSubmitButton()
     }
+//    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        subscribe()
+//    }
+//
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        unsubscibe()
+//    }
+//
+//    private func subscribe() {
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(keyboardWillShow),
+//            name: UIResponder.keyboardWillShowNotification,
+//            object: nil
+//        )
+//
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(keyboardWillHide),
+//            name: UIResponder.keyboardWillHideNotification,
+//            object: nil
+//        )
+//    }
+//
+//    private func unsubscibe() {
+//        NotificationCenter.default.removeObserver(
+//            self,
+//            name: UIResponder.keyboardWillShowNotification,
+//            object: nil
+//        )
+//
+//        NotificationCenter.default.removeObserver(
+//            self,
+//            name: UIResponder.keyboardWillHideNotification,
+//            object: nil
+//        )
+//    }
+//
+//    @objc func keyboardWillShow(notification: Notification) {
+//        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+//            return
+//        }
+//
+//        let keyboardSize = keyboardFrame.cgRectValue
+//
+//        rootView.scrollView.contentInset = UIEdgeInsets(
+//            top: 0,
+//            left: 0,
+//            bottom: keyboardSize.height,
+//            right: 0
+//        )
+//
+//        rootView.scrollView.scrollIndicatorInsets = rootView.scrollView.contentInset
+//    }
+//
+//    @objc func keyboardWillHide(_: Notification) {
+//        rootView.scrollView.contentInset = .zero
+//        rootView.scrollView.scrollIndicatorInsets = rootView.scrollView.contentInset
+//    }
+
 }
 
 // MARK: UITextFieldDelegate
@@ -150,7 +213,7 @@ extension AccountViewController: UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         rootView.prevButtonItem.isEnabled = !rootView.accountTextField.isFirstResponder
-        rootView.nextButtonItem.isEnabled = !rootView.sumTextField.isFirstResponder
+        rootView.nextButtonItem.isEnabled = !rootView.amountTextField.isFirstResponder
     }
 
     func textField(
@@ -166,7 +229,7 @@ extension AccountViewController: UITextFieldDelegate {
             return false
         }
 
-        if textField == rootView.sumTextField {
+        if textField == rootView.amountTextField {
             presenter.didChangeSum(sum: text)
             return true
         }

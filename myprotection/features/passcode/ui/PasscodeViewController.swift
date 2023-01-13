@@ -9,7 +9,25 @@
 import UIKit
 import Swinject
 
-extension PasscodeViewController: PasscodeView {
+class PasscodeViewController: UIViewController, PasscodeView {
+
+    private let presenter: PasscodePresenter
+
+    // swiftlint:disable:next force_cast
+    private var rootView: PasscodeScreenLayout { return self.view as! PasscodeScreenLayout }
+
+    init() {
+        presenter = Assembler.shared.resolver.resolve(PasscodePresenter.self)!
+
+        super.init(nibName: nil, bundle: nil)
+
+        title = ""
+        modalPresentationStyle = .fullScreen
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     func call(_ url: URL) {
         DispatchQueue.main.async {
@@ -36,23 +54,21 @@ extension PasscodeViewController: PasscodeView {
         }
     }
 
+    func setAppBarIsHidden(_ hidden: Bool) {
+        DispatchQueue.main.async {
+            self.navigationController?.setNavigationBarHidden(hidden, animated: false)
+        }
+    }
+
     func setHint(text: String) {
         DispatchQueue.main.async {
-            self.rootView.tipLabel.text = text
+            self.rootView.hintLabel.text = text
         }
     }
 
     func setIndicator(value: Int) {
         DispatchQueue.main.async {
-            var index = 0
-            while index < 4 {
-                let highlighted = index < value
-
-                let indicator = self.rootView.indicators[index]
-                self.rootView.changeIndicatorState(indicator: indicator, highlighted: highlighted)
-
-                index += 1
-            }
+            self.rootView.setIndicator(value: value)
         }
     }
 
@@ -78,27 +94,6 @@ extension PasscodeViewController: PasscodeView {
         }
     }
 
-}
-
-// MARK: -
-
-class PasscodeViewController: UIViewController {
-
-    private let presenter: PasscodePresenter
-
-    private var rootView: PasscodeScreenLayout { return self.view as! PasscodeScreenLayout } // swiftlint:disable:this force_cast line_length
-
-    init() {
-        presenter = Assembler.shared.resolver.resolve(PasscodePresenter.self)!
-
-        super.init(nibName: nil, bundle: nil)
-        modalPresentationStyle = .fullScreen
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     override func loadView() {
         self.view = PasscodeScreenLayout(frame: UIScreen.main.bounds)
     }
@@ -115,6 +110,8 @@ class PasscodeViewController: UIViewController {
     }
 
     private func setup() {
+        UIApplication.shared.statusBarUIView?.backgroundColor = UIColor(color: .cardBackground)
+
         rootView.phoneButton.target = self
         rootView.phoneButton.action = #selector(phoneButtonTapped)
 
@@ -123,7 +120,6 @@ class PasscodeViewController: UIViewController {
 
         navigationItem.leftBarButtonItem = rootView.phoneButton
         navigationItem.rightBarButtonItem = rootView.exitButton
-        navigationItem.titleView = rootView.titleView
 
         rootView.biometricButton.addTarget(
             self,

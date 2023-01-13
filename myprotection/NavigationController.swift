@@ -12,20 +12,10 @@ import UIKit
 class NavigationController: UINavigationController {
 
     override func viewDidLoad() {
-        navigationBar.backgroundColor = .darkBackgroundColor
-        navigationBar.barTintColor = .darkBackgroundColor
+        navigationBar.backgroundColor = UIColor(color: .cardBackground)
+        navigationBar.barTintColor = UIColor(color: .cardBackground)
         navigationBar.isTranslucent = false
-        navigationBar.tintColor = .white
-        navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-
         modalPresentationStyle = .overFullScreen
-    }
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        if #available(iOS 13.0, *) {
-            return .lightContent
-        }
-        return .default
     }
 
 }

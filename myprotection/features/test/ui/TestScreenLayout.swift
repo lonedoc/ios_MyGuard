@@ -10,107 +10,146 @@ import UIKit
 import Foundation
 
 class TestScreenLayout: UIView {
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func setup() {
         backgroundColor = .black.withAlphaComponent(0.5)
-
+        
         setupViews()
         setupConstraints()
     }
-
+    
     private func setupViews() {
-        containerView.addSubview(tipText)
-        containerView.addSubview(countDownText)
+        containerView.addSubview(titleLabel)
+        containerView.addSubview(tipLabel)
+        containerView.addSubview(countDownLabel)
         containerView.addSubview(resetButton)
+        containerView.addSubview(resetButtonTopBorder)
         containerView.addSubview(completeButton)
-
+        containerView.addSubview(completeButtonTopBorder)
         addSubview(containerView)
     }
-
+    
     private func setupConstraints() {
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        containerView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        containerView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         containerView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        containerView.heightAnchor.constraint(equalToConstant: 250).isActive = true
-
-        tipText.translatesAutoresizingMaskIntoConstraints = false
-        tipText.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16).isActive = true
-        tipText.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16).isActive = true
-        tipText.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16).isActive = true
-        tipText.heightAnchor.constraint(equalToConstant: 48).isActive = true
-
-        countDownText.translatesAutoresizingMaskIntoConstraints = false
-        countDownText.topAnchor.constraint(equalTo: tipText.bottomAnchor).isActive = true
-        countDownText.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16).isActive = true
-        countDownText.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16).isActive = true
-        countDownText.bottomAnchor.constraint(equalTo: resetButton.topAnchor).isActive = true
-
-        resetButton.translatesAutoresizingMaskIntoConstraints = false
-        resetButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -16).isActive = true
-        resetButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16).isActive = true
-        resetButton.trailingAnchor.constraint(equalTo: containerView.centerXAnchor, constant: -8).isActive = true
-        resetButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
-
+        containerView.widthAnchor.constraint(equalToConstant: 270).isActive = true
+        containerView.heightAnchor.constraint(equalToConstant: 210).isActive = true
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16).isActive = true
+        titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 22).isActive = true
+        
+        tipLabel.translatesAutoresizingMaskIntoConstraints = false
+        tipLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
+        tipLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16).isActive = true
+        tipLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16).isActive = true
+        tipLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 18).isActive = true
+        
         completeButton.translatesAutoresizingMaskIntoConstraints = false
-        completeButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -16).isActive = true
-        completeButton.leadingAnchor.constraint(equalTo: containerView.centerXAnchor, constant: 8).isActive = true
-        completeButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16).isActive = true
-        completeButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        completeButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        completeButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        completeButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
+        completeButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        
+        completeButtonTopBorder.translatesAutoresizingMaskIntoConstraints = false
+        completeButtonTopBorder.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        completeButtonTopBorder.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        completeButtonTopBorder.bottomAnchor.constraint(equalTo: completeButton.topAnchor).isActive = true
+        completeButtonTopBorder.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+        resetButton.translatesAutoresizingMaskIntoConstraints = false
+        resetButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        resetButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        resetButton.bottomAnchor.constraint(equalTo: completeButtonTopBorder.topAnchor).isActive = true
+        resetButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        
+        resetButtonTopBorder.translatesAutoresizingMaskIntoConstraints = false
+        resetButtonTopBorder.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        resetButtonTopBorder.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        resetButtonTopBorder.bottomAnchor.constraint(equalTo: resetButton.topAnchor).isActive = true
+        resetButtonTopBorder.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+        countDownLabel.translatesAutoresizingMaskIntoConstraints = false
+        countDownLabel.topAnchor.constraint(equalTo: tipLabel.bottomAnchor).isActive = true
+        countDownLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16).isActive = true
+        countDownLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16).isActive = true
+        countDownLabel.bottomAnchor.constraint(equalTo: resetButtonTopBorder.topAnchor).isActive = true
     }
-
+    
     // MARK: - Views
-
+    
     let containerView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .backgroundColor
+        view.layer.cornerRadius = 16
+        view.backgroundColor = UIColor(color: .alertDialogBackground)
         return view
     }()
-
-    let tipText: UILabel = {
-        let label = UILabel()
+    
+    let titleLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.font = TextStyle.dialogTitle.font
+        label.textColor = UIColor(color: .textContrast)
+        label.text = "Testing".localized
         label.textAlignment = .center
-        label.numberOfLines = 0
-        label.textColor = .paleTextColor
         return label
     }()
-
-    let countDownText: UILabel = {
-        let label = UILabel()
+    
+    let tipLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.font = TextStyle.caption3.font
+        label.textColor = UIColor(color: .textSecondary)
         label.textAlignment = .center
+        return label
+    }()
+    
+    let countDownLabel: UILabel = {
+        let label = UILabel(frame: .zero)
         label.numberOfLines = 1
-        label.textColor = .contrastTextColor
-        label.font = label.font.withSize(64)
+        label.font = TextStyle.display2.font
+        label.textColor = UIColor(color: .accent)
+        label.textAlignment = .center
         label.text = "0:00"
         return label
     }()
-
+    
     let resetButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 12
-        button.setBackgroundColor(.primaryColor, for: .normal)
-        button.setBackgroundColor(.primaryColorPale, for: .disabled)
+        let button = UIButton(frame: .zero)
+        button.setTitleColor(UIColor(color: .accent), for: .normal)
+        button.titleLabel?.font = TextStyle.paragraph.font
         button.setTitle("Reset".localized, for: .normal)
-        button.isEnabled = false
         return button
     }()
-
+    
+    var resetButtonTopBorder: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = UIColor(color: .tabMenuDelimiter)
+        return view
+    }()
+    
     let completeButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 12
-        button.setBackgroundColor(.primaryColor, for: .normal)
-        button.setBackgroundColor(.primaryColorPale, for: .disabled)
+        let button = UIButton(frame: .zero)
+        button.setTitleColor(UIColor(color: .error), for: .normal)
+        button.titleLabel?.font = TextStyle.paragraph.font
         button.setTitle("Complete".localized, for: .normal)
         return button
     }()
-
+    
+    var completeButtonTopBorder: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = UIColor(color: .tabMenuDelimiter)
+        return view
+    }()
+    
 }

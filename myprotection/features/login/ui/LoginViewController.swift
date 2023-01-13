@@ -10,7 +10,26 @@ import Foundation
 import UIKit
 import Swinject
 
-extension LoginViewController: LoginView {
+class LoginViewController: UIViewController, LoginView {
+
+    private let presenter: LoginPresenter
+
+    // swiftlint:disable:next force_cast
+    private var rootView: LoginScreenLayout { return self.view as! LoginScreenLayout }
+
+    private var cities = [""]
+    private var guardServices = [""]
+
+    init() {
+        self.presenter = Assembler.shared.resolver.resolve(LoginPresenter.self)!
+
+        super.init(nibName: nil, bundle: nil)
+        self.modalPresentationStyle = .fullScreen
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     func setCities(_ cities: [String]) {
         DispatchQueue.main.async {
@@ -69,30 +88,7 @@ extension LoginViewController: LoginView {
         }
     }
 
-}
-
-// MARK: -
-
-class LoginViewController: UIViewController {
-
-    private let presenter: LoginPresenter
-
-    // swiftlint:disable:next force_cast
-    private var rootView: LoginScreenLayout { return self.view as! LoginScreenLayout }
-
-    private var cities = [""]
-    private var guardServices = [""]
-
-    init() {
-        self.presenter = Assembler.shared.resolver.resolve(LoginPresenter.self)!
-
-        super.init(nibName: nil, bundle: nil)
-        self.modalPresentationStyle = .fullScreen
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    // MARK: - Setup
 
     override func loadView() {
         self.view = LoginScreenLayout(frame: UIScreen.main.bounds)
@@ -107,19 +103,15 @@ class LoginViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        subscribe()
+        subscribeForKeyboardEvents()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        unsubscibe()
+        unsubscibeFromKeyboardEvents()
     }
 
     private func setup() {
-        rootView.cityTextField.inputAccessoryView = rootView.toolbar
-        rootView.guardServiceTextField.inputAccessoryView = rootView.toolbar
-        rootView.phoneTextField.inputAccessoryView = rootView.toolbar
-
         rootView.cityPicker.dataSource = self
         rootView.cityPicker.delegate = self
 
@@ -141,13 +133,39 @@ class LoginViewController: UIViewController {
 
         rootView.submitButton.addTarget(
             self,
-            action: #selector(didHitSubmitButton),
+            action: #selector(submitButtonTapped),
             for: .touchUpInside
         )
     }
 
-    @objc func didHitSubmitButton() {
-        presenter.didHitSubmitButton()
+    private func subscribeForKeyboardEvents() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+
+    private func unsubscibeFromKeyboardEvents() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
 
     @objc func focusPrevControl() {
@@ -156,6 +174,16 @@ class LoginViewController: UIViewController {
 
     @objc func focusNextControl() {
         moveFocus(next: true)
+    }
+
+    @objc func endInput() {
+        rootView.cityTextField.resignFirstResponder()
+        rootView.guardServiceTextField.resignFirstResponder()
+        rootView.phoneTextField.resignFirstResponder()
+    }
+
+    @objc func submitButtonTapped() {
+        presenter.submitButtonTapped()
     }
 
     private func moveFocus(next: Bool) {
@@ -176,42 +204,6 @@ class LoginViewController: UIViewController {
         if controls[nextIndex].canBecomeFirstResponder {
             controls[nextIndex].becomeFirstResponder()
         }
-    }
-
-    @objc func endInput() {
-        rootView.cityTextField.resignFirstResponder()
-        rootView.guardServiceTextField.resignFirstResponder()
-        rootView.phoneTextField.resignFirstResponder()
-    }
-
-    private func subscribe() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillShow),
-            name: UIResponder.keyboardWillShowNotification,
-            object: nil
-        )
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillHide),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
-    }
-
-    private func unsubscibe() {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: UIResponder.keyboardWillShowNotification,
-            object: nil
-        )
-
-        NotificationCenter.default.removeObserver(
-            self,
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
     }
 
     @objc func keyboardWillShow(notification: Notification) {
@@ -238,9 +230,17 @@ class LoginViewController: UIViewController {
 
 }
 
-// MARK: UITextFieldDelegate
+// MARK: - UITextFieldDelegate
 
 extension LoginViewController: UITextFieldDelegate {
+
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        if textField == rootView.phoneTextField {
+            presenter.phoneNumberChanged("")
+        }
+
+        return true
+    }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         rootView.prevButtonItem.isEnabled = !rootView.cityTextField.isFirstResponder
@@ -261,7 +261,7 @@ extension LoginViewController: UITextFieldDelegate {
         }
 
         if textField == rootView.phoneTextField {
-            presenter.didChangePhone(value: text)
+            presenter.phoneNumberChanged(text)
             return false
         }
 
@@ -270,7 +270,7 @@ extension LoginViewController: UITextFieldDelegate {
                 return false
             }
 
-            presenter.didSelect(city: text)
+            presenter.citySelected(text)
         }
 
         if textField == rootView.guardServiceTextField {
@@ -278,7 +278,7 @@ extension LoginViewController: UITextFieldDelegate {
                 return false
             }
 
-            presenter.didSelect(guardService: text)
+            presenter.guardServiceSelected(text)
         }
 
         return true
@@ -297,7 +297,7 @@ extension LoginViewController: UITextFieldDelegate {
 
 }
 
-// MARK: UIPickerViewDataSource UIPickerViewDelegate
+// MARK: - UIPickerViewDataSource, UIPickerViewDelegate
 
 extension LoginViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 
@@ -338,9 +338,9 @@ extension LoginViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     ) {
         switch pickerView {
         case rootView.cityPicker:
-            presenter.didSelect(city: cities[row])
+            presenter.citySelected(cities[row])
         case rootView.guardServicePicker:
-            presenter.didSelect(guardService: guardServices[row])
+            presenter.guardServiceSelected(guardServices[row])
         default:
             return
         }

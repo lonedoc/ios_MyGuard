@@ -11,8 +11,8 @@ import Foundation
 protocol PasswordPresenter {
     func attach(view: PasswordView)
     func viewDidLoad()
-    func didHitRetryButton()
-    func didHitProceedButton()
-    func didChangePassword(value: String)
-    func didHitCancelButton()
+    func retryButtonTapped()
+    func proceedButtonTapped()
+    func passwordChanged(_ value: String)
+    func cancelButtonTapped()
 }

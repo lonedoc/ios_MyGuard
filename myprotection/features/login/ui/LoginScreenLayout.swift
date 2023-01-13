@@ -9,6 +9,7 @@
 import UIKit
 import MobileVLCKit
 
+// swiftlin:disable type_body_length
 class LoginScreenLayout: UIView {
 
     override init(frame: CGRect) {
@@ -20,24 +21,33 @@ class LoginScreenLayout: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func layoutSubviews() {
+        updateAppearance()
+        super.layoutSubviews()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        updateAppearance()
+    }
+
     private func setup() {
-        backgroundColor = .darkBackgroundColor
+        backgroundColor = UIColor(color: .backgroundPrimary)
 
         setupViews()
         setupConstraints()
     }
 
     private func setupViews() {
-        addSubview(backgroundView)
+        wrapperView.addSubview(titleLabel)
+        wrapperView.addSubview(hintLabel)
+        wrapperView.addSubview(cityTextField)
+        wrapperView.addSubview(cityTextFieldBorderView)
+        wrapperView.addSubview(guardServiceTextField)
+        wrapperView.addSubview(guardServiceTextFieldBorderView)
+        wrapperView.addSubview(phoneTextField)
+        wrapperView.addSubview(phoneTextFieldBorderView)
+        wrapperView.addSubview(submitButton)
 
-        contentView.addSubview(logoView)
-        contentView.addSubview(logoTextView)
-        contentView.addSubview(cityTextField)
-        contentView.addSubview(guardServiceTextField)
-        contentView.addSubview(phoneTextField)
-        contentView.addSubview(submitButton)
-
-        wrapperView.addSubview(contentView)
         scrollView.addSubview(wrapperView)
 
         addSubview(scrollView)
@@ -47,80 +57,110 @@ class LoginScreenLayout: UIView {
             animated: false
         )
 
+        cityTextField.inputAccessoryView = toolbar
+        guardServiceTextField.inputAccessoryView = toolbar
+        phoneTextField.inputAccessoryView = toolbar
+
         cityTextField.inputView = cityPicker
         guardServiceTextField.inputView = guardServicePicker
     }
 
+    // swiftlint:disable line_length
     // swiftlint:disable:next function_body_length
     private func setupConstraints() {
-        backgroundView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        backgroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        backgroundView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        backgroundView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
-        scrollView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor).isActive = true
-        scrollView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
 
         wrapperView.translatesAutoresizingMaskIntoConstraints = false
         wrapperView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        wrapperView.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
-        wrapperView.rightAnchor.constraint(equalTo: scrollView.rightAnchor).isActive = true
+        wrapperView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        wrapperView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
         wrapperView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-        wrapperView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        wrapperView.heightAnchor.constraint(equalTo: scrollView.heightAnchor).isActive = true
+        wrapperView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+        wrapperView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
 
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.leftAnchor.constraint(equalTo: wrapperView.leftAnchor).isActive = true
-        contentView.rightAnchor.constraint(equalTo: wrapperView.rightAnchor).isActive = true
-        contentView.heightAnchor.constraint(equalToConstant: 410).isActive = true
-        contentView.centerYAnchor.constraint(equalTo: wrapperView.centerYAnchor).isActive = true
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.topAnchor.constraint(equalTo: wrapperView.topAnchor, constant: 96).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor, constant: dimensions.windowPadding).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor, constant: -dimensions.windowPadding).isActive = true
+        titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
 
-        logoView.translatesAutoresizingMaskIntoConstraints = false
-        logoView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        logoView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        logoView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-
-        logoTextView.translatesAutoresizingMaskIntoConstraints = false
-        logoTextView.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 16).isActive = true
-        logoTextView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        hintLabel.translatesAutoresizingMaskIntoConstraints = false
+        hintLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
+        hintLabel.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor, constant: dimensions.windowPadding).isActive = true
+        hintLabel.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor, constant: -dimensions.windowPadding).isActive = true
+        hintLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: dimensions.oneLineTextFieldHeight).isActive = true
 
         cityTextField.translatesAutoresizingMaskIntoConstraints = false
-        cityTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        cityTextField.topAnchor.constraint(equalTo: logoTextView.bottomAnchor, constant: 60).isActive = true
-        cityTextField.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-        cityTextField.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        cityTextField.topAnchor.constraint(equalTo: hintLabel.bottomAnchor, constant: 56).isActive = true
+        cityTextField.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor, constant: dimensions.windowPadding).isActive = true
+        cityTextField.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor, constant: -dimensions.windowPadding).isActive = true
+        cityTextField.heightAnchor.constraint(equalToConstant: dimensions.oneLineTextFieldHeight).isActive = true
+
+        cityTextFieldBorderView.translatesAutoresizingMaskIntoConstraints = false
+        cityTextFieldBorderView.leadingAnchor.constraint(equalTo: cityTextField.leadingAnchor).isActive = true
+        cityTextFieldBorderView.trailingAnchor.constraint(equalTo: cityTextField.trailingAnchor).isActive = true
+        cityTextFieldBorderView.bottomAnchor.constraint(equalTo: cityTextField.bottomAnchor, constant: 1).isActive = true
+        cityTextFieldBorderView.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
         guardServiceTextField.translatesAutoresizingMaskIntoConstraints = false
-        guardServiceTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        guardServiceTextField.topAnchor.constraint(equalTo: cityTextField.bottomAnchor, constant: 1).isActive = true
-        guardServiceTextField.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-        guardServiceTextField.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        guardServiceTextField.topAnchor.constraint(equalTo: cityTextField.bottomAnchor, constant: 8).isActive = true
+        guardServiceTextField.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor, constant: dimensions.windowPadding).isActive = true
+        guardServiceTextField.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor, constant: -dimensions.windowPadding).isActive = true
+        guardServiceTextField.heightAnchor.constraint(equalToConstant: dimensions.oneLineTextFieldHeight).isActive = true
+
+        guardServiceTextFieldBorderView.translatesAutoresizingMaskIntoConstraints = false
+        guardServiceTextFieldBorderView.leadingAnchor.constraint(equalTo: guardServiceTextField.leadingAnchor).isActive = true
+        guardServiceTextFieldBorderView.trailingAnchor.constraint(equalTo: guardServiceTextField.trailingAnchor).isActive = true
+        guardServiceTextFieldBorderView.bottomAnchor.constraint(equalTo: guardServiceTextField.bottomAnchor, constant: 1).isActive = true
+        guardServiceTextFieldBorderView.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
         phoneTextField.translatesAutoresizingMaskIntoConstraints = false
-        phoneTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        phoneTextField.topAnchor.constraint(equalTo: guardServiceTextField.bottomAnchor, constant: 1).isActive = true
-        phoneTextField.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-        phoneTextField.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        phoneTextField.topAnchor.constraint(equalTo: guardServiceTextField.bottomAnchor, constant: 8).isActive = true
+        phoneTextField.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor, constant: 16).isActive = true
+        phoneTextField.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor, constant: -16).isActive = true
+        phoneTextField.heightAnchor.constraint(equalToConstant: dimensions.oneLineTextFieldHeight).isActive = true
+
+        phoneTextFieldBorderView.translatesAutoresizingMaskIntoConstraints = false
+        phoneTextFieldBorderView.leadingAnchor.constraint(equalTo: phoneTextField.leadingAnchor).isActive = true
+        phoneTextFieldBorderView.trailingAnchor.constraint(equalTo: phoneTextField.trailingAnchor).isActive = true
+        phoneTextFieldBorderView.bottomAnchor.constraint(equalTo: phoneTextField.bottomAnchor, constant: 1).isActive = true
+        phoneTextFieldBorderView.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
         submitButton.translatesAutoresizingMaskIntoConstraints = false
-        submitButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        submitButton.topAnchor.constraint(equalTo: phoneTextField.bottomAnchor, constant: 32).isActive = true
-        submitButton.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
-        submitButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16).isActive = true
+        submitButton.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor, constant: dimensions.windowPadding).isActive = true
+        submitButton.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor, constant: -dimensions.windowPadding).isActive = true
+        submitButton.bottomAnchor.constraint(equalTo: wrapperView.bottomAnchor, constant: -96).isActive = true
+        submitButton.heightAnchor.constraint(equalToConstant: dimensions.buttonHeight).isActive = true
+    }
+    // swiftlint:enable line_length
+
+    private func updateAppearance() {
+        cityTextField.setLeftPadding(dimensions.textFieldHorizontalPadding)
+        guardServiceTextField.setLeftPadding(dimensions.textFieldHorizontalPadding)
+        phoneTextField.setLeftPadding(dimensions.textFieldHorizontalPadding)
+
+        [cityTextField, guardServiceTextField].forEach { textField in
+            if let imageView = (textField.subviews.first { subview in subview is UIImageView }) {
+                // Reset constraints
+                imageView.removeFromSuperview()
+                textField.addSubview(imageView)
+
+                imageView.translatesAutoresizingMaskIntoConstraints = false
+                imageView.widthAnchor.constraint(equalToConstant: dimensions.dropdownIconSize).isActive = true
+                imageView.heightAnchor.constraint(equalToConstant: dimensions.dropdownIconSize).isActive = true
+                imageView.centerYAnchor.constraint(equalTo: textField.centerYAnchor).isActive = true
+                imageView.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -dimensions.textFieldHorizontalPadding).isActive = true // swiftlint:disable:this line_length
+            }
+        }
+
+        layoutIfNeeded()
     }
 
     // MARK: Views
-
-    let backgroundView: UIImageView = {
-        let image = UIImage.assets(.background)
-        let view = UIImageView(image: image)
-        view.contentMode = .scaleAspectFill
-        return view
-    }()
 
     let scrollView: UIScrollView = {
         let view = UIScrollView(frame: .zero)
@@ -132,71 +172,109 @@ class LoginScreenLayout: UIView {
         return view
     }()
 
-    let contentView: UIView = {
-        let view = UIView(frame: .zero)
-        return view
+    let titleLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.font = TextStyle.display1.font
+        label.textColor = UIColor(color: .textPrimary)
+        label.text = "Log in".localized
+        return label
     }()
 
-    let logoView: UIImageView = {
-        let image = UIImage.assets(.logo)
-        let view = UIImageView(image: image)
-        view.contentMode = .scaleAspectFill
-        return view
-    }()
-
-    let logoTextView: UILabel = {
-        let view = UILabel(frame: .zero)
-        view.textColor = .white
-        view.font = UIFont.boldSystemFont(ofSize: 30)
-        view.text = "Рубеж НПО" // It shouldn't be localized, as it's part of the logo
-        return view
+    let hintLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.font = TextStyle.paragraph.font
+        label.textColor = UIColor(color: .textSecondary)
+        label.text = "Enter your credentials in the text fields below".localized
+        return label
     }()
 
     let cityTextField: UITextField = {
         let textField = UITextField(frame: .zero)
-        textField.setLeftPadding(16)
-        textField.setRightPadding(16)
-        textField.backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        textField.textColor = .white
+        textField.backgroundColor = UIColor(color: .backgroundSurface)
+        textField.layer.cornerRadius = Dimensions.defaultValues.textFieldCornerRadius
+        textField.font = TextStyle.paragraph.font
+        textField.textColor = UIColor(color: .textPrimary)
 
         let placeholderText = "City".localized
-        let placeholderColor = UIColor.white.withAlphaComponent(0.6)
+        let placeholderColor = UIColor(color: .textSecondary)
         let attributes = [NSAttributedString.Key.foregroundColor: placeholderColor]
         let placeholder = NSAttributedString(string: placeholderText, attributes: attributes)
 
         textField.attributedPlaceholder = placeholder
 
+        let imageViewFrame = CGRect(
+            x: 0,
+            y: 0,
+            width: Dimensions.defaultValues.dropdownIconSize,
+            height: Dimensions.defaultValues.dropdownIconSize
+        )
+
+        let imageView = UIImageView(frame: imageViewFrame)
+        imageView.image = UIImage(image: .dropdownIcon)
+        imageView.contentMode = .scaleAspectFit
+
+        textField.addSubview(imageView)
+
         return textField
+    }()
+
+    let cityTextFieldBorderView: UIView = {
+        var bottomLine = UIView(frame: .zero)
+        bottomLine.backgroundColor = UIColor(color: .darkAppearanceBorder)
+        return bottomLine
     }()
 
     let guardServiceTextField: UITextField = {
         let textField = UITextField(frame: .zero)
-        textField.setLeftPadding(16)
-        textField.setRightPadding(16)
-        textField.backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        textField.textColor = .white
+        textField.backgroundColor = UIColor(color: .backgroundSurface)
+        textField.layer.cornerRadius = Dimensions.defaultValues.textFieldCornerRadius
+        textField.font = TextStyle.paragraph.font
+        textField.textColor = UIColor(color: .textPrimary)
 
-        let placeholderText = "Security company".localized
-        let placeholderColor = UIColor.white.withAlphaComponent(0.6)
+        let placeholderText = "Guard service".localized
+        let placeholderColor = UIColor(color: .textSecondary)
         let attributes = [NSAttributedString.Key.foregroundColor: placeholderColor]
         let placeholder = NSAttributedString(string: placeholderText, attributes: attributes)
 
         textField.attributedPlaceholder = placeholder
 
+        let imageViewFrame = CGRect(
+            x: 0,
+            y: 0,
+            width: Dimensions.defaultValues.dropdownIconSize,
+            height: Dimensions.defaultValues.dropdownIconSize
+        )
+
+        let imageView = UIImageView(frame: imageViewFrame)
+        imageView.image = UIImage(image: .dropdownIcon)
+        imageView.contentMode = .scaleAspectFit
+
+        textField.addSubview(imageView)
+
         return textField
+    }()
+
+    let guardServiceTextFieldBorderView: UIView = {
+        var bottomLine = UIView(frame: .zero)
+        bottomLine.backgroundColor = UIColor(color: .darkAppearanceBorder)
+        return bottomLine
     }()
 
     let phoneTextField: UITextField = {
         let textField = UITextField(frame: .zero)
+        textField.backgroundColor = UIColor(color: .backgroundSurface)
+        textField.layer.cornerRadius = Dimensions.defaultValues.textFieldCornerRadius
+        textField.setLeftPadding(Dimensions.defaultValues.textFieldHorizontalPadding)
+        textField.font = TextStyle.paragraph.font
+        textField.textColor = UIColor(color: .textPrimary)
+        textField.clearButtonMode = .whileEditing
         textField.textContentType = .telephoneNumber
         textField.keyboardType = .phonePad
-        textField.setLeftPadding(16)
-        textField.setRightPadding(16)
-        textField.backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        textField.textColor = .white
 
         let placeholderText = "Phone number".localized
-        let placeholderColor = UIColor.white.withAlphaComponent(0.6)
+        let placeholderColor = UIColor(color: .textSecondary)
         let attributes = [NSAttributedString.Key.foregroundColor: placeholderColor]
         let placeholder = NSAttributedString(string: placeholderText, attributes: attributes)
 
@@ -205,15 +283,21 @@ class LoginScreenLayout: UIView {
         return textField
     }()
 
+    let phoneTextFieldBorderView: UIView = {
+        var bottomLine = UIView(frame: .zero)
+        bottomLine.backgroundColor = UIColor(color: .darkAppearanceBorder)
+        return bottomLine
+    }()
+
     let submitButton: UIButton = {
-        let button = UIButton(frame: .zero)
-        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
-        button.layer.cornerRadius = 5
+        let button = SolidButton()
+        button.layer.cornerRadius = Dimensions.defaultValues.buttonCornerRadius
+        button.backgroundColorNormal = UIColor(color: .accent)
+        button.backgroundColorHighlighted = UIColor(color: .accent).lighter
+        button.backgroundColorDisabled = UIColor(color: .accent).lighter
+        button.setTitleColor(UIColor(color: .textOnAccent), for: .normal)
+        button.titleLabel?.font = TextStyle.paragraph.font
         button.setTitle("Get password".localized, for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.setTitleColor(.white, for: .disabled)
-        button.setBackgroundColor(.primaryColor, for: .normal)
-        button.setBackgroundColor(.primaryColorPale, for: .disabled)
         button.isEnabled = false
         return button
     }()
@@ -229,13 +313,13 @@ class LoginScreenLayout: UIView {
     }()
 
     let prevButtonItem: UIBarButtonItem = {
-        let image = UIImage.assets(.leftArrow)
+        let image = UIImage(image: .previousButtonIcon)
         let item = UIBarButtonItem(image: image, style: .plain, target: nil, action: nil)
         return item
     }()
 
     let nextButtonItem: UIBarButtonItem = {
-        let image = UIImage.assets(.rightArrow)
+        let image = UIImage(image: .nextButtonIcon)
         let item = UIBarButtonItem(image: image, style: .plain, target: nil, action: nil)
         return item
     }()
@@ -268,7 +352,7 @@ class LoginScreenLayout: UIView {
     let toolbar: UIToolbar = {
         let toolbar = UIToolbar()
         toolbar.barStyle = .default
-        toolbar.tintColor = .primaryColor
+        toolbar.tintColor = UIColor(color: .accent)
         toolbar.isUserInteractionEnabled = true
         toolbar.sizeToFit()
         return toolbar

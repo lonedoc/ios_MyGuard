@@ -20,26 +20,18 @@ class PasscodeScreenLayout: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func changeIndicatorState(indicator: UIImageView, highlighted: Bool) {
-        let image = UIImage.assets(highlighted ? .dotSolid : .dotOutlined)
-
-        if #available(iOS 13.0, *) {
-            let coloredImage = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
-            indicator.image = coloredImage
-        } else {
-            indicator.image = image?.withRenderingMode(.alwaysTemplate)
-            indicator.tintColor = .white
-        }
+    func setIndicator(value: Int) {
+        indicator.setIndicator(value: value)
     }
 
     func changeBiometricButtonType(_ biometryType: BiometryType) {
-        let image: UIImage?
+        let image: UIImage
 
         switch biometryType {
         case .faceID:
-            image = UIImage.assets(.faceId)
+            image = UIImage(image: .faceIdIcon)
         case .touchID:
-            image = UIImage.assets(.touchId)
+            image = UIImage(image: .touchIdIcon)
         case .none:
             biometricButton.alpha = 0
             biometricButton.isUserInteractionEnabled = false
@@ -47,15 +39,16 @@ class PasscodeScreenLayout: UIView {
         }
 
         if #available(iOS 13.0, *) {
-            let imageNormal = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
-            let imageHighlighted = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
+            let color = UIColor(color: .error)
+            let imageNormal = image.withTintColor(color, renderingMode: .alwaysOriginal)
+            let imageHighlighted = image.withTintColor(color, renderingMode: .alwaysOriginal)
 
             biometricButton.setImage(imageNormal, for: .normal)
             biometricButton.setImage(imageHighlighted, for: .highlighted)
         } else {
             biometricButton.setImage(image, for: .normal)
             biometricButton.setImage(image, for: .highlighted)
-            biometricButton.tintColor = .white
+            biometricButton.tintColor = UIColor(color: .error)
         }
 
         biometricButton.alpha = 1
@@ -70,158 +63,91 @@ class PasscodeScreenLayout: UIView {
     }
 
     private func setupViews() {
-        addSubview(backgroundView)
+        backgroundColor = UIColor(color: .backgroundPrimary)
 
-        digitButtons[1...4].forEach { keyboardRows[0].addArrangedSubview($0) }
-        digitButtons[4...7].forEach { keyboardRows[1].addArrangedSubview($0) }
-        digitButtons[7... ].forEach { keyboardRows[2].addArrangedSubview($0) }
+        digitButtons[1...4].forEach { button in keyboardRows[0].addArrangedSubview(button) }
+        digitButtons[4...7].forEach { button in keyboardRows[1].addArrangedSubview(button) }
+        digitButtons[7... ].forEach { button in keyboardRows[2].addArrangedSubview(button) }
 
         keyboardRows[3].addArrangedSubview(biometricButton)
         keyboardRows[3].addArrangedSubview(digitButtons[0])
         keyboardRows[3].addArrangedSubview(backspaceButton)
 
-        keyboardRows.forEach { keyboardStackView.addArrangedSubview($0) }
+        keyboardRows.forEach { row in keyboardStackView.addArrangedSubview(row) }
 
-        indicators.forEach { indicatorRow.addArrangedSubview($0) }
+        containerView.addArrangedSubview(hintLabel)
+        containerView.addArrangedSubview(indicator)
+        containerView.addArrangedSubview(keyboardStackView)
+        containerView.addArrangedSubview(forgotPasscodeButton)
 
-        wrapperView.addSubview(tipLabel)
-        wrapperView.addSubview(indicatorRow)
-
-        addSubview(forgotPasscodeButton)
-        addSubview(keyboardStackView)
-        addSubview(wrapperView)
-
-        titleView.addSubview(logoView)
+        addSubview(containerView)
     }
 
     // swiftlint:disable function_body_length line_length
     private func setupConstraints() {
-        backgroundView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        backgroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        backgroundView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        backgroundView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.topAnchor.constraint(equalTo: topAnchor, constant: 72).isActive = true
+        containerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        containerView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -40).isActive = true
 
-        forgotPasscodeButton.translatesAutoresizingMaskIntoConstraints = false
-        forgotPasscodeButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
-        forgotPasscodeButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
+        hintLabel.translatesAutoresizingMaskIntoConstraints = false
+        hintLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+        hintLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 22).isActive = true
 
-        keyboardStackView.translatesAutoresizingMaskIntoConstraints = false
-        keyboardStackView.bottomAnchor.constraint(equalTo: forgotPasscodeButton.topAnchor, constant: -16).isActive = true
-        keyboardStackView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 8).isActive = true
-        keyboardStackView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -8).isActive = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+        indicator.widthAnchor.constraint(equalToConstant: 96).isActive = true
+        indicator.heightAnchor.constraint(equalToConstant: 12).isActive = true
 
-        digitButtons.forEach { button in
+        (digitButtons + [biometricButton, backspaceButton]).forEach { button in
             button.translatesAutoresizingMaskIntoConstraints = false
             button.widthAnchor.constraint(equalToConstant: 80).isActive = true
             button.heightAnchor.constraint(equalToConstant: 80).isActive = true
         }
 
-        biometricButton.translatesAutoresizingMaskIntoConstraints = false
-        biometricButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        biometricButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        keyboardStackView.translatesAutoresizingMaskIntoConstraints = false
+        keyboardStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        keyboardStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
 
-        backspaceButton.translatesAutoresizingMaskIntoConstraints = false
-        backspaceButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        backspaceButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
-
-        wrapperView.translatesAutoresizingMaskIntoConstraints = false
-        wrapperView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
-        wrapperView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor).isActive = true
-        wrapperView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor).isActive = true
-        wrapperView.bottomAnchor.constraint(equalTo: keyboardStackView.topAnchor).isActive = true
-
-        tipLabel.translatesAutoresizingMaskIntoConstraints = false
-        tipLabel.bottomAnchor.constraint(equalTo: wrapperView.centerYAnchor, constant: -8).isActive = true
-        tipLabel.centerXAnchor.constraint(equalTo: wrapperView.centerXAnchor).isActive = true
-
-        indicators.forEach { indicator in
-            indicator.translatesAutoresizingMaskIntoConstraints = false
-            indicator.widthAnchor.constraint(equalToConstant: 20).isActive = true
-            indicator.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        }
-
-        indicatorRow.translatesAutoresizingMaskIntoConstraints = false
-        indicatorRow.widthAnchor.constraint(equalToConstant: 120).isActive = true
-        indicatorRow.topAnchor.constraint(equalTo: wrapperView.centerYAnchor, constant: 8).isActive = true
-        indicatorRow.centerXAnchor.constraint(equalTo: wrapperView.centerXAnchor).isActive = true
-
-        logoView.translatesAutoresizingMaskIntoConstraints = false
-        logoView.heightAnchor.constraint(equalTo: titleView.heightAnchor, multiplier: 0.8).isActive = true
-        logoView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor).isActive = true
-        logoView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
+        forgotPasscodeButton.translatesAutoresizingMaskIntoConstraints = false
+        forgotPasscodeButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16).isActive = true
+        forgotPasscodeButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16).isActive = true
+        forgotPasscodeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 22).isActive = true
     }
     // swiftlint:enable function_body_length line_length
 
     // MARK: Views
 
-    let backgroundView: UIImageView = {
-        let image = UIImage.assets(.background)
-        let view = UIImageView(image: image)
-        view.contentMode = .scaleAspectFill
-        return view
-    }()
-
-    let wrapperView: UIView = {
-        let view = UIView(frame: .zero)
-        return view
-    }()
-
-    let tipLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.textColor = UIColor.white.withAlphaComponent(0.6)
-        label.text = "Enter the code".localized
-        return label
-    }()
-
-    let indicatorRow: UIStackView = {
+    let containerView: UIStackView = {
         let stackView = UIStackView(frame: .zero)
-        stackView.axis = .horizontal
-        stackView.alignment = .center
+        stackView.axis = .vertical
         stackView.distribution = .equalSpacing
         return stackView
     }()
 
-    let indicators: [UIImageView] = {
-        var indicators = [UIImageView]()
+    let hintLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.textAlignment = .center
+        label.font = TextStyle.paragraph.font
+        label.textColor = UIColor(color: .textContrast)
+        label.text = "Create a PIN-code".localized
+        return label
+    }()
 
-        var i = 0 // swiftlint:disable:this identifier_name
-        while i < 4 {
-            let image = UIImage.assets(.dotOutlined)
-
-            if #available(iOS 13.0, *) {
-                let coloredImage = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
-                let indicator = UIImageView(image: coloredImage)
-                indicators.append(indicator)
-            } else {
-                let indicator = UIImageView(image: image?.withRenderingMode(.alwaysTemplate))
-                indicator.tintColor = .white
-                indicators.append(indicator)
-            }
-
-            i += 1
-        }
-
-        return indicators
+    let indicator: PasscodeIndicator = {
+        let indicator = PasscodeIndicator(frame: .zero)
+        return indicator
     }()
 
     let forgotPasscodeButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setTitle("Forgot passcode?".localized.uppercased(), for: .normal)
-        button.setTitleColor(UIColor.white.withAlphaComponent(0.6), for: .normal)
-        button.setTitleColor(.white, for: .highlighted)
-
-        let descriptor = button.titleLabel?.font?.fontDescriptor.addingAttributes(
-            [.traits: [UIFontDescriptor.TraitKey.weight: UIFont.Weight.bold]]
-        )
-
-        if let descriptor = descriptor {
-            let font = UIFont(descriptor: descriptor, size: 18)
-            button.titleLabel?.font = font
-        } else {
-            button.titleLabel?.font = button.titleLabel?.font.withSize(18)
-        }
-
+        let button = UIButton(frame: .zero)
+        button.setTitleColor(UIColor(color: .accent), for: .normal)
+        button.titleLabel?.font = TextStyle.paragraph.font
+        button.setTitle("Forgot the PIN-code?".localized, for: .normal)
+        button.isHidden = true
         return button
     }()
 
@@ -230,23 +156,24 @@ class PasscodeScreenLayout: UIView {
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
-        stackView.spacing = 10
+        stackView.spacing = 18
         return stackView
     }()
 
     let keyboardRows: [UIStackView] = {
         var rows = [UIStackView]()
 
-        var i = 0 // swiftlint:disable:this identifier_name
-        while i < 4 {
+        var index = 0
+        while index < 4 {
             let row = UIStackView(frame: .zero)
             row.axis = .horizontal
             row.alignment = .fill
-            row.distribution = .equalCentering
-            row.spacing = 15
+            row.distribution = .equalSpacing
+            row.spacing = 24
+
             rows.append(row)
 
-            i += 1
+            index += 1
         }
 
         return rows
@@ -256,7 +183,7 @@ class PasscodeScreenLayout: UIView {
         var buttons = [UIButton]()
 
         let tips = [
-            " ",
+            "+",
             " ",
             "abc",
             "def",
@@ -268,38 +195,37 @@ class PasscodeScreenLayout: UIView {
             "wxyz"
         ]
 
-        var i = 0 // swiftlint:disable:this identifier_name
-        while i < 10 {
-            let button = UIButton(type: .custom)
+        var index = 0
+        while index < 10 {
+            let button = SolidButton()
+            button.layer.cornerRadius = 40
+            button.backgroundColorNormal = UIColor(color: .digitButtonBackground)
+            button.backgroundColorHighlighted = UIColor(color: .digitButtonBackground).lighter
             button.titleLabel?.lineBreakMode = .byWordWrapping
             button.titleLabel?.textAlignment = .center
-            button.tag = i
+            button.tag = index
 
             let digitAttributes = [
-                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 30),
-                NSAttributedString.Key.foregroundColor: UIColor.white
+                NSAttributedString.Key.font: TextStyle.digitButtonTitle.font,
+                NSAttributedString.Key.foregroundColor: UIColor(color: .textContrast)
             ]
 
-            let digitString = NSMutableAttributedString(string: "\(String(i))\n", attributes: digitAttributes)
+            let digitString = NSMutableAttributedString(string: "\(String(index))\n", attributes: digitAttributes)
 
             let tipAttributes = [
-                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15),
-                NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.6)
+                NSAttributedString.Key.font: TextStyle.caption4.font,
+                NSAttributedString.Key.foregroundColor: UIColor(color: .textContrast)
             ]
 
-            let tipString = NSAttributedString(string: tips[i].localized, attributes: tipAttributes)
+            let tipString = NSAttributedString(string: tips[index].localized, attributes: tipAttributes)
 
             digitString.append(tipString)
 
             button.setAttributedTitle(digitString, for: .normal)
 
-            let backgroundColor = UIColor.white.withAlphaComponent(0.2)
-            button.setBackgroundColor(backgroundColor, for: .highlighted)
-            button.layer.cornerRadius = 40
-
             buttons.append(button)
 
-            i += 1
+            index += 1
         }
 
         return buttons
@@ -307,21 +233,23 @@ class PasscodeScreenLayout: UIView {
 
     let biometricButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        button.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
 
-        let image = UIImage.assets(.faceId)
+        let image = UIImage(image: .faceIdIcon)
 
         if #available(iOS 13.0, *) {
-            let coloredImage = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
+            let coloredImage = image.withTintColor(
+                UIColor(color: .error),
+                renderingMode: .alwaysOriginal
+            )
+
             button.setImage(coloredImage, for: .normal)
             button.setImage(coloredImage, for: .highlighted)
         } else {
-            button.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
-            button.tintColor = .white
+            button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
+            button.tintColor = UIColor(color: .error)
         }
 
-        let backgroundColor = UIColor.white.withAlphaComponent(0.2)
-        button.setBackgroundColor(backgroundColor, for: .highlighted)
         button.layer.cornerRadius = 40
 
         return button
@@ -329,19 +257,21 @@ class PasscodeScreenLayout: UIView {
 
     let backspaceButton: UIButton = {
         let button = UIButton(type: .custom)
-        let image = UIImage.assets(.backspace)
+        let image = UIImage(image: .backspaceIcon)
 
         if #available(iOS 13.0, *) {
-            let coloredImage = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
+            let coloredImage = image.withTintColor(
+                UIColor(color: .backspaceButtonColor),
+                renderingMode: .alwaysOriginal
+            )
+
             button.setImage(coloredImage, for: .normal)
             button.setImage(coloredImage, for: .highlighted)
         } else {
-            button.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
-            button.tintColor = .white
+            button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
+            button.tintColor = UIColor(color: .backspaceButtonColor)
         }
 
-        let backgroundColor = UIColor.white.withAlphaComponent(0.2)
-        button.setBackgroundColor(backgroundColor, for: .highlighted)
         button.layer.cornerRadius = 40
 
         return button
@@ -365,17 +295,6 @@ class PasscodeScreenLayout: UIView {
             action: nil
         )
         return button
-    }()
-
-    let titleView: UIView = {
-        let view = UIView(frame: .zero)
-        return view
-    }()
-
-    let logoView: UIImageView = {
-        let view = UIImageView(image: UIImage.assets(.logo))
-        view.contentMode = .scaleAspectFit
-        return view
     }()
 
 }

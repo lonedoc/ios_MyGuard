@@ -39,7 +39,7 @@ extension ApplicationsViewController: ApplicationsView {
 
     func setDateTimeText(_ text: String) {
         DispatchQueue.main.async {
-            self.rootView.dateTextField.text = text
+            self.rootView.dateTimeTextField.text = text
         }
     }
 
@@ -104,7 +104,7 @@ class ApplicationsViewController: UIViewController {
         rootView.doneButtonItem.action = #selector(didPushDoneButton)
 
         rootView.applicationsTextField.delegate = self
-        rootView.dateTextField.delegate = self
+        rootView.dateTimeTextField.delegate = self
 
         rootView.applicationPicker.dataSource = self
         rootView.applicationPicker.delegate = self
@@ -128,7 +128,7 @@ class ApplicationsViewController: UIViewController {
         let controls = [
             rootView.applicationsTextField,
             rootView.applicationTextField,
-            rootView.dateTextField
+            rootView.dateTimeTextField
         ]
 
         guard let index = (controls.firstIndex { $0.isFirstResponder }) else {
@@ -151,7 +151,7 @@ class ApplicationsViewController: UIViewController {
     @objc private func didPushDoneButton() {
         rootView.applicationsTextField.resignFirstResponder()
         rootView.applicationTextField.resignFirstResponder()
-        rootView.dateTextField.resignFirstResponder()
+        rootView.dateTimeTextField.resignFirstResponder()
     }
 
     @objc private func didSelectDate(sender: UIDatePicker) {
@@ -243,7 +243,7 @@ extension ApplicationsViewController: UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         rootView.prevButtonItem.isEnabled = !rootView.applicationsTextField.isFirstResponder
-        rootView.nextButtonItem.isEnabled = !rootView.dateTextField.isFirstResponder
+        rootView.nextButtonItem.isEnabled = !rootView.dateTimeTextField.isFirstResponder
     }
 
 }

@@ -10,51 +10,9 @@ import Foundation
 import RxSwift
 import RubegProtocol_v2_0
 
-private func formatPhoneNumber(_ phoneNumber: String) -> String {
-    return String(phoneNumber.filter { "0123456789".contains($0) }.suffix(10))
-}
-
-extension PasswordPresenterImpl: PasswordPresenter {
-
-    func attach(view: PasswordView) {
-        self.view = view
-    }
-
-    func viewDidLoad() {
-        requestPassword()
-        startCountDown()
-    }
-
-    func didHitRetryButton() {
-        view?.hideRetryButton()
-        requestPassword()
-        startCountDown()
-    }
-
-    func didHitCancelButton() {
-        view?.openLoginScreen()
-    }
-
-    func didHitProceedButton() {
-        logIn()
-    }
-
-    func didChangePassword(value: String) {
-        let isValid = validate(password: value)
-        view?.setProceedButtonEnabled(isValid)
-
-        if isValid {
-            password = value
-        }
-    }
-
-}
-
-// MARK: -
-
 private let timeToRetry = 15
 
-class PasswordPresenterImpl {
+class PasswordPresenterImpl : PasswordPresenter {
 
     private weak var view: PasswordView?
 
@@ -68,6 +26,38 @@ class PasswordPresenterImpl {
 
     init(interactor: PasswordInteractor) {
         self.interactor = interactor
+    }
+
+    func attach(view: PasswordView) {
+        self.view = view
+    }
+
+    func viewDidLoad() {
+        requestPassword()
+        startCountDown()
+    }
+
+    func retryButtonTapped() {
+        view?.hideRetryButton()
+        requestPassword()
+        startCountDown()
+    }
+
+    func cancelButtonTapped() {
+        view?.openLoginScreen()
+    }
+
+    func proceedButtonTapped() {
+        logIn()
+    }
+
+    func passwordChanged(_ value: String) {
+        let isValid = validate(password: value)
+        view?.setProceedButtonEnabled(isValid)
+
+        if isValid {
+            password = value
+        }
     }
 
     private func requestPassword() {
@@ -191,6 +181,10 @@ class PasswordPresenterImpl {
 
     private func validate(password: String) -> Bool {
         return password.count > 0 && password.allSatisfy { "0123456789".contains($0) }
+    }
+
+    private func formatPhoneNumber(_ phoneNumber: String) -> String {
+        return String(phoneNumber.filter { "0123456789".contains($0) }.suffix(10))
     }
 
 }

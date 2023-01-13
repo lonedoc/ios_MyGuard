@@ -14,8 +14,8 @@ protocol FacilitiesPresenter {
     func viewWillAppear()
     func viewWillDisappear()
     func refresh()
-    func sortButtonTapped()
     func phoneButtonTapped()
-    func sortingChanged(_ sortingValue: Int)
-    func objectSelected(_ facility: Facility)
+    func phoneCallFailed()
+    func sortingChanged(_ sorting: FacilitiesSorting)
+    func facilitySelected(_ facility: Facility)
 }

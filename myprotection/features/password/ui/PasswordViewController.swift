@@ -9,7 +9,25 @@
 import UIKit
 import Swinject
 
-extension PasswordViewController: PasswordView {
+class PasswordViewController: UIViewController, PasswordView {
+
+    private let presenter: PasswordPresenter
+
+    // swiftlint:disable:next force_cast
+    private var rootView: PasswordScreenLayout { return self.view as! PasswordScreenLayout }
+
+    init() {
+        presenter = Assembler.shared.resolver.resolve(PasswordPresenter.self)!
+
+        super.init(nibName: nil, bundle: nil)
+
+        title = ""
+        modalPresentationStyle = .fullScreen
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     func updateTimer(text: String) {
         DispatchQueue.main.async {
@@ -57,35 +75,14 @@ extension PasswordViewController: PasswordView {
         }
     }
 
-}
-
-// MARK: -
-
-class PasswordViewController: UIViewController {
-
-    private let presenter: PasswordPresenter
-
-    // swiftlint:disable:next force_cast
-    private var rootView: PasswordScreenLayout { return self.view as! PasswordScreenLayout }
-
-    init() {
-        self.presenter = Assembler.shared.resolver.resolve(PasswordPresenter.self)!
-
-        super.init(nibName: nil, bundle: nil)
-
-        self.title = ""
-        self.modalPresentationStyle = .fullScreen
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    // MARK: - Setup
 
     override func loadView() {
         self.view = PasswordScreenLayout(frame: UIScreen.main.bounds)
     }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         setup()
         presenter.attach(view: self)
         presenter.viewDidLoad()
@@ -93,12 +90,12 @@ class PasswordViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        registerForKeyboardNotifications()
+        subscribeForKeyboardEvents()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        unregisterForKeyboardNotifications()
+        unsubscibeFromKeyboardEvents()
     }
 
     private func setup() {
@@ -107,19 +104,19 @@ class PasswordViewController: UIViewController {
 
         rootView.retryButton.addTarget(
             self,
-            action: #selector(didHitRetryButton),
+            action: #selector(retryButtonTapped),
             for: .touchUpInside
         )
 
         rootView.cancelButton.addTarget(
             self,
-            action: #selector(didHitCancelButton),
+            action: #selector(cancelButtonTapped),
             for: .touchUpInside
         )
 
         rootView.proceedButton.addTarget(
             self,
-            action: #selector(didHitProceedButton),
+            action: #selector(proceedButtonTapped),
             for: .touchUpInside
         )
 
@@ -130,19 +127,19 @@ class PasswordViewController: UIViewController {
         rootView.passwordTextField.resignFirstResponder()
     }
 
-    @objc func didHitRetryButton() {
-        presenter.didHitRetryButton()
+    @objc func retryButtonTapped() {
+        presenter.retryButtonTapped()
     }
 
-    @objc func didHitCancelButton() {
-        presenter.didHitCancelButton()
+    @objc func cancelButtonTapped() {
+        presenter.cancelButtonTapped()
     }
 
-    @objc func didHitProceedButton() {
-        presenter.didHitProceedButton()
+    @objc func proceedButtonTapped() {
+        presenter.proceedButtonTapped()
     }
 
-    private func registerForKeyboardNotifications() {
+    private func subscribeForKeyboardEvents() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardWillShow),
@@ -158,19 +155,34 @@ class PasswordViewController: UIViewController {
         )
     }
 
-    private func unregisterForKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    private func unsubscibeFromKeyboardEvents() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
 
     @objc func keyboardWillShow(notification: Notification) {
-        guard let userInfo = notification.userInfo,
-              let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-        else {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
             return
         }
 
-        rootView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        let keyboardSize = keyboardFrame.cgRectValue
+
+        rootView.scrollView.contentInset = UIEdgeInsets(
+            top: 0,
+            left: 0,
+            bottom: keyboardSize.height,
+            right: 0
+        )
+
         rootView.scrollView.scrollIndicatorInsets = rootView.scrollView.contentInset
     }
 
@@ -181,7 +193,7 @@ class PasswordViewController: UIViewController {
 
 }
 
-// MARK: UITextFieldDelegate
+// MARK: - UITextFieldDelegate
 
 extension PasswordViewController: UITextFieldDelegate {
 
@@ -197,7 +209,7 @@ extension PasswordViewController: UITextFieldDelegate {
             let textRange = Range(range, in: text)
         {
             let updatedText = text.replacingCharacters(in: textRange, with: string)
-            presenter.didChangePassword(value: updatedText)
+            presenter.passwordChanged(updatedText)
         }
 
         return true

@@ -12,7 +12,35 @@ import RxSwift
 
 private let driverPort: Int32 = 8301
 
-extension PasscodePresenterImpl: PasscodePresenter {
+private enum Stage {
+    case creation, confirmation, entrance
+}
+
+class PasscodePresenterImpl: PasscodePresenter {
+
+    private var view: PasscodeView?
+
+    private let interactor: PasscodeInteractor
+    private let biometryHelper: BiometryHelper
+    private let communicationData: CommunicationData
+    
+    private var disposeBag = DisposeBag()
+
+    private var stage: Stage = .creation
+    private var passcode1 = ""
+    private var passcode2 = ""
+
+    private var ipIndex = 0
+
+    init(
+        interactor: PasscodeInteractor,
+        biometryHelper: BiometryHelper,
+        communicationData: CommunicationData
+    ) {
+        self.interactor = interactor
+        self.biometryHelper = biometryHelper
+        self.communicationData = communicationData
+    }
 
     func attach(view: PasscodeView) {
         self.view = view
@@ -96,40 +124,6 @@ extension PasscodePresenterImpl: PasscodePresenter {
         view?.openPasswordScreen()
     }
 
-}
-
-// MARK: -
-
-private enum Stage {
-    case creation, confirmation, entrance
-}
-
-class PasscodePresenterImpl {
-
-    private var view: PasscodeView?
-
-    private let interactor: PasscodeInteractor
-    private let biometryHelper: BiometryHelper
-    private let communicationData: CommunicationData
-
-    private var disposeBag = DisposeBag()
-
-    private var stage: Stage = .creation
-    private var passcode1 = ""
-    private var passcode2 = ""
-
-    private var ipIndex = 0
-
-    init(
-        interactor: PasscodeInteractor,
-        biometryHelper: BiometryHelper,
-        communicationData: CommunicationData
-    ) {
-        self.interactor = interactor
-        self.biometryHelper = biometryHelper
-        self.communicationData = communicationData
-    }
-
     private func prepareCommunicationData() {
         let hosts = interactor.getHosts()
         let token = interactor.getToken()
@@ -142,11 +136,12 @@ class PasscodePresenterImpl {
     private func prepareView() {
         switch stage {
         case .creation:
-            view?.setHint(text: "Enter new passcode".localized)
+            view?.setHint(text: "Create a PIN-code".localized)
             view?.setBiometryType(.none)
             view?.setForgotPasscodeButtonIsHidden(true)
+            view?.setAppBarIsHidden(true)
         case .entrance:
-            view?.setHint(text: "Enter the passcode".localized)
+            view?.setHint(text: "Enter the PIN-code".localized)
             view?.setBiometryType(biometryHelper.biometryType())
             view?.setForgotPasscodeButtonIsHidden(false)
         default:
@@ -158,7 +153,7 @@ class PasscodePresenterImpl {
         guard let phoneNumber = interactor.getGuardService()?.phoneNumber else {
             view?.showAlertDialog(
                 title: "Error".localized,
-                message: "Phone not found".localized
+                message: "Phone number not found".localized
             )
             return
         }
@@ -207,7 +202,7 @@ class PasscodePresenterImpl {
 
         if passcode1.count == 4 {
             stage = .confirmation
-            view?.setHint(text: "Repeat the passcode".localized)
+            view?.setHint(text: "Confirm the PIN-code".localized)
             view?.setIndicator(value: 0)
         }
     }
@@ -235,7 +230,7 @@ class PasscodePresenterImpl {
             passcode1 = ""
             passcode2 = ""
             view?.setIndicator(value: 0)
-            view?.setHint(text: "Enter new passcode".localized)
+            view?.setHint(text: "Create a PIN-code".localized)
         }
     }
 

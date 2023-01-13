@@ -11,8 +11,8 @@ import Foundation
 protocol LoginPresenter {
     func attach(view: LoginView)
     func viewDidLoad()
-    func didSelect(city: String)
-    func didSelect(guardService: String)
-    func didChangePhone(value: String)
-    func didHitSubmitButton()
+    func citySelected(_ city: String)
+    func guardServiceSelected(_ guardService: String)
+    func phoneNumberChanged(_ value: String)
+    func submitButtonTapped()
 }

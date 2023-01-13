@@ -20,111 +20,82 @@ class CerberThermostatCell: UICollectionViewCell {
     }
 
     func bind(_ device: CerberThermostat) {
-        let onlineIconBackgroundColor: UIColor = device.isOnline ? .secondaryColor : .errorColor
-        let onlineIcon = device.isOnline ? UIImage.assets(.link) : UIImage.assets(.linkOff)
-        let description = device.description.isEmpty ? "Unknown sensor".localized : device.description
+        let description = device.description.isEmpty ?
+            "Unknown sensor".localized :
+            device.description
 
-        self.isOnlineIconWrapper.backgroundColor = onlineIconBackgroundColor
-        self.isOnlineIcon.image = onlineIcon
-        self.valueLabel.text = "\(device.temperature)°C"
-        self.titleLabel.text = description
+        descriptionLabel.text = description
+        valueLabel.text = "\(device.temperature)°C"
     }
 
     private func setup() {
-        backgroundColor = .screenBackgroundColor
+        backgroundColor = .clear
 
         setupViews()
         setupConstraints()
+
+        isSkeletonable = true
     }
 
     private func setupViews() {
-        cardView.addSubview(isOnlineIconWrapper)
-        cardView.addSubview(isOnlineIcon)
         cardView.addSubview(iconView)
+        cardView.addSubview(descriptionLabel)
         cardView.addSubview(valueLabel)
-        cardView.addSubview(titleLabel)
         addSubview(cardView)
     }
 
     private func setupConstraints() {
         cardView.translatesAutoresizingMaskIntoConstraints = false
         cardView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        cardView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        cardView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        cardView.heightAnchor.constraint(greaterThanOrEqualToConstant: 128).isActive = true
-
-        isOnlineIconWrapper.translatesAutoresizingMaskIntoConstraints = false
-        isOnlineIconWrapper.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 16).isActive = true
-        isOnlineIconWrapper.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16).isActive = true
-        isOnlineIconWrapper.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        isOnlineIconWrapper.heightAnchor.constraint(equalToConstant: 24).isActive = true
-
-        isOnlineIcon.translatesAutoresizingMaskIntoConstraints = false
-        isOnlineIcon.centerXAnchor.constraint(equalTo: isOnlineIconWrapper.centerXAnchor).isActive = true
-        isOnlineIcon.centerYAnchor.constraint(equalTo: isOnlineIconWrapper.centerYAnchor).isActive = true
-        isOnlineIcon.widthAnchor.constraint(equalToConstant: 16).isActive = true
-        isOnlineIcon.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        cardView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        cardView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        cardView.heightAnchor.constraint(greaterThanOrEqualToConstant: 114).isActive = true
 
         iconView.translatesAutoresizingMaskIntoConstraints = false
-        iconView.topAnchor.constraint(equalTo: isOnlineIconWrapper.bottomAnchor).isActive = true
-        iconView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor).isActive = true
-        iconView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -8).isActive = true
+        iconView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 16).isActive = true
+        iconView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16).isActive = true
+        iconView.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        iconView.heightAnchor.constraint(equalToConstant: 32).isActive = true
+
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16).isActive = true
+        descriptionLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16).isActive = true
+        descriptionLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -16).isActive = true
 
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
-        valueLabel.topAnchor.constraint(equalTo: iconView.topAnchor).isActive = true
-        valueLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8).isActive = true
-        valueLabel.bottomAnchor.constraint(equalTo: iconView.bottomAnchor).isActive = true
-
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: valueLabel.bottomAnchor, constant: 0).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16).isActive = true
-        titleLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16).isActive = true
+        valueLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor).isActive = true
+        valueLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16).isActive = true
+        valueLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16).isActive = true
+        valueLabel.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor).isActive = true
     }
 
     // MARK: - Views
 
     let cardView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .surfaceBackgroundColor
         view.layer.cornerRadius = 16
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOpacity = 0.2
-        view.layer.shadowOffset = .zero
-        view.layer.shadowRadius = 2
+        view.backgroundColor = UIColor(color: .cardBackground)
         return view
-    }()
-
-    let isOnlineIconWrapper: UIView = {
-        let view = UIView(frame: .zero)
-        view.layer.cornerRadius = 12
-        view.backgroundColor = .secondaryColor
-        view.tintColor = .white
-        return view
-    }()
-
-    let isOnlineIcon: UIImageView = {
-        let image = UIImage.assets(.link)
-        let imageView = UIImageView(image: image)
-        imageView.tintColor = .white
-        return imageView
     }()
 
     let iconView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
-        imageView.image = UIImage.assets(.temperatureIcon)
+        imageView.contentMode = .center
+        imageView.image = UIImage(image: .thermostatIcon)
         return imageView
     }()
 
-    let titleLabel: UILabel = {
+    let descriptionLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.textColor = .surfaceForegroundColor
+        label.font = TextStyle.caption3.font
+        label.textColor = UIColor(color: .textSecondary)
         return label
     }()
 
     let valueLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = UIFont.boldSystemFont(ofSize: 18)
-        label.textColor = .surfaceForegroundColor
+        label.font = TextStyle.paragraph.font
+        label.textColor = UIColor(color: .textContrast)
         return label
     }()
 

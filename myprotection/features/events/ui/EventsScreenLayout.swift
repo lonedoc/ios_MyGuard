@@ -20,7 +20,7 @@ class EventsScreenLayout: UIView {
     }
 
     private func setup() {
-        backgroundColor = .screenBackgroundColor
+        backgroundColor = UIColor(color: .backgroundPrimary)
 
         setupViews()
         setupConstraints()
@@ -42,15 +42,16 @@ class EventsScreenLayout: UIView {
 
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
-        tableView.rowHeight = 92
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 96, right: 0)
-        tableView.backgroundColor = .mainBackgroundColor
+        tableView.rowHeight = 104
+        tableView.separatorStyle = .none
+        tableView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 24, right: 0)
+        tableView.backgroundColor = UIColor(color: .backgroundPrimary)
         return tableView
     }()
 
     let refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
-        refreshControl.tintColor = .primaryColor
+        refreshControl.tintColor = UIColor(color: .accent)
         return refreshControl
     }()
 

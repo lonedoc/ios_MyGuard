@@ -6,24 +6,47 @@
   Copyright © 2020 Rubeg NPO. All rights reserved.
 */
 
-// MARK: Errors
+// Common
+"Empty" = "Пусто";
+"Done" = "Готово";
+"Proceed" = "Продолжить";
+"Cancel" = "Отмена";
 "Error" = "Ошибка";
-"Wrong password" = "Неверный пароль";
-"Could not find user by provided phone number" = "Не удалось найти пользователя по указанному номеру телефона";
-"Service is not available now" = "Сервис сейчас не доступен";
-"Unable to load data" = "Не удалось загрузить данные";
-"Incorrect data format" = "Неправильный формат данных";
-"No security company selected" = "Не выбрано охранное предприятие";
-"Phone number not specified" = "Не указан номер телефона";
-"Server address unknown" = "Адрес сервера не известен";
 "Unknown error" = "Неизвестная ошибка";
 "Could not send request" = "Не удалось отправить запрос";
 "Server not responding" = "Сервер не отвечает";
 "The operation could not be performed" = "Операция не может быть выполнена";
 "Unable to read server response" = "Не удалось прочитать ответ сервера";
-"Push-notifications is not available" = "Сервис пуш-уведомлений не доступен";
-"Phone not found" = "Телефон не найден";
+"Wrong password" = "Неверный пароль";
+"Could not find user by provided phone number" = "Не удалось найти пользователя по указанному номеру телефона";
+"Phone number not found" = "Телефон не найден";
+"The phone number cannot be called" = "Номер не может быть набран";
 "The number cannot be dialed" = "Номер не может быть набран";
+
+// Splash screen
+"Your protection" = "Твоя охрана";
+
+// Login
+"Log in" = "Вход";
+"Enter your credentials in the text fields below" = "Введите ваши данные для входа в текстовые поля ниже";
+"City" = "Город";
+"Guard service" = "Охранное предприятие";
+"Phone number" = "Номер телефона";
+"Get password" = "Получить пароль";
+
+// Password
+"An SMS message with a password has been sent to your number" = "На Ваш номер отправлено SMS сообщение с паролем";
+"Enter the code" = "Введите код";
+"Get new password" = "Получить новый пароль";
+"Phone number not specified" = "Не указан номер телефона";
+"Push-notifications is not available" = "Сервис пуш-уведомлений не доступен";
+"You can request new password again after: %@" = "Пароль можно запросить повторно через: %@";
+
+// Passcode
+"Create a PIN-code" = "Придумайте PIN-код";
+"Confirm the PIN-code" = "Подтвердите PIN-код";
+"Enter the PIN-code" = "Введите PIN-код";
+"Forgot the PIN-code?" = "Забыли PIN-код?";
 "Wrong passcode" = "Неправильный код безопасности";
 "Wrong passcode confirmation" = "Введенные коды не совпадают";
 "Biometric authentication is unavailable" = "Данный способ аутентификации недоступен";
@@ -31,99 +54,156 @@
 "Biometry is not configured" = "Face ID/Touch ID не настроен";
 "Biometry is locked out" = "Данный способ аутентификации заблокирован";
 
-// MARK: Common
-"Proceed" = "Продолжить";
-"Done" = "Готово";
-"Cancel" = "Отмена";
+"abc" = "abc";
+"def" = "def";
+"ghi" = "ghi";
+"jkl" = "jkl";
+"mno" = "mno";
+"pqrs" = "pqrs";
+"tuv" = "tuv";
+"wxyz" = "wxyz";
 
-// MARK: Login
-"City" = "Город";
-"Security company" = "Охранное предприятие";
-"Phone number" = "Номер телефона";
-"Get password" = "Получить пароль";
-"Authentication is required to access the data" = "Для доступа к данным необходима авторизация";
-
-// MARK: Password
-"An sms message with a password has been sent to your number. Please, enter it in the text field below:" = "На Ваш номер отправлено смс-сообщение с паролем. Введите его в текстовое поле ниже:";
-"Password" = "Пароль";
-"Get new password" = "Запросить пароль";
-"Next" = "Продолжить";
-"You can request new password again after: %@" = "Пароль можно запросить повторно через: %@";
-
-// MARK: Passcode
-"abc" = "абвг";
-"def" = "дежз";
-"ghi" = "ийкл";
-"jkl" = "мноп";
-"mno" = "рсту";
-"pqrs" = "фхцч";
-"tuv" = "шщъы";
-"wxyz" = "ьэюя";
-
-"Forgot passcode?" = "Забыли код?";
-"Enter new passcode" = "Введите новый код безопасности";
-"Repeat the passcode" = "Введите код еще раз";
-"Enter the passcode" = "Введите код безопасности";
-
-"The phone number cannot be called" = "Номер не может быть набран";
-
-// MARK: Sorting dialog
-"Sorting" = "Сортировка";
-"Ascending" = "По возрастанию";
-"Descending" = "По убыванию";
-"By name" = "По имени";
-"By address" = "По адресу";
+// Facilities
+"Facilities list" = "Список объектов";
 "By status" = "По статусу";
+"By title" = "По названию";
+"By address" = "По адресу";
 
-// MARK: Facilities
-"Objects list" = "Список объектов";
-"Failed to load cached events" = "Не удалось загрузить сохраненные события";
-"Loading..." = "Загрузка...";
-
-// MARK: Facility
-"Arming..." = "Постановка на охрану...";
-"Arming perimeter..." = "Постановка периметра...";
-"Disarming..." = "Снятие с охраны...";
+// Facility details
+"Details" = "Подробнее";
+"Events" = "События";
+"Sensors" = "Датчики";
+"Payment" = "Оплата";
+"Application" = "Заявки";
+"Start an alarm" = "Начать тревогу";
+"Cancel the alarm" = "Отменить тревогу";
+"Turn on security" = "Поставить на охрану";
+"Turn off security" = "Снять с охраны";
+"Facility's name" = "Название объекта";
 "Confirmation required" = "Требуется подтверждение";
 "Are you sure you want to arm the object?" = "Вы уверены, что хотите поставить объект на охрану?";
 "Are you sure you want to disarm the object?" = "Вы уверены, что хотите снять объект с охраны?";
 "Are you sure you want to arm the object's perimeter?" = "Вы уверены, что хотите поставить периметр объекта на охрану?";
 "Are you sure you want to start alarm?" = "Вы уверены, что хотите нажать тревожную кнопку?";
 "Are you sure you want to start testing mode?" = "Вы уверены, что хотите начать тестирование тревожных кнопок?";
-"Facility's name" = "Название объекта";
-"Reset" = "Сбросить";
-"Complete" = "Завершить";
-"Press the alarm button" = "Нажмите тревожную кнопку";
-"The alarm button has been pressed" = "Тревожная кнопка была нажата";
-"The alarm button has been tested. Press the next alarm button" = "Тревожная кнопка протестирована. Нажмите следующую тревожную кнопку";
 "Arm the object" = "Поставить на охрану";
 "Disarm the object" = "Снять с охраны";
 "Arm the object's perimeter" = "Поставить периметр на охрану";
 "Start alarm" = "Подтвердить";
 "Start testing mode" = "Начать проверку ТК";
 "Feature is not available" = "Функция недоступна";
-"The arming/disarming feature is not available. In order to use this feature, contact your security company" = "Функция постановки/снятия с охраны недоступна. Для того, чтобы использовать данную функцию обратитесь в охранное предприятие";
 "The alarm feature is not available. In order to use this feature, contact your security company" = "Функция тревожной кнопки недоступна. Для того, чтобы использовать данную функцию обратитесь в охранное предприятие";
+"The arming/disarming feature is not available. In order to use this feature, contact your security company" = "Функция постановки/снятия с охраны недоступна. Для того, чтобы использовать данную функцию обратитесь в охранное предприятие";
 "Cancel the alarm" = "Отменить тревогу";
 "Go back" = "Назад";
 "Could not find the passcode to cancel the alarm" = "Не удалось получить кодовое слово для отмены тревоги";
 "Could not cancel alarm" = "Не удалось отменить тревогу";
 "You have already tried to cancel the alarm less then an hour ago" = "Вы уже совершили попытку отмены тревоги меньше часа назад";
 
+// Test mode
+"Testing" = "Тестирование ТК";
+"Reset" = "Сбросить";
+"Complete" = "Завершить";
+"Press the alarm button" = "Нажмите тревожную кнопку";
+"The alarm button has been pressed" = "Тревожная кнопка была нажата";
+"The alarm button has been tested. Press the next alarm button" = "Тревожная кнопка протестирована. Нажмите следующую тревожную кнопку";
+
+
+
+
+
+
+
+
+
 // MARK: Sensors
-"Empty" = "Пусто";
+"Unknown sensor" = "Unknown sensor";
+
+// MARK: Application
+"Application" = "Заявка";
+"Custom application" = "Текст заявки";
+"Date and time" = "Дата и время";
+"Submit" = "Отправить";
+
+// MARK: Account
+"Account" = "Лицевой счет";
+"Amount" = "Cумма";
+"Pay" = "Перейти к оплате";
+
+// Mark: Test mode
+
+
+
+
+// MARK: Errors
+"Service is not available now" = "Сервис сейчас не доступен";
+"Unable to load data" = "Не удалось загрузить данные";
+"Incorrect data format" = "Неправильный формат данных";
+"No security company selected" = "Не выбрано охранное предприятие";
+"Server address unknown" = "Адрес сервера не известен";
+
+
+
+
+//// MARK: Common
+//"Proceed" = "Продолжить";
+//"Done" = "Готово";
+//"Cancel" = "Отмена";
+//
+//// MARK: Login
+//"City" = "Город";
+//"Security company" = "Охранное предприятие";
+//"Phone number" = "Номер телефона";
+//"Get password" = "Получить пароль";
+//"Authentication is required to access the data" = "Для доступа к данным необходима авторизация";
+//
+//// MARK: Password
+//"An sms message with a password has been sent to your number. Please, enter it in the text field below:" = "На Ваш номер отправлено смс-сообщение с паролем. Введите его в текстовое поле ниже:";
+//"Password" = "Пароль";
+//"Get new password" = "Запросить пароль";
+//"Next" = "Продолжить";
+//"You can request new password again after: %@" = "Пароль можно запросить повторно через: %@";
+//
+
+//
+//// MARK: Sorting dialog
+//"Sorting" = "Сортировка";
+//"Ascending" = "По возрастанию";
+//"Descending" = "По убыванию";
+//"By name" = "По имени";
+//"By address" = "По адресу";
+//"By status" = "По статусу";
+//
+//// MARK: Facilities
+//"Objects list" = "Список объектов";
+//"Failed to load cached events" = "Не удалось загрузить сохраненные события";
+//"Loading..." = "Загрузка...";
+
+// MARK: Facility
+"Arming..." = "Постановка на охрану...";
+"Arming perimeter..." = "Постановка периметра...";
+"Disarming..." = "Снятие с охраны...";
+
+
+
+
+
+
+
+// MARK: Sensors
+
 "Unknown sensor" = "Неизвестный датчик";
 
 // MARK: Account
 "Account:" = "Лицевой счет:";
 "Sum:" = "Сумма:";
-"Pay" = "Оплатить";
+//"Pay" = "Оплатить";
 
 // MARK: Applications
-"Application" = "Заявка";
-"Application:" = "Заявки:";
-"Application text:" = "Текст заявки:";
+//"Application" = "Заявка";
+//"Application:" = "Заявки:";
+//"Application text:" = "Текст заявки:";
 "Date and time:" = "Дата и время:";
 "Apply" = "Отправить заявку";
-"Custom application" = "Свой вариант";
+//"Custom application" = "Свой вариант";
 "Could not send application" = "Не удалось отправить заявку";

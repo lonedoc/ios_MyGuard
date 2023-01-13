@@ -10,7 +10,28 @@ import UIKit
 import SkeletonView
 import Swinject
 
-extension FacilitiesViewController: FacilitiesView {
+private let cellIdentifier = "object_cell"
+
+class FacilitiesViewController: UIViewController, FacilitiesView {
+
+    private let presenter: FacilitiesPresenter
+
+    // swiftlint:disable:next force_cast
+    private var rootView: FacilitiesScreenLayout { return view as! FacilitiesScreenLayout }
+
+    private var facilities = [Facility]()
+
+    init() {
+        self.presenter = Assembler.shared.resolver.resolve(FacilitiesPresenter.self)!
+
+        super.init(nibName: nil, bundle: nil)
+        title = "Facilities list".localized
+        modalTransitionStyle = .crossDissolve
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     func showPlaceholder() {
         DispatchQueue.main.async {
@@ -45,62 +66,16 @@ extension FacilitiesViewController: FacilitiesView {
             if UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url)
             } else {
-                self.showAlertDialog(
-                    title: "Error".localized,
-                    message: "The number cannot be dialed".localized
-                )
+                self.presenter.phoneCallFailed()
             }
         }
     }
 
-    func showSortingDialog(options: [SortingOption], defaultValue: Int) {
-        DispatchQueue.main.async {
-            let sortingDialog = SortingDialogController()
-            sortingDialog.delegate = self
-
-            options.forEach { option in
-                sortingDialog.addOption(option)
-            }
-
-            sortingDialog.setDefault(value: defaultValue)
-
-            self.present(sortingDialog, animated: true, completion: nil)
-        }
-    }
-
-    func openObjectScreen(facility: Facility) {
+    func openFacilityScreen(facility: Facility) {
         DispatchQueue.main.async {
             let viewController = FacilityViewController(facility: facility)
-            viewController.title = facility.name
-
             self.navigationController?.pushViewController(viewController, animated: true)
         }
-    }
-
-}
-
-// MARK: -
-
-private let cellIdentifier = "object_cell"
-
-class FacilitiesViewController: UIViewController, SortingDialogDelegate {
-
-    private let presenter: FacilitiesPresenter
-
-    // swiftlint:disable:next force_cast
-    private var rootView: FacilitiesScreenLayout { return view as! FacilitiesScreenLayout }
-
-    private var facilities = [Facility]()
-
-    init() {
-        self.presenter = Assembler.shared.resolver.resolve(FacilitiesPresenter.self)!
-
-        super.init(nibName: nil, bundle: nil)
-        title = "Objects list".localized
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     override func loadView() {
@@ -125,6 +100,20 @@ class FacilitiesViewController: UIViewController, SortingDialogDelegate {
     }
 
     private func setup() {
+        UIApplication.shared.statusBarUIView?.backgroundColor = UIColor(color: .cardBackground)
+
+        rootView.phoneButton.target = self
+        rootView.phoneButton.action = #selector(phoneButtonTapped)
+
+        navigationItem.leftBarButtonItem = rootView.phoneButton
+
+        rootView.sortingSegmentedControl.selectedSegmentIndex = 0
+        rootView.sortingSegmentedControl.addTarget(
+            nil,
+            action: #selector(sortingChanged),
+            for: .valueChanged
+        )
+
         rootView.tableView.register(FacilitiesTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         rootView.tableView.dataSource = self
         rootView.tableView.delegate = self
@@ -134,31 +123,31 @@ class FacilitiesViewController: UIViewController, SortingDialogDelegate {
 
         rootView.refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         rootView.tableView.addSubview(rootView.refreshControl)
+    }
 
-        rootView.sortButton.target = self
-        rootView.sortButton.action = #selector(sortButtonTapped)
+    @objc private func sortingChanged() {
+        let sorting: FacilitiesSorting
 
-        rootView.phoneButton.target = self
-        rootView.phoneButton.action = #selector(phoneButtonTapped)
+        switch rootView.sortingSegmentedControl.selectedSegmentIndex {
+        case 1:
+            sorting = FacilitiesSorting.byNameAscending
+        case 2:
+            sorting = FacilitiesSorting.byAddressAscending
+        default:
+            sorting = FacilitiesSorting.byStatus
+        }
 
-        navigationItem.leftBarButtonItem = rootView.phoneButton
-        navigationItem.rightBarButtonItem = rootView.sortButton
+        print(sorting)
+
+        presenter.sortingChanged(sorting)
     }
 
     @objc private func refresh() {
         presenter.refresh()
     }
 
-    @objc private func sortButtonTapped() {
-        presenter.sortButtonTapped()
-    }
-
     @objc private func phoneButtonTapped() {
         presenter.phoneButtonTapped()
-    }
-
-    func sortingChanged(sorting: Int) {
-        presenter.sortingChanged(sorting)
     }
 
 }
@@ -180,46 +169,9 @@ extension FacilitiesViewController: SkeletonTableViewDataSource, UITableViewDele
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! FacilitiesTableViewCell
 
         let facility = facilities[indexPath.row]
-
-        cell.title = facility.name
-        cell.address = facility.address
-        cell.status = facility.status
-        cell.statusIcon = getStatusIcon(by: facility.statusCode)
-        cell.statusColor = getStatusColor(by: facility.statusCode)
+        cell.bind(facility: facility)
 
         return cell
-    }
-
-    private func getStatusIcon(by statusCode: StatusCode) -> UIImage? {
-        switch statusCode {
-        case let status where status.isNotGuarded:
-            return UIImage.assets(.notGuardedStatusIcon)
-        case let status where status.isFullGuarded:
-            return UIImage.assets(.guardedStatusIcon)
-        case let status where status.isPerimeterOnlyGuarded:
-            return UIImage.assets(.perimeterOnlyStatusIcon)
-        case let status where status.isAlarm:
-            return UIImage.assets(.alarmStatusIcon)
-        case let status where status.isMalfunction:
-            return UIImage.assets(.malfunctionStatusIcon)
-        default:
-            return nil
-        }
-    }
-
-    private func getStatusColor(by statusCode: StatusCode) -> UIColor {
-        switch statusCode {
-        case let status where status.isAlarm:
-            return .alarmStatusColor
-        case let status where status.isMalfunction:
-            return .malfunctionStatusColor
-        case let status where status.isNotGuarded:
-            return .notGuardedStatusColor
-        case let status where status.isGuarded:
-            return .guardedStatusColor
-        default:
-            return .malfunctionStatusColor
-        }
     }
 
     func collectionSkeletonView(
@@ -230,7 +182,7 @@ extension FacilitiesViewController: SkeletonTableViewDataSource, UITableViewDele
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.objectSelected(facilities[indexPath.row])
+        presenter.facilitySelected(facilities[indexPath.row])
     }
 
 }

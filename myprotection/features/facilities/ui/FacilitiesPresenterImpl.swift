@@ -11,8 +11,27 @@ import RubegProtocol_v2_0
 import RxSwift
 
 private let driverPort: Int32 = 8301
+private let attemptsCount = 2
+private let pollingInterval: Double = 10
 
-extension FacilitiesPresenterImpl: FacilitiesPresenter {
+class FacilitiesPresenterImpl: FacilitiesPresenter {
+
+    private var view: FacilitiesView?
+    private let interactor: FacilitiesInteractor
+    private let communicationData: CommunicationData
+
+    private var facilities = [Facility]()
+    private var sorting: FacilitiesSorting = .byStatus
+    private var comparator: FacilitiesComparator = StatusFirstFacilitiesComparator()
+
+    private var disposeBag = DisposeBag()
+
+    private var timer: Timer?
+
+    init(interactor: FacilitiesInteractor, communicationData: CommunicationData) {
+        self.interactor = interactor
+        self.communicationData = communicationData
+    }
 
     func attach(view: FacilitiesView) {
         self.view = view
@@ -70,20 +89,19 @@ extension FacilitiesPresenterImpl: FacilitiesPresenter {
         }
     }
 
-    func sortButtonTapped() {
-        let sortingOptions = getSortingOptions()
-        view?.showSortingDialog(options: sortingOptions, defaultValue: sorting.rawValue)
-    }
-
     func phoneButtonTapped() {
         callGuardService()
     }
 
-    func sortingChanged(_ sortingValue: Int) {
-        guard
-            let newSorting = FacilitiesSorting(rawValue: sortingValue),
-            sorting != newSorting
-        else {
+    func phoneCallFailed() {
+        view?.showAlertDialog(
+            title: "Error".localized,
+            message: "The number cannot be dialed".localized
+        )
+    }
+
+    func sortingChanged(_ newSorting: FacilitiesSorting) {
+        if sorting == newSorting {
             return
         }
 
@@ -94,34 +112,8 @@ extension FacilitiesPresenterImpl: FacilitiesPresenter {
         view?.updateData(facilities: facilities)
     }
 
-    func objectSelected(_ facility: Facility) {
-        view?.openObjectScreen(facility: facility)
-    }
-
-}
-
-// MARK: -
-
-private let attemptsCount = 2
-private let pollingInterval: Double = 10
-
-class FacilitiesPresenterImpl {
-
-    private var view: FacilitiesView?
-    private let interactor: FacilitiesInteractor
-    private let communicationData: CommunicationData
-
-    private var facilities = [Facility]()
-    private var sorting: FacilitiesSorting = .byStatus
-    private var comparator: FacilitiesComparator = StatusFirstFacilitiesComparator()
-
-    private var disposeBag = DisposeBag()
-
-    private var timer: Timer?
-
-    init(interactor: FacilitiesInteractor, communicationData: CommunicationData) {
-        self.interactor = interactor
-        self.communicationData = communicationData
+    func facilitySelected(_ facility: Facility) {
+        view?.openFacilityScreen(facility: facility)
     }
 
     private func startPolling() {
@@ -195,29 +187,6 @@ class FacilitiesPresenterImpl {
         interactor.saveGuardService(guardService)
     }
 
-    private func getSortingOptions() -> [SortingOption] {
-        return [
-            SortingOption(
-                title: "By name".localized,
-                values: [
-                    FacilitiesSorting.byNameAscending.rawValue,
-                    FacilitiesSorting.byNameDescending.rawValue
-                ]
-            ),
-            SortingOption(
-                title: "By address".localized,
-                values: [
-                    FacilitiesSorting.byAddressAscending.rawValue,
-                    FacilitiesSorting.byAddressDescending.rawValue
-                ]
-            ),
-            SortingOption(
-                title: "By status".localized,
-                values: [FacilitiesSorting.byStatus.rawValue]
-            )
-        ]
-    }
-
     private func getComparator(by sorting: FacilitiesSorting) -> FacilitiesComparator {
         switch sorting {
         case .byStatus:
@@ -237,7 +206,7 @@ class FacilitiesPresenterImpl {
         guard let phoneNumber = interactor.getGuardService()?.phoneNumber else {
             view?.showAlertDialog(
                 title: "Error".localized,
-                message: "Phone not found".localized
+                message: "Phone number not found".localized
             )
             return
         }

@@ -12,8 +12,26 @@ import RxSwift
 
 private let cancellationCooldown = 3600 // 1 hour
 
-// swiftlint:disable file_length
-extension FacilityPresenterImpl: FacilityPresenter {
+private let shortPollingInterval: TimeInterval = 1
+private let longPollingInterval: TimeInterval = 15
+
+// swiftlint: disable type_body_length file_length
+class FacilityPresenterImpl: FacilityPresenter {
+
+    private var view: FacilityView?
+    private let interactor: FacilityInteractor
+    private var disposeBag = DisposeBag()
+
+    private var facility: Facility
+
+    private var timer: Timer?
+    @Atomic private var progressBarIsShown = false
+    @Atomic private var alarmIsStarting = false
+
+    init(facility: Facility, interactor: FacilityInteractor) {
+        self.facility = facility
+        self.interactor = interactor
+    }
 
     func attach(view: FacilityView) {
         self.view = view
@@ -40,20 +58,61 @@ extension FacilityPresenterImpl: FacilityPresenter {
         startPolling()
     }
 
-    func editButtonTapped() {
-        view?.showEditNameDialog(currentName: facility.name)
-    }
-
-    func applyButtonTapped() {
-        view?.openApplicationScreen(facilityId: facility.id)
-    }
-
-    func newNameProvided(name: String) {
-        if name == facility.name {
+    func alarmButtonTapped() {
+        if facility.statusCode.isAlarm {
             return
         }
 
-        updateFacilityName(name)
+        guard facility.alarmButtonEnabled else {
+            view?.showAlertDialog(
+                title: "Feature is not available".localized,
+                message: "The alarm feature is not available. In order to use this feature, contact your security company".localized // swiftlint:disable:this line_length
+            )
+            return
+        }
+
+        view?.showConfirmDialog(
+            message: "Are you sure you want to start alarm?".localized,
+            proceedText: "Start alarm".localized
+        ) {
+            if self.facility.statusCode != .alarm {
+                self.startAlarm()
+            }
+        }
+    }
+
+    func cancelAlarmButtonTapped() {
+        if let lastCancellationTime = interactor.getLastCancellationTime(facilityId: facility.id) {
+            let timeSinceLastCancellation: Int = getUptime() - lastCancellationTime
+
+            if 0 ..< cancellationCooldown ~= timeSinceLastCancellation {
+                view?.showAlertDialog(
+                    title: "Error".localized,
+                    message: "You have already tried to cancel the alarm less then an hour ago".localized
+                )
+
+                return
+            }
+        }
+
+        interactor.setLastCancellationTime(facilityId: facility.id, time: getUptime())
+
+        if
+            let passcode = facility.passcode,
+            let path = Bundle.main.path(forResource: "Passcodes", ofType: "plist"),
+            let allPasscodes = NSArray(contentsOfFile: path) as? [String]
+        {
+            var passcodes = getRandomElements(count: 3, source: allPasscodes)
+            passcodes.append(passcode)
+            passcodes.shuffle()
+
+            view?.showCancelAlarmDialog(passcodes: passcodes)
+        } else {
+            view?.showAlertDialog(
+                title: "Error".localized,
+                message: "Could not find the passcode to cancel the alarm".localized
+            )
+        }
     }
 
     func armButtonTapped() {
@@ -72,18 +131,9 @@ extension FacilityPresenterImpl: FacilityPresenter {
                 message: "Are you sure you want to arm the object?".localized,
                 proceedText: "Arm the object".localized
             ) {
-                self.view?.setArmButtonEnabled(false)
                 self.changeStatus(1)
             }
             return
-        }
-
-        view?.showConfirmDialog(
-            message: "Are you sure you want to disarm the object?".localized,
-            proceedText: "Disarm the object".localized
-        ) {
-            self.view?.setArmButtonEnabled(false)
-            self.changeStatus(0)
         }
     }
 
@@ -106,64 +156,43 @@ extension FacilityPresenterImpl: FacilityPresenter {
             message: "Are you sure you want to arm the object's perimeter?".localized,
             proceedText: "Arm the object's perimeter".localized
         ) {
-            self.view?.setArmButtonEnabled(false)
             self.changeStatus(2)
         }
     }
 
-    func alarmButtonTapped() {
-        if facility.statusCode.isAlarm {
-            if let lastCancellationTime = interactor.getLastCancellationTime(facilityId: facility.id) {
-                let timeSinceLastCancellation: Int = getUptime() - lastCancellationTime
-
-                if 0 ..< cancellationCooldown ~= timeSinceLastCancellation {
-                    view?.showAlertDialog(
-                        title: "Error".localized,
-                        message: "You have already tried to cancel the alarm less then an hour ago".localized
-                    )
-
-                    return
-                }
-            }
-
-            interactor.setLastCancellationTime(facilityId: facility.id, time: getUptime())
-
-            if
-                let passcode = facility.passcode,
-                let path = Bundle.main.path(forResource: "Passcodes", ofType: "plist"),
-                let allPasscodes = NSArray(contentsOfFile: path) as? [String]
-            {
-                var passcodes = getRandomElements(count: 3, source: allPasscodes)
-                passcodes.append(passcode)
-                passcodes.shuffle()
-
-                view?.showCancelAlarmDialog(passcodes: passcodes)
-            } else {
-                view?.showAlertDialog(
-                    title: "Error".localized,
-                    message: "Could not find the passcode to cancel the alarm".localized
-                )
-            }
-
-            return
-        }
-
-        guard facility.alarmButtonEnabled else {
+    func disarmButtonTapped() {
+        guard facility.armingEnabled else {
             view?.showAlertDialog(
                 title: "Feature is not available".localized,
-                message: "The alarm feature is not available. In order to use this feature, contact your security company".localized // swiftlint:disable:this line_length
+                message: "The arming/disarming feature is not available. In order to use this feature, contact your security company".localized // swiftlint:disable:this line_length
             )
             return
         }
 
+        guard facility.online && facility.onlineEnabled else { return }
+
         view?.showConfirmDialog(
-            message: "Are you sure you want to start alarm?".localized,
-            proceedText: "Start alarm".localized
+            message: "Are you sure you want to disarm the object?".localized,
+            proceedText: "Disarm the object".localized
         ) {
-            if self.facility.statusCode != .alarm {
-                self.startAlarm()
-            }
+            self.changeStatus(0)
         }
+    }
+
+    func editButtonTapped() {
+        view?.showEditNameDialog(currentName: facility.name)
+    }
+
+    func applyButtonTapped() {
+        view?.showApplicationView(facilityId: facility.id)
+    }
+
+    func newNameProvided(name: String) {
+        if name == facility.name {
+            return
+        }
+
+        updateFacilityName(name)
     }
 
     func cancelAlarmPasscodeProvided(passcode: String) {
@@ -189,30 +218,6 @@ extension FacilityPresenterImpl: FacilityPresenter {
 
     func accountButtonTapped() {
         view?.showAccountView(accounts: facility.accounts)
-    }
-
-}
-
-// MARK: -
-
-private let shortPollingInterval: TimeInterval = 1
-private let longPollingInterval: TimeInterval = 15
-
-class FacilityPresenterImpl {
-
-    private var view: FacilityView?
-    private let interactor: FacilityInteractor
-    private var disposeBag = DisposeBag()
-
-    private var facility: Facility
-
-    private var timer: Timer?
-    @Atomic private var progressBarIsShown = false
-    @Atomic private var alarmIsStarting = false
-
-    init(facility: Facility, interactor: FacilityInteractor) {
-        self.facility = facility
-        self.interactor = interactor
     }
 
     private func startPolling(interval: TimeInterval = longPollingInterval) {
@@ -257,8 +262,6 @@ class FacilityPresenterImpl {
             let gotNotGuarded = !oldStatus.isNotGuarded && newStatus.isNotGuarded
 
             if gotGuarded || gotNotGuarded {
-                view?.hideProgressBar()
-                view?.setArmButtonEnabled(true)
                 restartPolling()
             }
         }
@@ -279,18 +282,21 @@ class FacilityPresenterImpl {
     }
 
     private func updateView() {
-        view?.showNavigationItems(isApplicationsEnabled: facility.isApplicationsAvailable)
-        view?.setName(facility.name)
+        let isAlarm = facility.statusCode.isAlarm
+        let isGuarded = facility.statusCode.isGuarded
+        let isOnlineChannelAvailable = facility.online || facility.onlineEnabled
+        let addressPart = facility.address.count > 0 ? " - \(facility.address)" : ""
+
+        view?.setTitle("\(facility.name)\(addressPart)")
         view?.setStatusDescription(facility.status)
-        view?.setAddress(facility.address)
         view?.setStatusIcon(facility.statusCode)
-        view?.setLinkIconHidden(!facility.online)
+        view?.setOnlineChannelIconHidden(!facility.online)
         view?.setElectricityIconHidden(!facility.powerSupplyMalfunction)
         view?.setBatteryIconHidden(!facility.batteryMalfunction)
-        view?.setLinkIcon(linked: facility.onlineEnabled)
-        view?.setAccountsButtonHidden(facility.accounts.isEmpty)
-        view?.setAlarmButtonVariant(!facility.statusCode.isAlarm)
-        view?.setAlarmButtonEnabled(![.alarm].contains(facility.statusCode))
+        view?.setAlarmButtonHidden(isAlarm)
+        view?.setCancelAlarmButtonHidden(!isAlarm)
+        view?.setArmButtonHidden(isGuarded || !isOnlineChannelAvailable)
+        view?.setDisarmButtonHidden(!isGuarded || !isOnlineChannelAvailable)
         view?.setDevices(facility.devices)
     }
 
@@ -299,7 +305,7 @@ class FacilityPresenterImpl {
             .subscribe(
                 onNext: { [weak self] success in
                     if success {
-                        self?.view?.setName(name)
+                        self?.view?.setTitle(name)
                     } else {
                         self?.view?.showAlertDialog(
                             title: "Error".localized,
@@ -331,12 +337,9 @@ class FacilityPresenterImpl {
                         return
                     }
 
-                    self?.showProgressBar(status: status)
                     self?.restartPolling(interval: shortPollingInterval)
                 },
                 onError: { [weak self] error in
-                    self?.view?.setArmButtonEnabled(true)
-
                     let errorMessage = getErrorMessage(by: error)
 
                     self?.view?.showAlertDialog(
@@ -346,42 +349,6 @@ class FacilityPresenterImpl {
                 }
             )
             .disposed(by: disposeBag)
-    }
-
-    private func showProgressBar(status: Int) {
-        guard
-            let message = getProgressBarMessage(by: status),
-            let type = getCommandType(by: status)
-        else {
-            return
-        }
-
-        view?.showProgressBar(message: message, type: type)
-        progressBarIsShown = true
-    }
-
-    private func getProgressBarMessage(by status: Int) -> String? {
-        switch status {
-        case 0:
-            return "Disarming...".localized
-        case 1:
-            return "Arming...".localized
-        case 2:
-            return "Arming perimeter...".localized
-        default:
-            return nil
-        }
-    }
-
-    private func getCommandType(by status: Int) -> ExecutingCommandType? {
-        switch status {
-        case 0:
-            return .disarming
-        case 1, 2:
-            return .arming
-        default:
-            return nil
-        }
     }
 
     private func startAlarm() {

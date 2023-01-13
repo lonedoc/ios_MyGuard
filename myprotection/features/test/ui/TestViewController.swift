@@ -17,13 +17,15 @@ extension TestViewController: TestView {
 
     func setTip(text: String) {
         DispatchQueue.main.async {
-            self.rootView.tipText.text = text
+            self.rootView.tipLabel.text = text
+//            self.rootView.tipText.text = text
         }
     }
 
     func setCountdown(text: String) {
         DispatchQueue.main.async {
-            self.rootView.countDownText.text = text
+//            self.rootView.countDownText.text = text
+            self.rootView.countDownLabel.text = text
         }
     }
 

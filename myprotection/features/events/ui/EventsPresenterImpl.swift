@@ -10,11 +10,28 @@ import Foundation
 import RubegProtocol_v2_0
 import RxSwift
 
+private let pollingInterval: TimeInterval = 15
+
 private enum DbError: Error {
     case unavailable
 }
 
-extension EventsPresenterImpl: EventsPresenter {
+class EventsPresenterImpl: EventsPresenter {
+
+    private var view: EventsView?
+    private let interactor: EventsInteractor
+
+    private let disposeBag = DisposeBag()
+
+    private let facilityId: String
+    private var events = [Event]()
+
+    private var timer: Timer?
+
+    init(facilityId: String, interactor: EventsInteractor) {
+        self.facilityId = facilityId
+        self.interactor = interactor
+    }
 
     func attach(view: EventsView) {
         self.view = view
@@ -55,29 +72,6 @@ extension EventsPresenterImpl: EventsPresenter {
         }
 
         loadEvents(range: range, userInitiated: false)
-    }
-
-}
-
-// MARK: -
-
-private let pollingInterval: TimeInterval = 15
-
-class EventsPresenterImpl {
-
-    private var view: EventsView?
-    private let interactor: EventsInteractor
-
-    private let disposeBag = DisposeBag()
-
-    private let facilityId: String
-    private var events = [Event]()
-
-    private var timer: Timer?
-
-    init(facilityId: String, interactor: EventsInteractor) {
-        self.facilityId = facilityId
-        self.interactor = interactor
     }
 
     private func startPolling() {

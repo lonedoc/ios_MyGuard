@@ -6,24 +6,47 @@
   Copyright © 2020 Rubeg NPO. All rights reserved.
 */
 
-// MARK: Errors
+// Common
+"Empty" = "Empty";
+"Done" = "Done";
+"Proceed" = "Proceed";
+"Cancel" = "Cancel";
 "Error" = "Error";
-"Wrong password" = "Wrong password";
-"Could not find user by provided phone number" = "Could not find user by provided phone number";
-"Service is not available now" = "Service is not available now";
-"Unable to load data" = "Unable to load data";
-"Incorrect data format" = "Incorrect data format";
-"No security company selected" = "No security company selected";
-"Phone number not specified" = "Phone number not specified";
-"Server address unknown" = "Server address unknown";
 "Unknown error" = "Unknown error";
 "Could not send request" = "Could not send request";
 "Server not responding" = "Server not responding";
 "The operation could not be performed" = "The operation could not be performed";
 "Unable to read server response" = "Unable to read server response";
-"Push-notifications is not available" = "Push-notifications is not available";
-"Phone not found" = "Phone not found";
+"Wrong password" = "Wrong password";
+"Could not find user by provided phone number" = "Could not find user by provided phone number";
+"Phone number not found" = "Phone number not found";
+"The phone number cannot be called" = "The phone number cannot be called";
 "The number cannot be dialed" = "The number cannot be dialed";
+
+// Splash screen
+"Your protection" = "Your protection";
+
+// Login
+"Log in" = "Log in";
+"Enter your credentials in the text fields below" = "Enter your credentials in the text fields below";
+"City" = "City";
+"Guard service" = "Guard service";
+"Phone number" = "Phone number";
+"Get password" = "Get password";
+
+// Password
+"An SMS message with a password has been sent to your number" = "An SMS message with a password has been sent to your number";
+"Enter the code" = "Enter the code";
+"Get new password" = "Get new password";
+"Phone number not specified" = "Phone number not specified";
+"Push-notifications is not available" = "Push-notifications is not available";
+"You can request new password again after: %@" = "You can request new password again after: %@";
+
+// Passcode
+"Create a PIN-code" = "Create a PIN-code";
+"Confirm the PIN-code" = "Confirm the PIN-code";
+"Enter the PIN-code" = "Enter the PIN-code";
+"Forgot the PIN-code?" = "Forgot the PIN-code?";
 "Wrong passcode" = "Wrong passcode";
 "Wrong passcode confirmation" = "Wrong passcode confirmation";
 "Biometric authentication is unavailable" = "Biometric authentication is unavailable";
@@ -31,26 +54,6 @@
 "Biometry is not configured" = "Biometry is not configured";
 "Biometry is locked out" = "Biometry is locked out";
 
-// MARK: Common
-"Proceed" = "Proceed";
-"Done" = "Done";
-"Cancel" = "Cancel";
-
-// MARK: Login
-"City" = "City";
-"Security company" = "Security company";
-"Phone number" = "Phone number";
-"Get password" = "Get password";
-"Authentication is required to access the data" = "Authentication is required to access the data";
-
-// MARK: Password
-"An sms message with a password has been sent to your number. Please, enter it in the text field below:" = "An sms message with a password has been sent to your number. Please, enter it in the text field below:";
-"Password" = "Password";
-"Get new password" = "Get new password";
-"Next" = "Next";
-"You can request new password again after: %@" = "You can request new password again after: %@";
-
-// MARK: Passcode
 "abc" = "abc";
 "def" = "def";
 "ghi" = "ghi";
@@ -60,64 +63,140 @@
 "tuv" = "tuv";
 "wxyz" = "wxyz";
 
-"Forgot passcode?" = "Forgot passcode?";
-"Enter new passcode" = "Enter new passcode";
-"Repeat the passcode" = "Repeat the passcode";
-"Enter the passcode" = "Enter the passcode";
-
-"The phone number cannot be called" = "The phone number cannot be called";
-
-// MARK: Sorting dialog
-"Sorting" = "Sorting";
-"Ascending" = "Ascending";
-"Descending" = "Descending";
-"By name" = "By name";
-"By address" = "By address";
+// Facilities
+"Facilities list" = "Facilities list";
 "By status" = "By status";
+"By title" = "By title";
+"By address" = "By address";
 
-// MARK: Facilities
-"Objects list" = "Facilities list";
-"Failed to load cached events" = "Failed to load cached events";
-"Loading..." = "Loading...";
-
-// MARK: Facility
-"Arming..." = "Arming...";
-"Arming perimeter..." = "Arming perimeter...";
-"Disarming..." = "Disarming...";
+// Facility details
+"Details" = "Details";
+"Events" = "Events";
+"Sensors" = "Sensors";
+"Payment" = "Payment";
+"Application" = "Application";
+"Start an alarm" = "Start an alarm";
+"Cancel the alarm" = "Cancel the alarm";
+"Turn on security" = "Turn on security";
+"Turn off security" = "Turn off security";
+"Facility's name" = "Facility's name";
 "Confirmation required" = "Confirmation required";
 "Are you sure you want to arm the object?" = "Are you sure you want to arm the object?";
 "Are you sure you want to disarm the object?" = "Are you sure you want to disarm the object?";
 "Are you sure you want to arm the object's perimeter?" = "Are you sure you want to arm the object's perimeter?";
 "Are you sure you want to start alarm?" = "Are you sure you want to start alarm?";
 "Are you sure you want to start testing mode?" = "Are you sure you want to start testing mode?";
-"Facility's name" = "Facility's name";
-"Reset" = "Reset";
-"Complete" = "Complete";
-"Press the alarm button" = "Press the alarm button";
-"The alarm button has been pressed" = "The alarm button has been pressed";
-"The alarm button has been tested. Press the next alarm button" = "The alarm button has been tested. Press the next alarm button";
 "Arm the object" = "Arm the object";
 "Disarm the object" = "Disarm the object";
 "Arm the object's perimeter" = "Arm the object's perimeter";
 "Start alarm" = "Start alarm";
 "Start testing mode" = "Start testing mode";
 "Feature is not available" = "Feature is not available";
-"The arming/disarming feature is not available. In order to use this feature, contact your security company" = "The arming/disarming feature is not available. In order to use this feature, contact your security company";
 "The alarm feature is not available. In order to use this feature, contact your security company" = "The alarm feature is not available. In order to use this feature, contact your security company";
+"The arming/disarming feature is not available. In order to use this feature, contact your security company" = "The arming/disarming feature is not available. In order to use this feature, contact your security company";
 "Cancel the alarm" = "Cancel the alarm";
 "Go back" = "Go back";
 "Could not find the passcode to cancel the alarm" = "Could not find the passcode to cancel the alarm";
 "Could not cancel alarm" = "Could not cancel alarm";
 "You have already tried to cancel the alarm less then an hour ago" = "You have already tried to cancel the alarm less then an hour ago";
 
+// Test mode
+"Testing" = "Testing";
+"Reset" = "Reset";
+"Complete" = "Complete";
+"Press the alarm button" = "Press the alarm button";
+"The alarm button has been pressed" = "The alarm button has been pressed";
+"The alarm button has been tested. Press the next alarm button" = "The alarm button has been tested. Press the next alarm button";
+
+
+
+
+
+
 // MARK: Sensors
-"Empty" = "Empty";
+"Unknown sensor" = "Unknown sensor";
+
+// MARK: Application
+"Application" = "Application";
+"Custom application" = "Custom application";
+"Date and time" = "Date and time";
+"Submit" = "Submit";
+
+// MARK: Account
+"Account" = "Account";
+"Amount" = "Amount";
+"Pay" = "Pay";
+
+// MARK: Test mode
+
+
+
+
+
+// MARK: Errors
+"Service is not available now" = "Service is not available now";
+"Unable to load data" = "Unable to load data";
+"Incorrect data format" = "Incorrect data format";
+"No security company selected" = "No security company selected";
+"Server address unknown" = "Server address unknown";
+
+
+
+
+//// MARK: Common
+//"Proceed" = "Proceed";
+//"Done" = "Done";
+//"Cancel" = "Cancel";
+//
+//// MARK: Login
+//"City" = "City";
+//"Security company" = "Security company";
+//"Phone number" = "Phone number";
+//"Get password" = "Get password";
+//"Authentication is required to access the data" = "Authentication is required to access the data";
+//
+//// MARK: Password
+//"An sms message with a password has been sent to your number. Please, enter it in the text field below:" = "An sms message with a password has been sent to your number. Please, enter it in the text field below:";
+//"Password" = "Password";
+//"Get new password" = "Get new password";
+//"Next" = "Next";
+//"You can request new password again after: %@" = "You can request new password again after: %@";
+//
+//
+//
+//
+//
+//// MARK: Sorting dialog
+//"Sorting" = "Sorting";
+//"Ascending" = "Ascending";
+//"Descending" = "Descending";
+//"By name" = "By name";
+//"By address" = "By address";
+//"By status" = "By status";
+//
+//// MARK: Facilities
+//"Objects list" = "Facilities list";
+//"Failed to load cached events" = "Failed to load cached events";
+//"Loading..." = "Loading...";
+
+// MARK: Facility
+"Arming..." = "Arming...";
+"Arming perimeter..." = "Arming perimeter...";
+"Disarming..." = "Disarming...";
+
+
+
+
+
+
+// MARK: Sensors
+
 "Unknown sensor" = "Unknown sensor";
 
 // MARK: Account
 "Account:" = "Account:";
 "Sum:" = "Sum:";
-"Pay" = "Pay";
+//"Pay" = "Pay";
 
 // MARK: Applications
 "Application" = "Application";

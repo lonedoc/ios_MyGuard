@@ -13,7 +13,21 @@ import Swinject
 
 private let driverPort: Int32 = 8301
 
-extension LoginPresenterImpl: LoginPresenter {
+class LoginPresenterImpl : LoginPresenter {
+
+    private weak var view: LoginView?
+
+    private let interactor: LoginInteractor
+    private let disposeBag = DisposeBag()
+
+    private var guardServices: [GuardService] = []
+    private var selectedCity: String?
+    private var selectedGuardService: GuardService?
+    private var phoneNumber: String?
+
+    init(interactor: LoginInteractor) {
+        self.interactor = interactor
+    }
 
     func attach(view: LoginView) {
         self.view = view
@@ -28,7 +42,7 @@ extension LoginPresenterImpl: LoginPresenter {
         }
     }
 
-    func didSelect(city: String) {
+    func citySelected(_ city: String) {
         view?.setCity(city)
         view?.setGuardService("")
 
@@ -46,7 +60,7 @@ extension LoginPresenterImpl: LoginPresenter {
         view?.setSubmitButtonEnabled(isReadyForSubmit())
     }
 
-    func didSelect(guardService: String) {
+    func guardServiceSelected(_ guardService: String) {
         view?.setGuardService(guardService)
         selectedGuardService = guardServices.first { $0.city == selectedCity && $0.name == guardService }
 
@@ -57,7 +71,7 @@ extension LoginPresenterImpl: LoginPresenter {
         view?.setSubmitButtonEnabled(isReadyForSubmit())
     }
 
-    func didChangePhone(value: String) {
+    func phoneNumberChanged(_ value: String) {
         let phoneMask = PhoneMask()
 
         if phoneMask.validatePart(value) {
@@ -72,7 +86,7 @@ extension LoginPresenterImpl: LoginPresenter {
         view?.setSubmitButtonEnabled(isReadyForSubmit())
     }
 
-    func didHitSubmitButton() {
+    func submitButtonTapped() {
         saveDataInCache()
 
         let communicationData = Assembler.shared.resolver.resolve(CommunicationData.self)!
@@ -80,26 +94,6 @@ extension LoginPresenterImpl: LoginPresenter {
         communicationData.setAddresses(addresses)
 
         view?.openPasswordScreen()
-    }
-
-}
-
-// MARK: -
-
-class LoginPresenterImpl {
-
-    private weak var view: LoginView?
-
-    private let interactor: LoginInteractor
-    private let disposeBag = DisposeBag()
-
-    private var guardServices: [GuardService] = []
-    private var selectedCity: String?
-    private var selectedGuardService: GuardService?
-    private var phoneNumber: String?
-
-    init(interactor: LoginInteractor) {
-        self.interactor = interactor
     }
 
     private func loadCachedData() {

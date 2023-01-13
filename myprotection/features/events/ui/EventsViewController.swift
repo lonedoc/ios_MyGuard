@@ -10,7 +10,32 @@ import UIKit
 import Swinject
 import SkeletonView
 
-extension EventsViewController: EventsView {
+private let cellIdentifier = "eventsTableViewCell"
+private let animationDuration = 0.5
+
+class EventsViewController: UIViewController, EventsView {
+
+    private let presenter: EventsPresenter
+
+    // swiftlint:disable:next force_cast
+    private var rootView: EventsScreenLayout { return view as! EventsScreenLayout }
+
+    private var events = [Event]()
+
+
+
+    init(facilityId: String, unitOfWork: UnitOfWork?) {
+        self.presenter = Assembler.shared.resolver.resolve(
+            EventsPresenter.self,
+            arguments: facilityId, unitOfWork
+        )!
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     func showPlaceholder() {
         DispatchQueue.main.async {
@@ -42,41 +67,6 @@ extension EventsViewController: EventsView {
         }
     }
 
-}
-
-// MARK: -
-
-private let cellIdentifier = "eventsTableViewCell"
-private let animationDuration = 0.5
-
-class EventsViewController: UIViewController {
-
-    private let presenter: EventsPresenter
-
-    // swiftlint:disable:next force_cast
-    private var rootView: EventsScreenLayout { return view as! EventsScreenLayout }
-
-    private var events = [Event]()
-
-    private lazy var formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy HH:mm:ss"
-        return formatter
-    }()
-
-    init(facilityId: String, unitOfWork: UnitOfWork?) {
-        self.presenter = Assembler.shared.resolver.resolve(
-            EventsPresenter.self,
-            arguments: facilityId, unitOfWork
-        )!
-
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     override func loadView() {
         view = EventsScreenLayout(frame: UIScreen.main.bounds)
     }
@@ -87,6 +77,18 @@ class EventsViewController: UIViewController {
         setupTableView()
         presenter.attach(view: self)
         presenter.viewDidLoad()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter.viewWillAppear()
+        subscribe()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        presenter.viewWillDisappear()
+        unsubscribe()
     }
 
     private func setupTableView() {
@@ -109,12 +111,6 @@ class EventsViewController: UIViewController {
         presenter.refresh()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        presenter.viewWillAppear()
-        subscribe()
-    }
-
     private func subscribe() {
         NotificationCenter.default.addObserver(
             self,
@@ -129,12 +125,6 @@ class EventsViewController: UIViewController {
             name: TestViewController.willDisappear,
             object: nil
         )
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        presenter.viewWillDisappear()
-        unsubscribe()
     }
 
     private func unsubscribe() {
@@ -178,18 +168,7 @@ extension EventsViewController: SkeletonTableViewDataSource, UITableViewDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! EventsTableViewCell
 
         let event = events[indexPath.row]
-
-        cell.eventDescription = event.description
-        cell.zone = event.zone
-
-        if let timestamp = event.timestamp {
-            cell.timestamp = formatter.string(from: timestamp)
-        } else {
-            cell.timestamp = ""
-        }
-
-        cell.eventIcon = getIcon(by: event)
-        cell.eventColor = getColor(by: event)
+        cell.bind(event: event)
 
         return cell
     }
@@ -208,46 +187,6 @@ extension EventsViewController: SkeletonTableViewDataSource, UITableViewDelegate
     ) {
         if indexPath.row + 1 == events.count {
             presenter.endOfTableReached()
-        }
-    }
-
-    private func getIcon(by event: Event) -> UIImage? {
-        switch event.type {
-        case 1, 2, 3, 77, 79, 85:
-            return UIImage.assets(.alarmStatusIcon)
-        case 4:
-            return UIImage.assets(.fireAlarm)
-        case 5:
-            return UIImage.assets(.malfunctionStatusIcon)
-        case 6, 8, 9, 66, 67:
-            return UIImage.assets(.guardedStatusIcon)
-        case 10, 69, 68:
-            return UIImage.assets(.notGuardedStatusIcon)
-        case 33, 81:
-            return UIImage.assets(.battery)
-        default:
-            return UIImage.assets(.settings)
-        }
-    }
-
-    private func getColor(by event: Event) -> UIColor? {
-        switch event.type {
-        case 1, 2, 3, 77, 79, 85:
-            return .alarmStatusColor
-        case 4:
-            return .alarmStatusColor
-        case 5:
-            return .malfunctionStatusColor
-        case 6, 8, 9, 66, 67:
-            return .guardedStatusColor
-        case 10, 69, 68:
-            return .notGuardedStatusColor
-        case 33:
-            return .malfunctionStatusColor
-        case 81:
-            return .alarmStatusColor
-        default:
-            return .unknownStatusColor
         }
     }
 

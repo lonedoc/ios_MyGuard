@@ -11,31 +11,6 @@ import SkeletonView
 
 class FacilitiesTableViewCell: UITableViewCell {
 
-    var title: String {
-        get { return titleLabel.text ?? "" }
-        set { titleLabel.text = newValue }
-    }
-
-    var address: String {
-        get { return addressLabel.text ?? "" }
-        set { addressLabel.text = newValue }
-    }
-
-    var status: String {
-        get { return statusLabel.text ?? "" }
-        set { statusLabel.text = newValue }
-    }
-
-    var statusIcon: UIImage? {
-        get { return iconView.image }
-        set { iconView.image = newValue }
-    }
-
-    var statusColor: UIColor? {
-        get { return iconView.backgroundColor }
-        set { iconView.backgroundColor = newValue }
-    }
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setup()
@@ -45,8 +20,48 @@ class FacilitiesTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func bind(facility: Facility) {
+        titleLabel.text = facility.name
+        addressLabel.text = facility.address
+        statusLabel.text = facility.status
+        updateStatus(facility.statusCode)
+    }
+
+    private func updateStatus(_ statusCode: StatusCode) {
+        iconView.image = getStatusIcon(statusCode: statusCode)
+        statusLabel.textColor = getStatusTextColor(statusCode: statusCode)
+    }
+
+    private func getStatusIcon(statusCode: StatusCode) -> UIImage? {
+        switch statusCode {
+        case let status where status.isAlarm:
+            return nil // TODO
+        case let status where status.isNotGuarded:
+            return UIImage(image: .notGuardedStatusIcon)
+        case let status where status.isPerimeterOnlyGuarded:
+            return UIImage(image: .perimeterGuardedStatusIcon)
+        case let status where status.isGuarded:
+            return UIImage(image: .guardedStatusIcon)
+        default:
+            return nil
+        }
+    }
+
+    private func getStatusTextColor(statusCode: StatusCode) -> UIColor {
+        switch statusCode {
+        case let status where status.isAlarm:
+            return UIColor(color: .error)
+        case let status where status.isNotGuarded:
+            return UIColor(color: .textSecondary)
+        case let status where status.isGuarded || status.isPerimeterOnlyGuarded:
+            return UIColor(color: .accent)
+        default:
+            return UIColor(color: .textSecondary)
+        }
+    }
+
     private func setup() {
-        backgroundColor = .screenBackgroundColor
+        backgroundColor = .clear
 
         setupViews()
         setupConstraints()
@@ -56,82 +71,90 @@ class FacilitiesTableViewCell: UITableViewCell {
     }
 
     private func setupViews() {
-        stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(addressLabel)
-        stackView.addArrangedSubview(statusLabel)
+        cardView.addSubview(iconView)
+        cardView.addSubview(statusLabel)
+        cardView.addSubview(titleLabel)
+        cardView.addSubview(addressLabel)
+        cardView.addSubview(chevronIconView)
 
-        contentView.addSubview(iconView)
-        contentView.addSubview(stackView)
+        contentView.addSubview(cardView)
     }
 
     private func setupConstraints() {
+        cardView.translatesAutoresizingMaskIntoConstraints = false
+        cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
+        cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
+        cardView.heightAnchor.constraint(equalToConstant: 120).isActive = true
+
         iconView.translatesAutoresizingMaskIntoConstraints = false
-        iconView.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
-        iconView.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
-        iconView.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        iconView.heightAnchor.constraint(equalToConstant: 80).isActive = true
-
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.topAnchor.constraint(equalTo: iconView.topAnchor).isActive = true
-        stackView.leftAnchor.constraint(equalTo: iconView.rightAnchor, constant: 16).isActive = true
-        stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: iconView.bottomAnchor).isActive = true
-
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-
-        addressLabel.translatesAutoresizingMaskIntoConstraints = false
-        addressLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        iconView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 16).isActive = true
+        iconView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16).isActive = true
+        iconView.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        iconView.heightAnchor.constraint(equalToConstant: 32).isActive = true
 
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
-        statusLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        statusLabel.centerYAnchor.constraint(equalTo: iconView.centerYAnchor).isActive = true
+        statusLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 12).isActive = true
+        statusLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16).isActive = true
+
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 10).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16).isActive = true
+
+        addressLabel.translatesAutoresizingMaskIntoConstraints = false
+        addressLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16).isActive = true
+        addressLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -16).isActive = true
+
+        chevronIconView.translatesAutoresizingMaskIntoConstraints = false
+        chevronIconView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor).isActive = true
+        chevronIconView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16).isActive = true
+        chevronIconView.widthAnchor.constraint(equalToConstant: 12).isActive = true
+        chevronIconView.heightAnchor.constraint(equalToConstant: 12).isActive = true
     }
 
     // MARK: Views
 
+    let cardView: UIView = {
+        let view = UIView(frame: .zero)
+        view.layer.cornerRadius = 16
+        view.backgroundColor = UIColor(color: .cardBackground)
+        return view
+    }()
+
     let iconView: UIImageView = {
-        let image = UIImage.assets(.notGuardedStatusIcon)
-        let imageView = UIImageView(image: image)
+        let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .center
-        imageView.tintColor = .white
-        imageView.backgroundColor = .green
-        imageView.layer.cornerRadius = 40
-        imageView.layer.masksToBounds = true
         imageView.isSkeletonable = true
         return imageView
     }()
 
-    let stackView: UIStackView = {
-        let stackView = UIStackView(frame: .zero)
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .equalCentering
-        stackView.isSkeletonable = true
-        return stackView
+    let statusLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.font = TextStyle.caption2.font
+        label.textColor = UIColor(color: .accent)
+        label.isSkeletonable = true
+        return label
     }()
 
     let titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = label.font.withSize(20)
-        label.textColor = .screenForegroundColor
-        label.isSkeletonable = true
+        label.font = TextStyle.paragraph.font
+        label.textColor = UIColor(color: .textContrast)
         return label
     }()
 
     let addressLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = label.font.withSize(16)
-        label.textColor = .screenForegroundColor
-        label.isSkeletonable = true
+        label.font = TextStyle.caption2.font
+        label.textColor = UIColor(color: .textSecondary)
         return label
     }()
 
-    let statusLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.font = label.font.withSize(16)
-        label.textColor = .screenForegroundColor
-        label.isSkeletonable = true
-        return label
+    let chevronIconView: UIImageView = {
+        let imageView = UIImageView(frame: .zero)
+        imageView.contentMode = .center
+        imageView.image = UIImage(image: .chevronRightIcon)
+        return imageView
     }()
 
 }

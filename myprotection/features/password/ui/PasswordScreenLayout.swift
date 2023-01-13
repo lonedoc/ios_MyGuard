@@ -12,12 +12,20 @@ class PasswordScreenLayout: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-
         setup()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func layoutSubviews() {
+        updateAppearance()
+        super.layoutSubviews()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        updateAppearance()
     }
 
     private func setup() {
@@ -28,92 +36,88 @@ class PasswordScreenLayout: UIView {
     }
 
     private func setupViews() {
-        addSubview(backgroundView)
+        backgroundColor = UIColor(color: .backgroundPrimary)
 
-        contentView.addSubview(requestLabel)
-        contentView.addSubview(passwordTextField)
-        contentView.addSubview(timeLeftLabel)
-        contentView.addSubview(retryButton)
-        contentView.addSubview(cancelButton)
-        contentView.addSubview(proceedButton)
+        wrapperView.addSubview(hintLabel)
+        wrapperView.addSubview(passwordTextField)
+        wrapperView.addSubview(passwordTextFieldBorderView)
+        wrapperView.addSubview(timeLeftLabel)
+        wrapperView.addSubview(retryButton)
+        wrapperView.addSubview(cancelButton)
+        wrapperView.addSubview(proceedButton)
 
-        wrapperView.addSubview(contentView)
         scrollView.addSubview(wrapperView)
 
         addSubview(scrollView)
 
         toolbar.setItems([spacer, doneButtonItem], animated: false)
-
         passwordTextField.inputAccessoryView = toolbar
     }
 
+    // swiftlint:disable line_length
     // swiftlint:disable:next function_body_length
     private func setupConstraints() {
-        backgroundView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        backgroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        backgroundView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        backgroundView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
-        scrollView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor).isActive = true
-        scrollView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
 
         wrapperView.translatesAutoresizingMaskIntoConstraints = false
         wrapperView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        wrapperView.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
-        wrapperView.rightAnchor.constraint(equalTo: scrollView.rightAnchor).isActive = true
+        wrapperView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        wrapperView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
         wrapperView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-        wrapperView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        wrapperView.heightAnchor.constraint(equalTo: scrollView.heightAnchor).isActive = true
+        wrapperView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+        wrapperView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
 
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.leftAnchor.constraint(equalTo: wrapperView.leftAnchor).isActive = true
-        contentView.rightAnchor.constraint(equalTo: wrapperView.rightAnchor).isActive = true
-        contentView.heightAnchor.constraint(equalToConstant: 320).isActive = true
-        contentView.centerYAnchor.constraint(equalTo: wrapperView.centerYAnchor).isActive = true
-
-        requestLabel.translatesAutoresizingMaskIntoConstraints = false
-        requestLabel.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        requestLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
-        requestLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16).isActive = true
+        hintLabel.translatesAutoresizingMaskIntoConstraints = false
+        hintLabel.topAnchor.constraint(equalTo: wrapperView.topAnchor, constant: 128).isActive = true
+        hintLabel.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor, constant: dimensions.windowPadding).isActive = true
+        hintLabel.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor, constant: -dimensions.windowPadding).isActive = true
+        hintLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 44).isActive = true
 
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-        passwordTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        passwordTextField.topAnchor.constraint(equalTo: requestLabel.bottomAnchor, constant: 32).isActive = true
-        passwordTextField.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-        passwordTextField.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        passwordTextField.topAnchor.constraint(equalTo: hintLabel.bottomAnchor, constant: 56).isActive = true
+        passwordTextField.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor, constant: dimensions.windowPadding).isActive = true
+        passwordTextField.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor, constant: -dimensions.windowPadding).isActive = true
+        passwordTextField.heightAnchor.constraint(equalToConstant: dimensions.oneLineTextFieldHeight).isActive = true
+
+        passwordTextFieldBorderView.translatesAutoresizingMaskIntoConstraints = false
+        passwordTextFieldBorderView.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor).isActive = true
+        passwordTextFieldBorderView.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor).isActive = true
+        passwordTextFieldBorderView.bottomAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 1).isActive = true
+        passwordTextFieldBorderView.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
         timeLeftLabel.translatesAutoresizingMaskIntoConstraints = false
-        timeLeftLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 32).isActive = true
-        timeLeftLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32).isActive = true
-        timeLeftLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
+        timeLeftLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 56).isActive = true
+        timeLeftLabel.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor, constant: dimensions.windowPadding).isActive = true
+        timeLeftLabel.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor, constant: -dimensions.windowPadding).isActive = true
+        timeLeftLabel.heightAnchor.constraint(equalToConstant: 44).isActive = true
 
         retryButton.translatesAutoresizingMaskIntoConstraints = false
         retryButton.centerXAnchor.constraint(equalTo: timeLeftLabel.centerXAnchor).isActive = true
         retryButton.centerYAnchor.constraint(equalTo: timeLeftLabel.centerYAnchor).isActive = true
 
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        cancelButton.topAnchor.constraint(equalTo: timeLeftLabel.bottomAnchor, constant: 48).isActive = true
-        cancelButton.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
-        cancelButton.rightAnchor.constraint(equalTo: contentView.centerXAnchor, constant: -8).isActive = true
+        cancelButton.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor, constant: dimensions.windowPadding).isActive = true
+        cancelButton.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor, constant: -dimensions.windowPadding).isActive = true
+        cancelButton.bottomAnchor.constraint(equalTo: wrapperView.bottomAnchor, constant: -96).isActive = true
+        cancelButton.heightAnchor.constraint(equalToConstant: dimensions.buttonHeight).isActive = true
 
         proceedButton.translatesAutoresizingMaskIntoConstraints = false
-        proceedButton.topAnchor.constraint(equalTo: timeLeftLabel.bottomAnchor, constant: 48).isActive = true
-        proceedButton.leftAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 8).isActive = true
-        proceedButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16).isActive = true
+        proceedButton.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor, constant: dimensions.windowPadding).isActive = true
+        proceedButton.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor, constant: -dimensions.windowPadding).isActive = true
+        proceedButton.bottomAnchor.constraint(equalTo: cancelButton.topAnchor, constant: -8).isActive = true
+        proceedButton.heightAnchor.constraint(equalToConstant: dimensions.buttonHeight).isActive = true
+    }
+    // swiftlint:enable line_length
+
+    private func updateAppearance() {
+        passwordTextField.setLeftPadding(dimensions.textFieldHorizontalPadding)
     }
 
     // MARK: Views
-
-    let backgroundView: UIImageView = {
-        let image = UIImage.assets(.background)
-        let view = UIImageView(image: image)
-        view.contentMode = .scaleAspectFill
-        return view
-    }()
 
     let scrollView: UIScrollView = {
         let view = UIScrollView(frame: .zero)
@@ -125,32 +129,32 @@ class PasswordScreenLayout: UIView {
         return view
     }()
 
-    let contentView: UIView = {
-        let view = UIView(frame: .zero)
-        return view
-    }()
-
-    let requestLabel: UILabel = {
-        // swiftlint:disable:next line_length
-        let text = "An sms message with a password has been sent to your number. Please, enter it in the text field below:".localized
+    let hintLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
-        label.textColor = .white
-        label.text = text
+        label.lineBreakMode = .byWordWrapping
+        label.textAlignment = .center
+        label.font = TextStyle.paragraph.font
+        label.textColor = UIColor(color: .textContrast)
+        label.text = "An SMS message with a password has been sent to your number".localized
         return label
     }()
 
     let passwordTextField: UITextField = {
         let textField = UITextField(frame: .zero)
+        textField.backgroundColor = UIColor(color: .backgroundSurface)
+        textField.layer.cornerRadius = Dimensions.defaultValues.textFieldCornerRadius
+        textField.setLeftPadding(Dimensions.defaultValues.textFieldHorizontalPadding)
+        textField.font = TextStyle.paragraph.font
+        textField.textColor = UIColor(color: .textPrimary)
         textField.keyboardType = .numberPad
-        textField.setLeftPadding(16)
-        textField.setRightPadding(16)
-        textField.backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        textField.textColor = .white
 
-        let placeholderText = "Password".localized
-        let placeholderColor = UIColor.white.withAlphaComponent(0.6)
+        if #available(iOS 12, *) {
+            textField.textContentType = .oneTimeCode
+        }
+
+        let placeholderText = "Enter the code".localized
+        let placeholderColor = UIColor(color: .textSecondary)
         let attributes = [NSAttributedString.Key.foregroundColor: placeholderColor]
         let placeholder = NSAttributedString(string: placeholderText, attributes: attributes)
 
@@ -159,49 +163,51 @@ class PasswordScreenLayout: UIView {
         return textField
     }()
 
+    let passwordTextFieldBorderView: UIView = {
+        var bottomLine = UIView(frame: .zero)
+        bottomLine.backgroundColor = UIColor(color: .darkAppearanceBorder)
+        return bottomLine
+    }()
+
     let timeLeftLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.isUserInteractionEnabled = false
         label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center
-        label.textColor = .white
-        label.font = label.font.withSize(16)
+        label.font = TextStyle.paragraph.font
+        label.textColor = UIColor(color: .textContrast)
         label.text = " "
         return label
     }()
 
     let retryButton: UIButton = {
-        let title = "Get new password".localized.uppercased()
-        let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         let button = UIButton(frame: .zero)
-        button.setTitle(title, for: .normal)
-        button.setTitleColor(.secondaryColor, for: .normal)
-        button.titleLabel?.font = font
+        button.setTitleColor(UIColor(color: .accent), for: .normal)
+        button.titleLabel?.font = TextStyle.paragraph.font
+        button.setTitle("Get new password".localized, for: .normal)
         button.isHidden = true
-        return button
-    }()
-    let cancelButton: UIButton = {
-        let title = "Cancel".localized
-        let button = UIButton(frame: .zero)
-        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
-        button.layer.cornerRadius = 5
-        button.setBackgroundColor(.errorColor, for: .normal)
-        button.setTitle(title, for: .normal)
-        button.setTitleColor(.white, for: .normal)
         return button
     }()
 
     let proceedButton: UIButton = {
-        let title = "Next".localized
-        let button = UIButton(frame: .zero)
-        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
-        button.layer.cornerRadius = 5
-        button.setBackgroundColor(.primaryColor, for: .normal)
-        button.setBackgroundColor(.primaryColorPale, for: .disabled)
-        button.setTitle(title, for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.setTitleColor(.white, for: .disabled)
-        button.isEnabled = false
+        let button = SolidButton()
+        button.layer.cornerRadius = Dimensions.defaultValues.buttonCornerRadius
+        button.backgroundColorNormal = UIColor(color: .backgroundSurfaceVariant)
+        button.backgroundColorHighlighted = UIColor(color: .backgroundSurfaceVariant).darker
+        button.backgroundColorDisabled = UIColor(color: .backgroundSurfaceVariant).darker
+        button.setTitleColor(UIColor(color: .accent), for: .normal)
+        button.titleLabel?.font = TextStyle.paragraph.font
+        button.setTitle("Proceed".localized, for: .normal)
+        return button
+    }()
+
+    let cancelButton: UIButton = {
+        let button = SolidButton()
+        button.layer.cornerRadius = Dimensions.defaultValues.buttonCornerRadius
+        button.backgroundColor = nil
+        button.setTitleColor(UIColor(color: .error), for: .normal)
+        button.titleLabel?.font = TextStyle.paragraph.font
+        button.setTitle("Cancel".localized, for: .normal)
         return button
     }()
 
@@ -223,7 +229,7 @@ class PasswordScreenLayout: UIView {
     let toolbar: UIToolbar = {
         let toolbar = UIToolbar()
         toolbar.barStyle = .default
-        toolbar.tintColor = .primaryColor
+        toolbar.tintColor = UIColor(color: .accent)
         toolbar.isUserInteractionEnabled = true
         toolbar.sizeToFit()
         return toolbar
